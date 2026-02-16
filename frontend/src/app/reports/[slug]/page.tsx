@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useState } from "react";
+import { use } from "react";
 import {
   Calendar,
   Clock,
@@ -15,56 +15,12 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-interface ReportTier {
-  price: number;
-  pages: string;
-  label: string;
-  features: string[];
-  recommended?: boolean;
-}
-
-const tiers: ReportTier[] = [
-  {
-    price: 199,
-    pages: "25+",
-    label: "Mini Report",
-    features: [
-      "Birth Chart Analysis",
-      "Planetary Positions",
-      "Basic Predictions",
-    ],
-  },
-  {
-    price: 249,
-    pages: "45+",
-    label: "Basic Report",
-    features: [
-      "Everything in Mini",
-      "Detailed Dasha Analysis",
-      "Career & Finance Overview",
-    ],
-    recommended: true,
-  },
-  {
-    price: 299,
-    pages: "65+",
-    label: "Premium Report",
-    features: [
-      "Everything in Basic",
-      "In-depth Life Predictions",
-      "Remedies & Gemstones",
-      "5-Year Transit Forecast",
-    ],
-  },
-];
-
 export default function ReportPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = use(params);
-  const [selectedTier, setSelectedTier] = useState<number>(1); // Default to recommended
 
   // Format slug for display (e.g., "janam-kundali" -> "Janam Kundali")
   const reportName = slug
@@ -326,46 +282,11 @@ export default function ReportPage({
                 </div>
               </div>
 
-              {/* Tier Selection Buttons */}
-              <div className="pt-4 space-y-3">
-                <p className="text-center text-white/60 text-sm mb-2">
-                  Select Report Variant
-                </p>
-                <div className="grid grid-cols-1 gap-3">
-                  {tiers.map((tier, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      onClick={() => setSelectedTier(index)}
-                      className={`relative w-full p-4 rounded-xl border transition-all duration-300 text-left group overflow-hidden ${
-                        selectedTier === index
-                          ? "bg-gradient-to-r from-[#cfa375] to-[#b8894f] border-transparent text-[#0f0a2e] shadow-lg shadow-[#cfa375]/20"
-                          : "bg-[#0f0a2e]/30 border-white/10 text-white/60 hover:border-[#cfa375]/50 hover:bg-[#cfa375]/5"
-                      }`}
-                    >
-                      <div className="flex justify-between items-center z-10 relative">
-                        <div>
-                          <p
-                            className={`font-bold text-lg ${selectedTier === index ? "text-[#0f0a2e]" : "text-white"}`}
-                          >
-                            ₹{tier.price}
-                          </p>
-                          <p className="text-xs font-medium uppercase tracking-wider opacity-80">
-                            {tier.label} ({tier.pages} Pages)
-                          </p>
-                        </div>
-                        {selectedTier === index && (
-                          <CheckCircle className="w-6 h-6" />
-                        )}
-                      </div>
-                    </button>
-                  ))}
-                </div>
-
-                {/* Submit Button */}
+              {/* Submit Button */}
+              <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full mt-4 bg-white text-[#0f0a2e] font-bold py-4 rounded-xl hover:bg-white/90 transition-colors shadow-lg shadow-white/10 text-lg"
+                  className="w-full bg-gradient-to-r from-[#cfa375] to-[#b8894f] hover:from-[#e8c99b] hover:to-[#cfa375] text-[#0f0a2e] font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-[#cfa375]/20 hover:shadow-[#cfa375]/40 text-lg"
                 >
                   Proceed to Payment
                 </button>

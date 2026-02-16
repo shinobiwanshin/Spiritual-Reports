@@ -1,10 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { Smartphone, Mail, MapPin } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Contact Us — Astra Reports",
+  title: "Contact Us — Shivabakthi",
   description:
-    "Get in touch with Astra Spiritual for consultations, report queries, or any questions. Reach us via WhatsApp, email, or visit our office.",
+    "Get in touch with Shivabakthi for consultations, report queries, or any questions. Reach us via WhatsApp, email, or visit our office.",
 };
 
 export default function ContactPage() {
@@ -20,7 +21,7 @@ export default function ContactPage() {
             Contact <span className="gold-gradient-text">Us</span>
           </h1>
           <p className="text-[#b0a8c8] text-lg max-w-2xl mx-auto leading-relaxed">
-            Thank you for your interest in Astra Reports! Whether you&apos;re
+            Thank you for your interest in Shivabakthi! Whether you&apos;re
             exploring our reports, seeking personalized guidance, or simply wish
             to share your thoughts, we&apos;re here to help. Our team is just a
             message away!
@@ -37,8 +38,8 @@ export default function ContactPage() {
             rel="noopener noreferrer"
             className="glass-card rounded-2xl p-8 text-center group"
           >
-            <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center text-3xl mx-auto mb-5 group-hover:bg-green-500/20 transition-colors">
-              📱
+            <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-green-500/20 transition-colors">
+              <Smartphone className="w-8 h-8 text-green-400" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-2">
               WhatsApp Chat
@@ -53,11 +54,11 @@ export default function ContactPage() {
 
           {/* Email */}
           <a
-            href="mailto:support@astrareports.com"
+            href="mailto:support@shivabakthi.com"
             className="glass-card rounded-2xl p-8 text-center group"
           >
-            <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center text-3xl mx-auto mb-5 group-hover:bg-blue-500/20 transition-colors">
-              ✉️
+            <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-blue-500/20 transition-colors">
+              <Mail className="w-8 h-8 text-blue-400" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-2">
               Email Address
@@ -72,8 +73,8 @@ export default function ContactPage() {
 
           {/* Office */}
           <div className="glass-card rounded-2xl p-8 text-center group">
-            <div className="w-16 h-16 rounded-2xl bg-[#cfa375]/10 flex items-center justify-center text-3xl mx-auto mb-5 group-hover:bg-[#cfa375]/20 transition-colors">
-              📍
+            <div className="w-16 h-16 rounded-2xl bg-[#cfa375]/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-[#cfa375]/20 transition-colors">
+              <MapPin className="w-8 h-8 text-[#cfa375]" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-2">
               Office Address

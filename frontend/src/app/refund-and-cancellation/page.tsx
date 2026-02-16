@@ -1,7 +1,18 @@
 import type { Metadata } from "next";
+import {
+  Pin,
+  Ban,
+  CheckCircle2,
+  Search,
+  CreditCard,
+  Clock,
+  Phone,
+  Mail,
+  Smartphone,
+} from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Refund & Cancellation — Astra Spiritual",
+  title: "Refund & Cancellation — Shivabakthi",
   description:
     "Read our refund and cancellation policy for digital reports and consultation services.",
 };
@@ -28,7 +39,7 @@ export default function RefundPage() {
               Last updated: February 2026
             </p>
             <p className="text-[#b0a8c8] leading-relaxed">
-              At Astra Spiritual, we provide personalized digital information
+              At Shivabakthi, we provide personalized digital information
               services that are custom-created, securely delivered, and handled
               with professional standards. As our offerings involve
               made-to-order digital reports and consultation-based services, we
@@ -38,10 +49,11 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              📌 Nature of Service
+              <Pin className="w-5 h-5 text-[#cfa375] inline-block mr-1" />{" "}
+              Nature of Service
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed">
-              All services offered on Astra Spiritual are custom-created digital
+              All services offered on Shivabakthi are custom-created digital
               products and consultations, prepared based on user-provided
               details and delivered electronically. Due to the personalized
               nature of these services, once a report is generated or a
@@ -52,7 +64,8 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              🚫 No Refunds After Delivery
+              <Ban className="w-5 h-5 text-[#cfa375] inline-block mr-1" /> No
+              Refunds After Delivery
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed mb-3">
               To maintain service integrity and prevent misuse, refunds are not
@@ -83,7 +96,8 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              ✅ Eligible Refund Scenarios
+              <CheckCircle2 className="w-5 h-5 text-[#cfa375] inline-block mr-1" />{" "}
+              Eligible Refund Scenarios
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed mb-3">
               Refunds may be considered only under the following verifiable
@@ -118,7 +132,8 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              🔍 Internal Review Process
+              <Search className="w-5 h-5 text-[#cfa375] inline-block mr-1" />{" "}
+              Internal Review Process
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed mb-3">
               All refund requests are reviewed by our internal Service Review
@@ -151,7 +166,8 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              💳 Payment Dispute Policy
+              <CreditCard className="w-5 h-5 text-[#cfa375] inline-block mr-1" />{" "}
+              Payment Dispute Policy
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed">
               Customers are requested to contact our support team before
@@ -164,7 +180,8 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              🕒 Refund Processing Timeline
+              <Clock className="w-5 h-5 text-[#cfa375] inline-block mr-1" />{" "}
+              Refund Processing Timeline
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed">
               If a refund is approved, it will be credited within 24 hours to
@@ -176,7 +193,8 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-xl font-semibold text-white mb-3 flex items-center gap-2">
-              📞 Customer Support
+              <Phone className="w-5 h-5 text-[#cfa375] inline-block mr-1" />{" "}
+              Customer Support
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed">
               For order-related queries or assistance, please contact us through
@@ -184,10 +202,10 @@ export default function RefundPage() {
             </p>
             <div className="mt-4 flex flex-col sm:flex-row gap-4">
               <a
-                href="mailto:info@astraspiritual.com"
+                href="mailto:info@shivabakthi.com"
                 className="glass-card px-6 py-3 rounded-xl text-sm text-white hover:border-[#cfa375]/30 transition-all inline-flex items-center gap-2"
               >
-                ✉️ info@astraspiritual.com
+                <Mail className="w-4 h-4" /> info@shivabakthi.com
               </a>
               <a
                 href="https://wa.me/917861087127"
@@ -195,7 +213,7 @@ export default function RefundPage() {
                 rel="noopener noreferrer"
                 className="glass-card px-6 py-3 rounded-xl text-sm text-white hover:border-[#cfa375]/30 transition-all inline-flex items-center gap-2"
               >
-                📱 +91-7861087127
+                <Smartphone className="w-4 h-4" /> +91-7861087127
               </a>
             </div>
           </section>

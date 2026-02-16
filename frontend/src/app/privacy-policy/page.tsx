@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — Astra Spiritual",
+  title: "Privacy Policy — Shivabakthi",
   description:
     "Read our privacy policy to understand how we collect, use, and protect your personal information.",
 };
@@ -28,8 +28,8 @@ export default function PrivacyPolicyPage() {
               Last updated: February 2026
             </p>
             <p className="text-[#b0a8c8] leading-relaxed">
-              At Astra Spiritual, we are committed to protecting your privacy.
-              This Privacy Policy explains how we collect, use, disclose, and
+              At Shivabakthi, we are committed to protecting your privacy. This
+              Privacy Policy explains how we collect, use, disclose, and
               safeguard your information when you visit our website and use our
               services.
             </p>
@@ -182,10 +182,10 @@ export default function PrivacyPolicyPage() {
               If you have any questions or concerns about this Privacy Policy,
               please contact us at{" "}
               <a
-                href="mailto:info@astraspiritual.com"
+                href="mailto:info@shivabakthi.com"
                 className="text-[#cfa375] hover:underline"
               >
-                info@astraspiritual.com
+                info@shivabakthi.com
               </a>
               .
             </p>

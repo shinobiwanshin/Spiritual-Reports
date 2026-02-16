@@ -1,13 +1,25 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { CalendarDays, BarChart3, Map } from "lucide-react";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Our Services — Astra Spiritual Reports",
+  title: "Our Services — Shivabakthi",
   description:
     "Explore our personalized 1-year, 3-year, and 5-year astrology reports. Gain insights into career, relationships, finances, and personal growth.",
 };
 
-const reports = [
+const reports: {
+  id: string;
+  title: string;
+  subtitle: string;
+  duration: string;
+  description: string;
+  highlights: string[];
+  icon: ReactNode;
+  accent: string;
+  featured?: boolean;
+}[] = [
   {
     id: "1-year",
     title: "1-Year Report",
@@ -22,7 +34,7 @@ const reports = [
       "Health & wellness guidance",
       "Actionable recommendations",
     ],
-    icon: "📅",
+    icon: <CalendarDays className="w-8 h-8 text-[#cfa375]" />,
     accent: "from-[#cfa375] to-[#e8c99b]",
   },
   {
@@ -40,7 +52,7 @@ const reports = [
       "Financial planning insights",
       "Personal development milestones",
     ],
-    icon: "📊",
+    icon: <BarChart3 className="w-8 h-8 text-[#cfa375]" />,
     accent: "from-[#e8c99b] to-[#cfa375]",
     featured: true,
   },
@@ -60,7 +72,7 @@ const reports = [
       "Life purpose & spiritual growth",
       "Risk assessment & mitigation",
     ],
-    icon: "🗺️",
+    icon: <Map className="w-8 h-8 text-[#cfa375]" />,
     accent: "from-[#b8894f] to-[#cfa375]",
   },
 ];
@@ -105,7 +117,7 @@ export default function ServicesPage() {
             <div className={`p-8 ${report.featured ? "pt-14" : "pt-8"}`}>
               {/* Icon and duration */}
               <div className="flex items-center justify-between mb-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#cfa375]/20 to-[#cfa375]/5 flex items-center justify-center text-3xl">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#cfa375]/20 to-[#cfa375]/5 flex items-center justify-center">
                   {report.icon}
                 </div>
                 <span className="px-4 py-1.5 rounded-full bg-[#cfa375]/10 text-[#cfa375] text-xs font-semibold">

@@ -1,38 +1,46 @@
 import Link from "next/link";
+import {
+  BarChart3,
+  Target,
+  Search,
+  Lightbulb,
+  Zap,
+  Shield,
+} from "lucide-react";
 
 const features = [
   {
-    icon: "📊",
+    icon: <BarChart3 className="w-7 h-7 text-[#cfa375]" />,
     title: "Clear & Structured Information",
     description:
       "All insights are presented in an easy-to-understand and well-organized format.",
   },
   {
-    icon: "🎯",
+    icon: <Target className="w-7 h-7 text-[#cfa375]" />,
     title: "Focus on Key Life Areas",
     description:
       "Content is designed to address career planning, relationships, finances, and personal growth.",
   },
   {
-    icon: "🔍",
+    icon: <Search className="w-7 h-7 text-[#cfa375]" />,
     title: "Self-Reflection Support",
     description:
       "Encourages awareness of habits, preferences, and decision patterns for better self-understanding.",
   },
   {
-    icon: "💡",
+    icon: <Lightbulb className="w-7 h-7 text-[#cfa375]" />,
     title: "Practical Suggestions",
     description:
       "Includes general recommendations that support planning, focus, and consistency.",
   },
   {
-    icon: "⚡",
+    icon: <Zap className="w-7 h-7 text-[#cfa375]" />,
     title: "Action-Oriented Approach",
     description:
       "Designed to help users apply insights gradually in daily life for meaningful change.",
   },
   {
-    icon: "🛡️",
+    icon: <Shield className="w-7 h-7 text-[#cfa375]" />,
     title: "Ethical & Responsible Use",
     description:
       "No misleading claims, guarantees, or unrealistic promises are made.",
@@ -118,7 +126,7 @@ export default function HomePage() {
                 className="glass-card rounded-2xl p-8 group cursor-default"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="w-14 h-14 rounded-xl bg-[#cfa375]/10 flex items-center justify-center text-2xl mb-5 group-hover:bg-[#cfa375]/20 transition-colors">
+                <div className="w-14 h-14 rounded-xl bg-[#cfa375]/10 flex items-center justify-center mb-5 group-hover:bg-[#cfa375]/20 transition-colors">
                   {feature.icon}
                 </div>
                 <h3 className="text-lg font-semibold text-white mb-3">
@@ -143,8 +151,7 @@ export default function HomePage() {
               About Us
             </p>
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-              Welcome to{" "}
-              <span className="gold-gradient-text">Astra Spiritual</span>
+              Welcome to <span className="gold-gradient-text">Shivabakthi</span>
             </h2>
             <p className="text-[#b0a8c8] text-base md:text-lg leading-relaxed max-w-3xl mx-auto mb-8">
               A platform focused on personalized informational reports and
