@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import { Smartphone, Mail, MapPin } from "lucide-react";
 
 const quickLinks = [
   { href: "/", label: "Home" },
@@ -24,12 +26,16 @@ export default function Footer() {
           {/* Brand Section */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-4 group">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#cfa375] to-[#b8894f] flex items-center justify-center text-[#0f0a2e] font-bold text-lg shadow-lg shadow-[#cfa375]/20 group-hover:shadow-[#cfa375]/40 transition-shadow">
-                ✦
-              </div>
+              <Image
+                src="/images/Circle Crop Image.png"
+                alt="Shivabakthi"
+                width={40}
+                height={40}
+                className="rounded-full shadow-lg shadow-[#cfa375]/20 group-hover:shadow-[#cfa375]/40 transition-shadow"
+              />
               <span className="text-lg font-bold tracking-wide">
-                <span className="gold-gradient-text">ASTRA</span>
-                <span className="text-white/90">REPORTS</span>
+                <span className="gold-gradient-text">SHIVA</span>
+                <span className="text-white/80 ml-1">BAKTHI</span>
               </span>
             </Link>
             <p className="text-sm text-[#b0a8c8] leading-relaxed mt-4">
@@ -83,7 +89,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <span className="text-[#cfa375] text-lg mt-0.5">📱</span>
+                <Smartphone className="w-5 h-5 text-[#cfa375] mt-0.5" />
                 <div>
                   <p className="text-xs text-[#b0a8c8] mb-1">WhatsApp</p>
                   <span className="text-sm text-white hover:text-[#cfa375] transition-colors cursor-default">
@@ -92,11 +98,11 @@ export default function Footer() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#cfa375] text-lg mt-0.5">✉️</span>
+                <Mail className="w-5 h-5 text-[#cfa375] mt-0.5" />
                 <div>
                   <p className="text-xs text-[#b0a8c8] mb-1">Email</p>
                   <a
-                    href="mailto:support@astrareports.com"
+                    href="mailto:support@shivabakthi.com"
                     className="text-sm text-white hover:text-[#cfa375] transition-colors"
                   >
                     sup*****@gmail.com
@@ -104,10 +110,10 @@ export default function Footer() {
                 </div>
               </li>
               <li className="flex items-start gap-3">
-                <span className="text-[#cfa375] text-lg mt-0.5">📍</span>
+                <MapPin className="w-5 h-5 text-[#cfa375] mt-0.5" />
                 <div>
                   <p className="text-xs text-[#b0a8c8] mb-1">Office</p>
-                  <p className="text-sm text-white/80">Surat, Gujarat, India</p>
+                  <p className="text-sm text-white/80">India</p>
                 </div>
               </li>
             </ul>
@@ -117,7 +123,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-12 pt-8 border-t border-[rgba(207,163,117,0.08)] flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-[#b0a8c8]">
-            © {new Date().getFullYear()} Astra Reports, all rights reserved.
+            © {new Date().getFullYear()} Shivabakthi, all rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link

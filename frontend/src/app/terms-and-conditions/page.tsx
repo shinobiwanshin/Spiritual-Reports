@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions — Astra Spiritual",
+  title: "Terms & Conditions — Shivabakthi",
   description:
-    "Read our terms and conditions for using Astra Spiritual services and platform.",
+    "Read our terms and conditions for using Shivabakthi services and platform.",
 };
 
 export default function TermsPage() {
@@ -28,7 +28,7 @@ export default function TermsPage() {
               Last updated: February 2026
             </p>
             <p className="text-[#b0a8c8] leading-relaxed">
-              Welcome to Astra Spiritual. By accessing or using our website and
+              Welcome to Shivabakthi. By accessing or using our website and
               services, you agree to be bound by these Terms and Conditions.
               Please read them carefully before using our platform.
             </p>
@@ -43,8 +43,7 @@ export default function TermsPage() {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#cfa375] mt-2 flex-shrink-0" />
                 <span>
                   <strong className="text-white">&quot;Platform&quot;</strong>{" "}
-                  refers to the Astra Spiritual website and all associated
-                  services.
+                  refers to the Shivabakthi website and all associated services.
                 </span>
               </li>
               <li className="flex items-start gap-3">
@@ -119,10 +118,9 @@ export default function TermsPage() {
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed">
               All content, including text, graphics, logos, reports, and
-              software on this Platform, is the intellectual property of Astra
-              Spiritual and is protected by applicable copyright and trademark
-              laws. Unauthorized reproduction, distribution, or modification of
-              any content is strictly prohibited.
+              software on this Platform, is the intellectual property of
+              Shivabakthi laws. Unauthorized reproduction, distribution, or
+              modification of any content is strictly prohibited.
             </p>
           </section>
 
@@ -143,7 +141,7 @@ export default function TermsPage() {
               6. Limitation of Liability
             </h2>
             <p className="text-[#b0a8c8] leading-relaxed">
-              Astra Spiritual shall not be held liable for any direct, indirect,
+              Shivabakthi shall not be held liable for any direct, indirect,
               incidental, or consequential damages arising from the use of our
               services. The information provided is for general guidance and
               informational purposes only. Users acknowledge that decisions made
@@ -183,10 +181,10 @@ export default function TermsPage() {
               For any questions regarding these Terms and Conditions, please
               contact us at{" "}
               <a
-                href="mailto:info@astraspiritual.com"
+                href="mailto:info@shivabakthi.com"
                 className="text-[#cfa375] hover:underline"
               >
-                info@astraspiritual.com
+                info@shivabakthi.com
               </a>
               .
             </p>

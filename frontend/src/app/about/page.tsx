@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
+import {
+  Target,
+  Handshake,
+  ClipboardList,
+  UserCircle,
+  Shield,
+  Sparkles,
+} from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "About Us — Astra Spiritual",
+  title: "About Us — Shivabakthi",
   description:
-    "Learn about Astra Spiritual — our mission, values, and commitment to providing personalized insights and structured guidance.",
+    "Learn about Shivabakthi — our mission, values, and commitment to providing personalized insights and structured guidance.",
 };
 
 export default function AboutPage() {
@@ -15,7 +23,7 @@ export default function AboutPage() {
           About Us
         </p>
         <h1 className="text-4xl sm:text-5xl font-bold text-white mb-6">
-          Welcome to <span className="gold-gradient-text">Astra Spiritual</span>
+          Welcome to <span className="gold-gradient-text">Shivabakthi</span>
         </h1>
         <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-[#cfa375] to-transparent mx-auto" />
       </div>
@@ -25,14 +33,14 @@ export default function AboutPage() {
         {/* Mission */}
         <div className="glass-card rounded-3xl p-10 md:p-14">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center text-2xl">
-              🎯
+            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center">
+              <Target className="w-6 h-6 text-[#cfa375]" />
             </div>
             <h2 className="text-2xl font-bold text-white">Our Mission</h2>
           </div>
           <p className="text-[#b0a8c8] text-base leading-relaxed mb-4">
-            At Astra Spiritual, our objective is to present customized reports
-            based on user-provided details, formatted to help individuals better
+            At Shivabakthi, our objective is to present customized reports based
+            on user-provided details, formatted to help individuals better
             understand themselves and plan ahead with clarity.
           </p>
           <p className="text-[#b0a8c8] text-base leading-relaxed">
@@ -47,8 +55,8 @@ export default function AboutPage() {
         {/* Values */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="glass-card rounded-2xl p-8">
-            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center text-2xl mb-4">
-              🤝
+            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center mb-4">
+              <Handshake className="w-6 h-6 text-[#cfa375]" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-3">
               Transparency
@@ -61,8 +69,8 @@ export default function AboutPage() {
           </div>
 
           <div className="glass-card rounded-2xl p-8">
-            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center text-2xl mb-4">
-              📋
+            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center mb-4">
+              <ClipboardList className="w-6 h-6 text-[#cfa375]" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-3">
               Structured Approach
@@ -75,8 +83,8 @@ export default function AboutPage() {
           </div>
 
           <div className="glass-card rounded-2xl p-8">
-            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center text-2xl mb-4">
-              👤
+            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center mb-4">
+              <UserCircle className="w-6 h-6 text-[#cfa375]" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-3">
               User-Centered
@@ -89,8 +97,8 @@ export default function AboutPage() {
           </div>
 
           <div className="glass-card rounded-2xl p-8">
-            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center text-2xl mb-4">
-              🛡️
+            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center mb-4">
+              <Shield className="w-6 h-6 text-[#cfa375]" />
             </div>
             <h3 className="text-lg font-semibold text-white mb-3">
               Ethical Practice
@@ -106,8 +114,8 @@ export default function AboutPage() {
         {/* What We Do */}
         <div className="glass-card rounded-3xl p-10 md:p-14">
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center text-2xl">
-              ✨
+            <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-[#cfa375]" />
             </div>
             <h2 className="text-2xl font-bold text-white">What We Do</h2>
           </div>

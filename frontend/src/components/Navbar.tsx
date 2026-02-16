@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -24,12 +25,16 @@ export default function Navbar() {
       <div className="relative max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#cfa375] to-[#b8894f] flex items-center justify-center text-[#0f0a2e] font-bold text-lg shadow-lg shadow-[#cfa375]/20 group-hover:shadow-[#cfa375]/40 transition-shadow">
-            ✦
-          </div>
+          <Image
+            src="/images/Circle Crop Image.png"
+            alt="Shivabakthi"
+            width={40}
+            height={40}
+            className="rounded-full shadow-lg shadow-[#cfa375]/20 group-hover:shadow-[#cfa375]/40 transition-shadow"
+          />
           <span className="text-xl font-bold tracking-wide">
-            <span className="gold-gradient-text">ASTRA</span>
-            <span className="text-white/90">REPORTS</span>
+            <span className="gold-gradient-text">SHIVA</span>
+            <span className="text-white/90">BAKTHI</span>
           </span>
         </Link>
 

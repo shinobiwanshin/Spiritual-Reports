@@ -1,13 +1,30 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import {
+  Star,
+  BarChart3,
+  Search,
+  Briefcase,
+  Heart,
+  Wallet,
+} from "lucide-react";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
-  title: "Blog — Astra Spiritual",
+  title: "Blog — Shivabakthi",
   description:
     "Read our latest articles on astrology, spiritual growth, self-improvement, and personalized insights.",
 };
 
-const blogPosts = [
+const blogPosts: {
+  id: number;
+  title: string;
+  excerpt: string;
+  date: string;
+  category: string;
+  readTime: string;
+  icon: ReactNode;
+}[] = [
   {
     id: 1,
     title: "Understanding Your Birth Chart: A Beginner's Guide",
@@ -16,7 +33,7 @@ const blogPosts = [
     date: "February 10, 2026",
     category: "Astrology Basics",
     readTime: "5 min read",
-    icon: "🌟",
+    icon: <Star className="w-10 h-10 text-[#cfa375]" />,
   },
   {
     id: 2,
@@ -26,7 +43,7 @@ const blogPosts = [
     date: "February 5, 2026",
     category: "Insights",
     readTime: "4 min read",
-    icon: "📊",
+    icon: <BarChart3 className="w-10 h-10 text-[#cfa375]" />,
   },
   {
     id: 3,
@@ -36,7 +53,7 @@ const blogPosts = [
     date: "January 28, 2026",
     category: "Personal Growth",
     readTime: "6 min read",
-    icon: "🔍",
+    icon: <Search className="w-10 h-10 text-[#cfa375]" />,
   },
   {
     id: 4,
@@ -46,7 +63,7 @@ const blogPosts = [
     date: "January 20, 2026",
     category: "Career",
     readTime: "5 min read",
-    icon: "💼",
+    icon: <Briefcase className="w-10 h-10 text-[#cfa375]" />,
   },
   {
     id: 5,
@@ -56,7 +73,7 @@ const blogPosts = [
     date: "January 15, 2026",
     category: "Relationships",
     readTime: "4 min read",
-    icon: "❤️",
+    icon: <Heart className="w-10 h-10 text-[#cfa375]" />,
   },
   {
     id: 6,
@@ -66,7 +83,7 @@ const blogPosts = [
     date: "January 8, 2026",
     category: "Finance",
     readTime: "5 min read",
-    icon: "💰",
+    icon: <Wallet className="w-10 h-10 text-[#cfa375]" />,
   },
 ];
 
@@ -97,7 +114,7 @@ export default function BlogPage() {
               className="glass-card rounded-2xl overflow-hidden group cursor-pointer"
             >
               {/* Icon banner */}
-              <div className="h-40 bg-gradient-to-br from-[#1a1347] to-[#241a5e] flex items-center justify-center text-5xl group-hover:from-[#241a5e] group-hover:to-[#1a1347] transition-all duration-500">
+              <div className="h-40 bg-gradient-to-br from-[#1a1347] to-[#241a5e] flex items-center justify-center group-hover:from-[#241a5e] group-hover:to-[#1a1347] transition-all duration-500">
                 {post.icon}
               </div>
 
