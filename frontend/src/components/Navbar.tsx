@@ -19,8 +19,8 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-      {/* Blur backdrop */}
-      <div className="absolute inset-0 bg-[#0f0a2e]/80 backdrop-blur-xl border-b border-[rgba(207,163,117,0.1)]" />
+      {/* Blur backdrop — very transparent so video shows through */}
+      <div className="absolute inset-0 bg-[#0f0a2e]/40 backdrop-blur-xl border-b border-[rgba(207,163,117,0.05)]" />
 
       <div className="relative max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* Brand */}

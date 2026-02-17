@@ -25,6 +25,7 @@ import {
   Send,
   type LucideIcon,
 } from "lucide-react";
+import VideoBackground from "@/components/VideoBackground";
 
 /* ───────────────────────────── Report Variants ───────────────────────────── */
 
@@ -107,11 +108,9 @@ export default function InstagramLandingPage() {
 
   return (
     <div className="min-h-screen bg-[#0f0a2e] text-white relative overflow-hidden">
-      {/* Ambient background effects */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-[#cfa375]/[0.04] blur-[120px]" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] rounded-full bg-[#6c3bbd]/[0.06] blur-[100px]" />
-        <div className="absolute top-[40%] right-[20%] w-[300px] h-[300px] rounded-full bg-[#cfa375]/[0.03] blur-[80px]" />
+      {/* Video background — fixed behind everything */}
+      <div className="fixed inset-0 z-0">
+        <VideoBackground overlayOpacity={0.7} />
       </div>
 
       {/* ─── Mini Brand Bar ─── */}
@@ -299,7 +298,7 @@ export default function InstagramLandingPage() {
                       {variant.highlights.map((h, i) => (
                         <li key={i} className="flex items-start gap-2">
                           <CheckCircle
-                            className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
+                            className={`w-4 h-4 shrink-0 mt-0.5 ${
                               isSelected ? "text-[#cfa375]" : "text-white/30"
                             }`}
                           />
