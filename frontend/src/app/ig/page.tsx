@@ -144,23 +144,44 @@ export default function InstagramLandingPage() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#cfa375]/10 border border-[#cfa375]/20 mb-6">
             <Sparkles className="w-3.5 h-3.5 text-[#cfa375]" />
             <span className="text-xs font-semibold text-[#cfa375] uppercase tracking-wider">
-              Limited Time Offer
+              Guided by Ancient Wisdom
             </span>
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-            Discover What the <span className="gold-gradient-text">Stars</span>{" "}
-            Have
-            <br className="hidden sm:block" /> Planned for{" "}
-            <span className="gold-gradient-text">You</span>
+            This Is Not a{" "}
+            <span className="gold-gradient-text">Coincidence</span>
           </h1>
 
-          <p className="text-[#b0a8c8] text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-8">
-            Get a personalized Vedic astrology report with detailed insights
-            into your career, relationships, finances, and personal growth.
-            Crafted by expert astrologers using ancient wisdom and modern
-            analysis.
+          <p className="text-[#b0a8c8] text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-4">
+            Among countless websites and astrologers, you are here — and that
+            matters.
           </p>
+
+          <p className="text-[#b0a8c8]/70 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6">
+            Under the grace of{" "}
+            <span className="text-[#cfa375] font-semibold">Lord Shiva</span>,
+            this is offered as sincere spiritual guidance — not superstition,
+            not false promises.
+          </p>
+
+          {/* Philosophy lines */}
+          <div className="max-w-xl mx-auto mb-8 space-y-4">
+            <div className="w-12 h-px bg-[#cfa375]/30 mx-auto" />
+            <p className="text-white/80 text-sm sm:text-base leading-relaxed italic">
+              Life moves in phases. Some expand you. Some test you. Some prepare
+              you.
+            </p>
+            <p className="text-white/60 text-xs sm:text-sm leading-relaxed">
+              Astrology does not control destiny. It reveals{" "}
+              <span className="text-[#cfa375] font-semibold">timing</span>.
+              <br />
+              And when timing is understood, decisions become calmer — and
+              calmer decisions{" "}
+              <span className="text-white font-medium">change outcomes</span>.
+            </p>
+            <div className="w-12 h-px bg-[#cfa375]/30 mx-auto" />
+          </div>
 
           {/* Trust row */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-white/50">
@@ -175,6 +196,10 @@ export default function InstagramLandingPage() {
               </div>
               <span>4.9/5 Rating</span>
             </div>
+            <div className="h-4 w-px bg-white/10" />
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4" /> 10,000+ Seekers
+            </span>
             <div className="h-4 w-px bg-white/10" />
             <span className="flex items-center gap-1.5">
               <FileText className="w-4 h-4" /> 65+ Page Reports
@@ -192,10 +217,11 @@ export default function InstagramLandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-8">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
-              Choose Your Report
+              Choose the Depth of{" "}
+              <span className="gold-gradient-text">Insight</span>
             </h2>
             <p className="text-[#b0a8c8] text-sm">
-              Select the duration that fits your needs
+              That aligns with where you stand today
             </p>
           </div>
 
