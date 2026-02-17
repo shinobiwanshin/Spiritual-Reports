@@ -1,14 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import {
-  Star,
-  BarChart3,
-  Search,
-  Briefcase,
-  Heart,
-  Wallet,
-} from "lucide-react";
-import type { ReactNode } from "react";
+import { db } from "@/db";
+import { blogPosts } from "@/db/schema";
+import { getIcon } from "@/lib/icon-map";
+import { ArrowRight } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Blog — Shivabakthi",
@@ -16,78 +11,9 @@ export const metadata: Metadata = {
     "Read our latest articles on astrology, spiritual growth, self-improvement, and personalized insights.",
 };
 
-const blogPosts: {
-  id: number;
-  title: string;
-  excerpt: string;
-  date: string;
-  category: string;
-  readTime: string;
-  icon: ReactNode;
-}[] = [
-  {
-    id: 1,
-    title: "Understanding Your Birth Chart: A Beginner's Guide",
-    excerpt:
-      "A birth chart is a snapshot of the sky at the exact moment of your birth. Learn how to read and interpret the key elements that shape your personality and life journey.",
-    date: "February 10, 2026",
-    category: "Astrology Basics",
-    readTime: "5 min read",
-    icon: <Star className="w-10 h-10 text-[#cfa375]" />,
-  },
-  {
-    id: 2,
-    title: "How Yearly Reports Can Help You Plan Better",
-    excerpt:
-      "Discover how structured yearly insights can help you anticipate key phases, make informed decisions, and align your actions with your goals for better outcomes.",
-    date: "February 5, 2026",
-    category: "Insights",
-    readTime: "4 min read",
-    icon: <BarChart3 className="w-10 h-10 text-[#cfa375]" />,
-  },
-  {
-    id: 3,
-    title: "The Power of Self-Reflection in Personal Growth",
-    excerpt:
-      "Self-reflection is a powerful tool for growth. Learn practical techniques for developing self-awareness and using structured analysis to improve decision-making.",
-    date: "January 28, 2026",
-    category: "Personal Growth",
-    readTime: "6 min read",
-    icon: <Search className="w-10 h-10 text-[#cfa375]" />,
-  },
-  {
-    id: 4,
-    title: "Career Planning Through Structured Analysis",
-    excerpt:
-      "Making career decisions can be overwhelming. Explore how personalized reports and structured consultations can provide clarity on your professional path.",
-    date: "January 20, 2026",
-    category: "Career",
-    readTime: "5 min read",
-    icon: <Briefcase className="w-10 h-10 text-[#cfa375]" />,
-  },
-  {
-    id: 5,
-    title: "Building Better Relationships with Awareness",
-    excerpt:
-      "Understanding patterns in your relationships can lead to deeper connections. Learn how self-assessment tools can support healthier communication and bonds.",
-    date: "January 15, 2026",
-    category: "Relationships",
-    readTime: "4 min read",
-    icon: <Heart className="w-10 h-10 text-[#cfa375]" />,
-  },
-  {
-    id: 6,
-    title: "Financial Planning: Aligning Actions with Timing",
-    excerpt:
-      "Timing matters in financial decisions. Discover how understanding key phases and patterns can help you make smarter investments and build long-term wealth.",
-    date: "January 8, 2026",
-    category: "Finance",
-    readTime: "5 min read",
-    icon: <Wallet className="w-10 h-10 text-[#cfa375]" />,
-  },
-];
+export default async function BlogPage() {
+  const posts = await db.select().from(blogPosts);
 
-export default function BlogPage() {
   return (
     <div className="min-h-screen pt-28 pb-20 px-6">
       <div className="max-w-6xl mx-auto">
@@ -108,42 +34,51 @@ export default function BlogPage() {
 
         {/* Blog Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {blogPosts.map((post) => (
-            <article
-              key={post.id}
-              className="glass-card rounded-2xl overflow-hidden group cursor-pointer"
-            >
-              {/* Icon banner */}
-              <div className="h-40 bg-gradient-to-br from-[#1a1347] to-[#241a5e] flex items-center justify-center group-hover:from-[#241a5e] group-hover:to-[#1a1347] transition-all duration-500">
-                {post.icon}
-              </div>
-
-              <div className="p-6">
-                {/* Category & Read time */}
-                <div className="flex items-center justify-between mb-3">
-                  <span className="px-3 py-1 rounded-full bg-[#cfa375]/10 text-[#cfa375] text-xs font-medium">
-                    {post.category}
-                  </span>
-                  <span className="text-xs text-[#b0a8c8]">
-                    {post.readTime}
-                  </span>
+          {posts.map((post) => {
+            const Icon = getIcon(post.iconName);
+            return (
+              <Link
+                key={post.id}
+                href={`/blog/${post.id}`}
+                className="glass-card rounded-2xl overflow-hidden group cursor-pointer block hover:ring-1 hover:ring-[#cfa375]/20 transition-all"
+              >
+                {/* Icon banner */}
+                <div className="h-40 bg-gradient-to-br from-[#1a1347] to-[#241a5e] flex items-center justify-center group-hover:from-[#241a5e] group-hover:to-[#1a1347] transition-all duration-500">
+                  <Icon className="w-10 h-10 text-[#cfa375]" />
                 </div>
 
-                {/* Title */}
-                <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-[#cfa375] transition-colors line-clamp-2">
-                  {post.title}
-                </h3>
+                <div className="p-6">
+                  {/* Category & Read time */}
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="px-3 py-1 rounded-full bg-[#cfa375]/10 text-[#cfa375] text-xs font-medium">
+                      {post.category}
+                    </span>
+                    <span className="text-xs text-[#b0a8c8]">
+                      {post.readTime}
+                    </span>
+                  </div>
 
-                {/* Excerpt */}
-                <p className="text-sm text-[#b0a8c8] leading-relaxed mb-4 line-clamp-3">
-                  {post.excerpt}
-                </p>
+                  {/* Title */}
+                  <h3 className="text-lg font-semibold text-white mb-3 group-hover:text-[#cfa375] transition-colors line-clamp-2">
+                    {post.title}
+                  </h3>
 
-                {/* Date */}
-                <p className="text-xs text-[#b0a8c8]/60">{post.date}</p>
-              </div>
-            </article>
-          ))}
+                  {/* Excerpt */}
+                  <p className="text-sm text-[#b0a8c8] leading-relaxed mb-4 line-clamp-3">
+                    {post.excerpt}
+                  </p>
+
+                  {/* Footer: Date + Read more */}
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs text-[#b0a8c8]/60">{post.date}</p>
+                    <span className="text-xs text-[#cfa375] font-medium inline-flex items-center gap-1 group-hover:gap-2 transition-all">
+                      Read more <ArrowRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Coming Soon Notice */}
