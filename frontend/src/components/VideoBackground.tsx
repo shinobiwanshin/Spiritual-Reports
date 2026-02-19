@@ -7,7 +7,7 @@ interface VideoBackgroundProps {
   overlayOpacity?: number;
 }
 
-const VIDEO_SRC = "/output-1080p.mp4";
+const VIDEO_SRC = "/output.mov";
 /** Seconds before the end to begin the cross-fade */
 const FADE_LEAD = 1.5;
 
