@@ -1,11 +1,11 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { Smartphone, Mail, MapPin } from "lucide-react";
+import { Mail, Instagram, Facebook } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Contact Us — Shivabakthi",
   description:
-    "Get in touch with Shivabakthi for consultations, report queries, or any questions. Reach us via WhatsApp, email, or visit our office.",
+    "Get in touch with Shivabakthi for consultations, report queries, or any questions. Reach us via email or social media.",
 };
 
 export default function ContactPage() {
@@ -31,30 +31,9 @@ export default function ContactPage() {
 
         {/* Contact Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          {/* WhatsApp */}
-          <a
-            href="https://wa.me/9100000000"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="glass-card rounded-2xl p-8 text-center group"
-          >
-            <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-green-500/20 transition-colors">
-              <Smartphone className="w-8 h-8 text-green-400" />
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-2">
-              WhatsApp Chat
-            </h3>
-            <p className="text-sm text-[#b0a8c8] mb-4">
-              Quick response via chat
-            </p>
-            <span className="text-[#cfa375] text-sm font-medium">
-              +91 91********
-            </span>
-          </a>
-
           {/* Email */}
           <a
-            href="mailto:support@shivabakthi.com"
+            href="mailto:shivabakthi.in@gmail.com"
             className="glass-card rounded-2xl p-8 text-center group"
           >
             <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-blue-500/20 transition-colors">
@@ -67,42 +46,46 @@ export default function ContactPage() {
               We&apos;ll respond within 24 hours
             </p>
             <span className="text-[#cfa375] text-sm font-medium">
-              sup*****@gmail.com
+              shivabakthi.in@gmail.com
             </span>
           </a>
 
-          {/* Office */}
-          <div className="glass-card rounded-2xl p-8 text-center group">
-            <div className="w-16 h-16 rounded-2xl bg-[#cfa375]/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-[#cfa375]/20 transition-colors">
-              <MapPin className="w-8 h-8 text-[#cfa375]" />
-            </div>
-            <h3 className="text-lg font-semibold text-white mb-2">
-              Office Address
-            </h3>
-            <p className="text-sm text-[#b0a8c8] mb-4">Visit us in person</p>
-            <span className="text-[#cfa375] text-sm font-medium">
-              Surat, Gujarat, India
-            </span>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="glass-card rounded-3xl p-10 md:p-14 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
-            Start a <span className="gold-gradient-text">Live Chat</span>
-          </h2>
-          <p className="text-[#b0a8c8] text-base leading-relaxed max-w-xl mx-auto mb-8">
-            For the quickest response, reach us directly on WhatsApp. Our team
-            is available to answer your questions and guide you to the right
-            report.
-          </p>
+          {/* Instagram */}
           <a
-            href="https://wa.me/917861087127"
+            href="https://www.instagram.com/shivabakthi.in/"
             target="_blank"
             rel="noopener noreferrer"
-            className="gold-btn px-10 py-4 rounded-full text-base font-semibold shadow-lg shadow-[#cfa375]/20 inline-block"
+            className="glass-card rounded-2xl p-8 text-center group"
           >
-            Chat on WhatsApp
+            <div className="w-16 h-16 rounded-2xl bg-pink-500/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-pink-500/20 transition-colors">
+              <Instagram className="w-8 h-8 text-pink-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Instagram</h3>
+            <p className="text-sm text-[#b0a8c8] mb-4">
+              Follow us for daily insights
+            </p>
+            <span className="text-[#cfa375] text-sm font-medium">
+              @shivabakthi.in
+            </span>
+          </a>
+
+          {/* Facebook */}
+          <a
+            href="https://www.facebook.com/profile.php?id=61587559000445"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card rounded-2xl p-8 text-center group"
+          >
+            <div className="w-16 h-16 rounded-2xl bg-blue-600/10 flex items-center justify-center mx-auto mb-5 group-hover:bg-blue-600/20 transition-colors">
+              <Facebook className="w-8 h-8 text-blue-500" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Facebook</h3>
+            <p className="text-sm text-[#b0a8c8] mb-4">
+              Connect with our community
+            </p>
+            <span className="text-[#cfa375] text-sm font-medium">
+              Shivabakthi
+            </span>
           </a>
         </div>
       </div>

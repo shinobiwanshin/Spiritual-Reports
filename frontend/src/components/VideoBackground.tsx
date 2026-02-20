@@ -5,9 +5,10 @@ import { useEffect, useRef, useState } from "react";
 interface VideoBackgroundProps {
   className?: string;
   overlayOpacity?: number;
+  src?: string;
 }
 
-const VIDEO_SRC = "/final_output.mp4";
+const DEFAULT_VIDEO_SRC = "/final_output.mp4";
 /** Seconds before the end to begin the cross-fade */
 const FADE_LEAD = 1.5;
 
@@ -18,7 +19,9 @@ const FADE_LEAD = 1.5;
 export default function VideoBackground({
   className = "",
   overlayOpacity = 0.65,
+  src,
 }: VideoBackgroundProps) {
+  const videoSrc = src || DEFAULT_VIDEO_SRC;
   const videoARef = useRef<HTMLVideoElement>(null);
   const videoBRef = useRef<HTMLVideoElement>(null);
   const [loaded, setLoaded] = useState(false);
@@ -31,8 +34,8 @@ export default function VideoBackground({
     if (!a || !b) return;
 
     // Load both
-    a.src = VIDEO_SRC;
-    b.src = VIDEO_SRC;
+    a.src = videoSrc;
+    b.src = videoSrc;
     a.load();
     b.load();
 
@@ -40,7 +43,7 @@ export default function VideoBackground({
     a.addEventListener("canplaythrough", onReady, { once: true });
 
     return () => a.removeEventListener("canplaythrough", onReady);
-  }, []);
+  }, [videoSrc]);
 
   // Poll the active video's time to trigger cross-fade near the end
   useEffect(() => {
@@ -70,7 +73,7 @@ export default function VideoBackground({
   }, [active]);
 
   const sharedClasses =
-    "absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-in-out";
+    "absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-in-out blur-[2px] scale-[1.02]";
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>

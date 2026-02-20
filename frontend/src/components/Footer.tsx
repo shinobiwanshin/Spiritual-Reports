@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Smartphone, Mail, MapPin } from "lucide-react";
+import { Mail, Instagram, Facebook } from "lucide-react";
 
 const quickLinks = [
   { href: "/", label: "Home" },
@@ -89,34 +89,40 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3">
               <li className="flex items-start gap-3">
-                <Smartphone className="w-5 h-5 text-[#cfa375] mt-0.5" />
-                <div>
-                  <p className="text-xs text-[#b0a8c8] mb-1">WhatsApp</p>
-                  <span className="text-sm text-white hover:text-[#cfa375] transition-colors cursor-default">
-                    +91 91********
-                  </span>
-                </div>
-              </li>
-              <li className="flex items-start gap-3">
                 <Mail className="w-5 h-5 text-[#cfa375] mt-0.5" />
                 <div>
                   <p className="text-xs text-[#b0a8c8] mb-1">Email</p>
                   <a
-                    href="mailto:support@shivabakthi.com"
+                    href="mailto:shivabakthi.in@gmail.com"
                     className="text-sm text-white hover:text-[#cfa375] transition-colors"
                   >
-                    sup*****@gmail.com
+                    shivabakthi.in@gmail.com
                   </a>
                 </div>
               </li>
-              <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-[#cfa375] mt-0.5" />
-                <div>
-                  <p className="text-xs text-[#b0a8c8] mb-1">Office</p>
-                  <p className="text-sm text-white/80">India</p>
-                </div>
-              </li>
             </ul>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-4 mt-5">
+              <a
+                href="https://www.instagram.com/shivabakthi.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-lg bg-[#cfa375]/10 flex items-center justify-center hover:bg-[#cfa375]/20 transition-colors"
+                aria-label="Instagram"
+              >
+                <Instagram className="w-4.5 h-4.5 text-[#cfa375]" />
+              </a>
+              <a
+                href="https://www.facebook.com/profile.php?id=61587559000445"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-9 h-9 rounded-lg bg-[#cfa375]/10 flex items-center justify-center hover:bg-[#cfa375]/20 transition-colors"
+                aria-label="Facebook"
+              >
+                <Facebook className="w-4.5 h-4.5 text-[#cfa375]" />
+              </a>
+            </div>
           </div>
         </div>
 
