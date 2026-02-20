@@ -14,6 +14,7 @@ import {
   Award,
   ShieldCheck,
 } from "lucide-react";
+import Image from "next/image";
 
 export default function ReportPage({
   params,
@@ -34,38 +35,38 @@ export default function ReportPage({
         {/* Left Column: Hero & Content */}
         <div className="lg:col-span-7 space-y-12">
           {/* Hero Section */}
-          <div className="text-center lg:text-left">
+          <div className="text-center">
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight">
               Explore Your Personalized Report: <br />
               <span className="gold-gradient-text">
                 A Detailed Analysis Tailored Just for You.
               </span>
             </h1>
-            <p className="text-[#b0a8c8] text-lg leading-relaxed mb-8">
+            <p className="text-[#b0a8c8] text-lg leading-relaxed mb-8 max-w-2xl mx-auto">
               Discover a clear and organized overview of your personal
               information with our detailed, customized {reportName} report.
               Gain structured insights into key aspects of your life, helping
               you navigate your path with confidence and clarity.
             </p>
 
-            {/* Mockup Placeholder */}
-            <div className="relative w-full max-w-md mx-auto lg:mx-0 aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl shadow-[#cfa375]/10 border border-[#cfa375]/20 bg-gradient-to-b from-[#1a1347] to-[#0f0a2e] flex items-center justify-center group">
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1630149462879-1c9f0c239454?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center opacity-40 mix-blend-overlay" />
-              <div className="relative text-center p-8">
-                <div className="w-20 h-20 mx-auto bg-[#cfa375]/10 rounded-full flex items-center justify-center mb-6 backdrop-blur-sm border border-[#cfa375]/30">
-                  <Gem className="w-10 h-10 text-[#cfa375]" />
-                </div>
-                <h3 className="text-2xl font-serif text-[#cfa375] mb-2">
-                  {reportName}
-                </h3>
-                <p className="text-white/60 text-sm"> comprehensive Insight</p>
-              </div>
+            {/* Sculpture Image */}
+            <div className="relative w-full max-w-sm mx-auto aspect-[3/4] rounded-3xl overflow-hidden shadow-[0_8px_60px_rgba(207,163,117,0.15)] border border-[#cfa375]/20 group hover:shadow-[0_8px_80px_rgba(207,163,117,0.25)] transition-all duration-500">
+              <Image
+                src="/images/Monumental Sculpture Photo.jpg"
+                alt="Divine Sculpture"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                priority
+              />
+              {/* Subtle vignette overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0f0a2e]/40 via-transparent to-[#0f0a2e]/20" />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_50%,rgba(15,10,46,0.4)_100%)]" />
             </div>
           </div>
 
           {/* Content Section: Benefits */}
-          <div className="bg-[#1a1347]/50 border border-[#cfa375]/10 rounded-2xl p-8 backdrop-blur-sm">
-            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+          <div className="bg-[#1a1347]/50 border border-[#cfa375]/10 rounded-2xl p-8 backdrop-blur-sm text-center">
+            <h2 className="text-2xl font-bold text-white mb-6 flex items-center justify-center gap-3">
               <Award className="text-[#cfa375]" />
               Why Choose This Report?
             </h2>
@@ -89,7 +90,7 @@ export default function ReportPage({
           </div>
 
           {/* Trust Badges */}
-          <div className="flex flex-wrap items-center gap-6 justify-center lg:justify-start opacity-70 grayscale hover:grayscale-0 transition-all duration-300">
+          <div className="flex flex-wrap items-center gap-6 justify-center opacity-70 grayscale hover:grayscale-0 transition-all duration-300">
             {/* Simple text or SVGs for payment methods could go here */}
             <div className="flex items-center gap-2 text-white/50 text-sm">
               <ShieldCheck className="w-4 h-4" />
@@ -255,7 +256,7 @@ export default function ReportPage({
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs text-[#cfa375] font-semibold uppercase tracking-wider pl-1">
-                    WhatsApp
+                    Phone Number
                   </label>
                   <div className="relative">
                     <Smartphone className="absolute left-3 top-3 w-4 h-4 text-white/40" />

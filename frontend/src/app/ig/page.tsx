@@ -487,7 +487,7 @@ export default function InstagramLandingPage() {
                 </div>
                 <div className="space-y-1.5">
                   <label className="text-xs text-[#cfa375] font-semibold uppercase tracking-wider pl-1">
-                    WhatsApp
+                    Phone Number
                   </label>
                   <div className="relative">
                     <Smartphone className="absolute left-3 top-3 w-4 h-4 text-white/40" />

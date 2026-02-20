@@ -17,13 +17,13 @@ export default function HomePage() {
     <div className="min-h-screen overflow-x-hidden relative">
       {/* ═══════════════ FIXED VIDEO BACKGROUND ═══════════════ */}
       <div className="fixed inset-0 z-0">
-        <VideoBackground overlayOpacity={0.6} />
+        <VideoBackground overlayOpacity={0.8} />
       </div>
 
       {/* All content sits above the video */}
       <div className="relative z-10">
         {/* ═══════════════ HERO SECTION ═══════════════ */}
-        <section className="relative min-h-screen flex items-center justify-center px-6">
+        <section className="relative min-h-screen flex items-center justify-center px-6 pt-32 pb-20">
           <div className="max-w-4xl mx-auto text-center animate-fade-in-up">
             {/* Sanskrit tag */}
             <p className="text-[#cfa375]/70 text-sm sm:text-base font-medium tracking-wide mb-6 animate-pulse">
@@ -80,7 +80,7 @@ Mahadev responds — not with noise, but with truth.`}
         </section>
 
         {/* ═══════════════ THE CALL OF SHIVA ═══════════════ */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-12 sm:py-24 px-6">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-[#cfa375]/10 mb-6">
@@ -111,20 +111,18 @@ not promise.`}</p>
         </section>
 
         {/* ═══════════════ DIVINE ASTROLOGICAL GUIDANCE ═══════════════ */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-12 sm:py-24 px-6">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto">
-              <div className="glass-card rounded-3xl p-10 md:p-14">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center shrink-0">
-                    <Sparkles className="w-6 h-6 text-[#cfa375]" />
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                    Divine Astrological Guidance
-                  </h2>
+              <div className="glass-card rounded-3xl p-10 md:p-14 text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#cfa375]/10 mb-4">
+                  <Sparkles className="w-6 h-6 text-[#cfa375]" />
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
+                  Divine Astrological Guidance
+                </h2>
 
-                <div className="text-center my-8">
+                <div className="my-8">
                   <p className="text-xl sm:text-2xl font-semibold text-[#cfa375]">
                     कालः साक्षी भवति
                   </p>
@@ -150,20 +148,18 @@ but why your soul is being prepared.`}</p>
         </section>
 
         {/* ═══════════════ KARMA & TRANSFORMATION ═══════════════ */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-12 sm:py-24 px-6">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto">
-              <div className="glass-card rounded-3xl p-10 md:p-14">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center shrink-0">
-                    <Eye className="w-6 h-6 text-[#cfa375]" />
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                    Karma & Transformation
-                  </h2>
+              <div className="glass-card rounded-3xl p-10 md:p-14 text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#cfa375]/10 mb-4">
+                  <Eye className="w-6 h-6 text-[#cfa375]" />
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
+                  Karma & Transformation
+                </h2>
 
-                <div className="text-center my-8">
+                <div className="my-8">
                   <p className="text-xl sm:text-2xl font-semibold text-[#cfa375] whitespace-pre-line">
                     {`यदा आत्मा प्रश्नं करोति
 तदा शिवः उत्तरं ददाति`}
@@ -189,7 +185,7 @@ It is Shiva's method of refinement.`}
         </section>
 
         {/* ═══════════════ MANTRA & INNER ALIGNMENT ═══════════════ */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-12 sm:py-24 px-6">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-[#cfa375]/10 mb-6">
@@ -214,20 +210,18 @@ but to understand it.`}</p>
         </section>
 
         {/* ═══════════════ GUIDANCE WITHOUT FEAR ═══════════════ */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-12 sm:py-24 px-6">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto">
-              <div className="glass-card rounded-3xl p-10 md:p-14">
-                <div className="flex items-center gap-4 mb-8">
-                  <div className="w-12 h-12 rounded-xl bg-[#cfa375]/10 flex items-center justify-center shrink-0">
-                    <Moon className="w-6 h-6 text-[#cfa375]" />
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                    Guidance Without Fear
-                  </h2>
+              <div className="glass-card rounded-3xl p-10 md:p-14 text-center">
+                <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-[#cfa375]/10 mb-4">
+                  <Moon className="w-6 h-6 text-[#cfa375]" />
                 </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-white mb-8">
+                  Guidance Without Fear
+                </h2>
 
-                <div className="text-center my-8">
+                <div className="my-8">
                   <p className="text-xl sm:text-2xl font-semibold text-[#cfa375] whitespace-pre-line">
                     {`अविद्याया विनाशाय
 विद्याया च प्रवर्धनाय`}
@@ -254,7 +248,7 @@ only Shiva tattva.`}
         </section>
 
         {/* ═══════════════ WHY YOU WERE CALLED HERE ═══════════════ */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-12 sm:py-24 px-6">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-[#cfa375]/10 mb-6">
@@ -282,7 +276,7 @@ that is the confirmation.`}
         </section>
 
         {/* ═══════════════ PRIMARY CTA ═══════════════ */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-12 sm:py-24 px-6">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
               <div className="glass-card rounded-3xl p-10 md:p-16">
@@ -312,7 +306,7 @@ that is the confirmation.`}
         </section>
 
         {/* ═══════════════ CLOSING BLESSING ═══════════════ */}
-        <section className="relative py-24 px-6">
+        <section className="relative py-12 sm:py-24 px-6">
           <ScrollReveal>
             <div className="max-w-3xl mx-auto text-center">
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-[#cfa375]/10 mb-8">
