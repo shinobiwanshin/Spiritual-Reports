@@ -5,16 +5,20 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import VideoBackground from "@/components/VideoBackground";
 
-/** Routes where Navbar and Footer should be hidden (e.g. ad landing pages) */
-const MINIMAL_ROUTES = ["/ig"];
+/** Routes where Navbar and Footer should be hidden (e.g. ad landing pages, admin) */
+const MINIMAL_ROUTES = ["/ig", "/admin"];
 
 /** Routes that supply their OWN video background */
 const OWN_VIDEO_ROUTES = ["/ig"];
 
 export default function LayoutShell({
   children,
+  isAdmin = false,
+  isSignedIn = false,
 }: {
   children: React.ReactNode;
+  isAdmin?: boolean;
+  isSignedIn?: boolean;
 }) {
   const pathname = usePathname();
   const isMinimal = MINIMAL_ROUTES.some((r) => pathname.startsWith(r));
@@ -33,7 +37,7 @@ export default function LayoutShell({
           <VideoBackground src="/output-1080p.mp4" overlayOpacity={0.8} />
         </div>
       )}
-      <Navbar />
+      <Navbar isAdmin={isAdmin} isSignedIn={isSignedIn} />
       <main className={!hasOwnVideo ? "relative z-10" : ""}>{children}</main>
       <Footer />
     </>

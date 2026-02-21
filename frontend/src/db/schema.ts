@@ -17,6 +17,7 @@ export const blogPosts = pgTable("blog_posts", {
   readTime: text("read_time").notNull(),
   iconName: text("icon_name").notNull(),
   content: text("content"),
+  image: text("image"),
   createdAt: timestamp("created_at").defaultNow(),
 });
 
