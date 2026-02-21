@@ -42,10 +42,21 @@ export default async function BlogPage() {
                 href={`/blog/${post.id}`}
                 className="glass-card rounded-2xl overflow-hidden group cursor-pointer block hover:ring-1 hover:ring-[#cfa375]/20 transition-all"
               >
-                {/* Icon banner */}
-                <div className="h-40 bg-gradient-to-br from-[#1a1347] to-[#241a5e] flex items-center justify-center group-hover:from-[#241a5e] group-hover:to-[#1a1347] transition-all duration-500">
-                  <Icon className="w-10 h-10 text-[#cfa375]" />
-                </div>
+                {/* Image or icon banner */}
+                {post.image ? (
+                  <div className="h-40 relative overflow-hidden">
+                    <img
+                      src={post.image}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0f0a2e]/40 to-transparent" />
+                  </div>
+                ) : (
+                  <div className="h-40 bg-gradient-to-br from-[#1a1347] to-[#241a5e] flex items-center justify-center group-hover:from-[#241a5e] group-hover:to-[#1a1347] transition-all duration-500">
+                    <Icon className="w-10 h-10 text-[#cfa375]" />
+                  </div>
+                )}
 
                 <div className="p-6">
                   {/* Category & Read time */}

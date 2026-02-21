@@ -73,7 +73,7 @@ export default function VideoBackground({
   }, [active]);
 
   const sharedClasses =
-    "absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-in-out blur-[2px] scale-[1.02]";
+    "absolute inset-0 w-full h-full object-cover transition-opacity duration-[1500ms] ease-in-out";
 
   return (
     <div className={`absolute inset-0 overflow-hidden ${className}`}>

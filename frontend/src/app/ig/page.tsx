@@ -110,7 +110,7 @@ export default function InstagramLandingPage() {
     <div className="min-h-screen bg-[#0f0a2e] text-white relative overflow-hidden">
       {/* Video background — fixed behind everything */}
       <div className="fixed inset-0 z-0">
-        <VideoBackground overlayOpacity={0.7} />
+        <VideoBackground overlayOpacity={0.55} />
       </div>
 
       {/* ─── Mini Brand Bar ─── */}

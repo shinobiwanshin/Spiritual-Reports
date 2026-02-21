@@ -17,7 +17,7 @@ export default function HomePage() {
     <div className="min-h-screen overflow-x-hidden relative">
       {/* ═══════════════ FIXED VIDEO BACKGROUND ═══════════════ */}
       <div className="fixed inset-0 z-0">
-        <VideoBackground overlayOpacity={0.8} />
+        <VideoBackground overlayOpacity={0.6} />
       </div>
 
       {/* All content sits above the video */}

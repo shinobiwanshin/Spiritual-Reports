@@ -146,10 +146,21 @@ export default async function BlogPostPage({ params }: Props) {
 
         {/* Header */}
         <div className="glass-card rounded-3xl overflow-hidden mb-8">
-          {/* Icon banner */}
-          <div className="h-48 bg-gradient-to-br from-[#1a1347] to-[#241a5e] flex items-center justify-center">
-            <Icon className="w-16 h-16 text-[#cfa375]" />
-          </div>
+          {/* Banner: image or icon fallback */}
+          {post.image ? (
+            <div className="h-64 sm:h-80 relative overflow-hidden">
+              <img
+                src={post.image}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0f0a2e]/60 to-transparent" />
+            </div>
+          ) : (
+            <div className="h-48 bg-gradient-to-br from-[#1a1347] to-[#241a5e] flex items-center justify-center">
+              <Icon className="w-16 h-16 text-[#cfa375]" />
+            </div>
+          )}
 
           <div className="p-8 md:p-10">
             {/* Meta */}
