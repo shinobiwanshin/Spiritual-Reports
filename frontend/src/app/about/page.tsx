@@ -208,7 +208,7 @@ export default function AboutPage() {
             If you feel called, begin your journey with us.
           </p>
           <Link
-            href="/services"
+            href="/ig"
             className="gold-btn px-8 py-3.5 rounded-full text-sm font-semibold inline-block"
           >
             Explore Our Reports

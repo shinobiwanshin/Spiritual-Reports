@@ -212,7 +212,7 @@ export default async function BlogPostPage({ params }: Props) {
               actionable recommendations.
             </p>
             <Link
-              href="/services"
+              href="/ig"
               className="gold-btn px-8 py-3 rounded-full text-sm font-semibold inline-block"
             >
               Explore Reports

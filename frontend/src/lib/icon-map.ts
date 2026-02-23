@@ -11,6 +11,21 @@ import {
   Lightbulb,
   Zap,
   Shield,
+  Compass,
+  Calendar,
+  Moon,
+  Sun,
+  Flame,
+  Eye,
+  Mountain,
+  Sparkles,
+  Infinity,
+  BookOpen,
+  Gem,
+  Feather,
+  Clock,
+  FileText,
+  Layers,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -27,6 +42,21 @@ const iconMap: Record<string, LucideIcon> = {
   Lightbulb,
   Zap,
   Shield,
+  Compass,
+  Calendar,
+  Moon,
+  Sun,
+  Flame,
+  Eye,
+  Mountain,
+  Sparkles,
+  Infinity,
+  BookOpen,
+  Gem,
+  Feather,
+  Clock,
+  FileText,
+  Layers,
 };
 
 export function getIcon(name: string): LucideIcon {
