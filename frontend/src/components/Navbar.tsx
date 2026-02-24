@@ -10,7 +10,7 @@ import { UserButton, SignInButton } from "@clerk/nextjs";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
-  { href: "/services", label: "Services" },
+  { href: "/ig", label: "Services" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
@@ -40,7 +40,7 @@ export default function Navbar({
             height={40}
             className="rounded-full shadow-lg shadow-[#cfa375]/20 group-hover:shadow-[#cfa375]/40 transition-shadow"
           />
-          <span className="text-xl font-bold tracking-wide">
+          <span className="text-xl font-bold tracking-wide font-cochin">
             <span className="gold-gradient-text">SHIVA</span>
             <span className="text-white/90">BAKTHI</span>
           </span>
@@ -65,7 +65,7 @@ export default function Navbar({
             );
           })}
           <Link
-            href="/services"
+            href="/ig"
             className="ml-4 gold-btn px-5 py-2.5 rounded-full text-sm font-semibold"
           >
             Get Report
@@ -149,7 +149,7 @@ export default function Navbar({
             );
           })}
           <Link
-            href="/services"
+            href="/ig"
             onClick={() => setMobileOpen(false)}
             className="mt-2 gold-btn px-5 py-3 rounded-full text-sm font-semibold text-center"
           >

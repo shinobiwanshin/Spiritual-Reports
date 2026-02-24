@@ -57,7 +57,7 @@ Mahadev responds — not with noise, but with truth.`}
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
-                href="/services"
+                href="/ig"
                 className="gold-btn px-8 py-4 rounded-full text-base font-semibold shadow-lg shadow-[#cfa375]/20"
               >
                 Receive Divine Guidance
@@ -294,7 +294,7 @@ that is the confirmation.`}
                   Only what your soul is ready to receive shall be revealed.
                 </p>
                 <Link
-                  href="/services"
+                  href="/ig"
                   className="gold-btn px-10 py-4 rounded-full text-base font-semibold shadow-lg shadow-[#cfa375]/20 inline-flex items-center gap-2"
                 >
                   Explore Reports

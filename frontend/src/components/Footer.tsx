@@ -5,7 +5,7 @@ import { Mail, Instagram, Facebook } from "lucide-react";
 const quickLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
-  { href: "/services", label: "Services" },
+  { href: "/ig", label: "Services" },
   { href: "/blog", label: "Blog" },
 ];
 

@@ -2,7 +2,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { UserButton } from "@clerk/nextjs";
-import { LayoutDashboard, FileText, PlusCircle } from "lucide-react";
+import { LayoutDashboard, FileText, PlusCircle, Layers } from "lucide-react";
 
 export default async function AdminLayout({
   children,
@@ -54,6 +54,14 @@ export default async function AdminLayout({
               >
                 <PlusCircle className="w-4 h-4" />
                 New Post
+              </Link>
+              <div className="w-px h-5 bg-white/10 mx-2" />
+              <Link
+                href="/admin/services"
+                className="px-4 py-2 rounded-lg text-sm text-white/70 hover:text-white hover:bg-white/5 transition-all flex items-center gap-2"
+              >
+                <Layers className="w-4 h-4" />
+                Services
               </Link>
             </nav>
           </div>

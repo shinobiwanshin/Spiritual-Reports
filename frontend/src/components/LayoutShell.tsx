@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import VideoBackground from "@/components/VideoBackground";
 
 /** Routes where Navbar and Footer should be hidden (e.g. ad landing pages, admin) */
-const MINIMAL_ROUTES = ["/ig", "/admin"];
+const MINIMAL_ROUTES = ["/admin"];
 
 /** Routes that supply their OWN video background */
 const OWN_VIDEO_ROUTES = ["/ig"];
