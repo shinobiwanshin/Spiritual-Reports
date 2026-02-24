@@ -75,6 +75,13 @@
   }
 }
 
+/* Cochin font for all h1 headings */
+h1 {
+  font-family:
+    "Cochin", "Palatino Linotype", "Book Antiqua", Palatino, "Times New Roman",
+    serif !important;
+}
+
 /* Custom animations */
 @keyframes float {
   0%,

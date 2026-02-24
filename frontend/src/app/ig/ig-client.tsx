@@ -85,7 +85,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
             </span>
           </div>
 
-          <h1 className="font-cochin text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
             This Is Not a{" "}
             <span className="gold-gradient-text">Coincidence</span>
           </h1>
