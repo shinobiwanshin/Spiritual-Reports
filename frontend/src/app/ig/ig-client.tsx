@@ -20,9 +20,11 @@ import {
   Timer,
   Lock,
   Send,
+  Loader2,
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
 import { getIcon } from "@/lib/icon-map";
+import { load } from "@cashfreepayments/cashfree-js";
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
@@ -49,6 +51,75 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
     featuredIndex >= 0 ? featuredIndex : 0,
   );
   const selected = services[selectedVariant];
+
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    dobDay: "",
+    dobMonth: "",
+    dobYear: "",
+    tobHour: "",
+    tobMin: "",
+    tobAmPm: "AM",
+    placeOfBirth: "",
+    email: "",
+    phone: "",
+    language: "English",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  function handleChange(
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+
+    if (!form.firstName || !form.email || !form.phone) {
+      setError("Please fill in First Name, Email, and Phone.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/cashfree/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          email: form.email,
+          phone: form.phone,
+          reportSlug: selected.slug,
+          amount: selected.price,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Failed to initiate payment. Please try again.");
+        return;
+      }
+
+      const cashfree = await load({
+        mode: (process.env.NEXT_PUBLIC_CASHFREE_ENV as "sandbox" | "production") ?? "sandbox",
+      });
+
+      cashfree.checkout({
+        paymentSessionId: data.paymentSessionId,
+        redirectTarget: "_self",
+      });
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   if (!services.length) {
     return (
@@ -276,7 +347,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
               </div>
             </div>
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               {/* Name fields */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
@@ -287,7 +358,11 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                     <User className="absolute left-3 top-3 w-4 h-4 text-white/40" />
                     <input
                       type="text"
+                      name="firstName"
+                      value={form.firstName}
+                      onChange={handleChange}
                       placeholder="Name"
+                      required
                       className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                     />
                   </div>
@@ -298,6 +373,9 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                   </label>
                   <input
                     type="text"
+                    name="lastName"
+                    value={form.lastName}
+                    onChange={handleChange}
                     placeholder="Surname"
                     className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                   />
@@ -312,7 +390,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                 <div className="grid grid-cols-3 gap-2">
                   <div className="relative">
                     <Calendar className="absolute left-2.5 top-3 w-3.5 h-3.5 text-white/40" />
-                    <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                    <select
+                      name="dobDay"
+                      value={form.dobDay}
+                      onChange={handleChange}
+                      className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                    >
                       <option value="">Day</option>
                       {Array.from({ length: 31 }, (_, i) => (
                         <option key={i + 1} value={i + 1}>
@@ -321,7 +404,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       ))}
                     </select>
                   </div>
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                  <select
+                    name="dobMonth"
+                    value={form.dobMonth}
+                    onChange={handleChange}
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                  >
                     <option value="">Month</option>
                     {[
                       "Jan",
@@ -342,7 +430,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       </option>
                     ))}
                   </select>
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                  <select
+                    name="dobYear"
+                    value={form.dobYear}
+                    onChange={handleChange}
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                  >
                     <option value="">Year</option>
                     {Array.from({ length: 100 }, (_, i) => (
                       <option key={2026 - i} value={2026 - i}>
@@ -361,7 +454,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                 <div className="grid grid-cols-3 gap-2">
                   <div className="relative">
                     <Clock className="absolute left-2.5 top-3 w-3.5 h-3.5 text-white/40" />
-                    <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                    <select
+                      name="tobHour"
+                      value={form.tobHour}
+                      onChange={handleChange}
+                      className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                    >
                       <option value="">Hr</option>
                       {Array.from({ length: 12 }, (_, i) => (
                         <option key={i + 1} value={i + 1}>
@@ -370,7 +468,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       ))}
                     </select>
                   </div>
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                  <select
+                    name="tobMin"
+                    value={form.tobMin}
+                    onChange={handleChange}
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                  >
                     <option value="">Min</option>
                     {Array.from({ length: 60 }, (_, i) => (
                       <option key={i} value={i}>
@@ -378,7 +481,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       </option>
                     ))}
                   </select>
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                  <select
+                    name="tobAmPm"
+                    value={form.tobAmPm}
+                    onChange={handleChange}
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                  >
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
                   </select>
@@ -394,6 +502,9 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                   <MapPin className="absolute left-3 top-3 w-4 h-4 text-white/40" />
                   <input
                     type="text"
+                    name="placeOfBirth"
+                    value={form.placeOfBirth}
+                    onChange={handleChange}
                     placeholder="Enter City"
                     className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                   />
@@ -410,7 +521,11 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                     <Mail className="absolute left-3 top-3 w-4 h-4 text-white/40" />
                     <input
                       type="email"
+                      name="email"
+                      value={form.email}
+                      onChange={handleChange}
                       placeholder="you@email.com"
+                      required
                       className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                     />
                   </div>
@@ -423,7 +538,11 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                     <Smartphone className="absolute left-3 top-3 w-4 h-4 text-white/40" />
                     <input
                       type="tel"
+                      name="phone"
+                      value={form.phone}
+                      onChange={handleChange}
                       placeholder="+91..."
+                      required
                       className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                     />
                   </div>
@@ -437,21 +556,41 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                 </label>
                 <div className="relative">
                   <Languages className="absolute left-3 top-3 w-4 h-4 text-white/40" />
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none">
+                  <select
+                    name="language"
+                    value={form.language}
+                    onChange={handleChange}
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none"
+                  >
                     <option value="English">English</option>
                     <option value="Hindi">Hindi</option>
                   </select>
                 </div>
               </div>
 
+              {/* Error message */}
+              {error && (
+                <p className="text-red-400 text-sm text-center">{error}</p>
+              )}
+
               {/* Submit */}
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-[#cfa375] to-[#b8894f] hover:from-[#e8c99b] hover:to-[#cfa375] text-[#0f0a2e] font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-[#cfa375]/20 hover:shadow-[#cfa375]/40 hover:-translate-y-0.5 text-lg"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-[#cfa375] to-[#b8894f] hover:from-[#e8c99b] hover:to-[#cfa375] text-[#0f0a2e] font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-[#cfa375]/20 hover:shadow-[#cfa375]/40 hover:-translate-y-0.5 text-lg disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
                 >
-                  Proceed to Payment — ₹{selected.price}
-                  <ArrowRight className="w-5 h-5" />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Processing…
+                    </>
+                  ) : (
+                    <>
+                      Proceed to Payment — ₹{selected.price}
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
                 </button>
 
                 <p className="text-center text-xs text-white/30 mt-4">
