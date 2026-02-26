@@ -209,6 +209,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
         let checkoutOptions = {
           paymentSessionId: data.paymentSessionId,
           returnUrl: `${window.location.origin}/payment/status?order_id=${data.orderId}`,
+          redirectTarget: "_modal" as const,
         };
         await cashfree.checkout(checkoutOptions);
       } else {
