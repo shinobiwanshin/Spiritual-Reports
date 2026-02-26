@@ -55,16 +55,30 @@ export async function POST(req: NextRequest) {
     }
 
     if (orderId && newStatus !== "UNKNOWN") {
-      // Update the order status in our database
-      await db
-        .update(orders)
-        .set({
-          status: newStatus,
-          updatedAt: new Date(),
-        })
-        .where(eq(orders.orderId, orderId));
+      const isFailed =
+        newStatus === "FAILED" ||
+        newStatus === "USER_DROPPED" ||
+        newStatus === "CANCELLED" ||
+        newStatus === "VOID";
 
-      console.log(`Webhook: Order ${orderId} updated to status ${newStatus}`);
+      if (isFailed) {
+        // Delete the order instead of storing a failed one
+        await db.delete(orders).where(eq(orders.orderId, orderId));
+        console.log(
+          `Webhook: Order ${orderId} deleted due to failed status ${newStatus}`,
+        );
+      } else {
+        // Update the order status in our database
+        await db
+          .update(orders)
+          .set({
+            status: newStatus,
+            updatedAt: new Date(),
+          })
+          .where(eq(orders.orderId, orderId));
+
+        console.log(`Webhook: Order ${orderId} updated to status ${newStatus}`);
+      }
 
       // If PAID, trigger report generation
       if (newStatus === "PAID") {

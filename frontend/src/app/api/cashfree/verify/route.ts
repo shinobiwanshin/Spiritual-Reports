@@ -44,29 +44,42 @@ export async function GET(req: NextRequest) {
     // Determine payment status
     const paymentStatus = cfOrder.order_status || "UNKNOWN";
 
-    // Update order in our database
-    await db
-      .update(orders)
-      .set({
-        status: paymentStatus,
-        updatedAt: new Date(),
-      })
-      .where(eq(orders.orderId, orderId));
-
-    // Fetch our order record for additional details
+    // Fetch our order record for additional details first before potential deletion
     const [dbOrder] = await db
       .select()
       .from(orders)
       .where(eq(orders.orderId, orderId))
       .limit(1);
 
+    const isFailed =
+      paymentStatus === "FAILED" ||
+      paymentStatus === "USER_DROPPED" ||
+      paymentStatus === "CANCELLED" ||
+      paymentStatus === "VOID";
+
+    if (isFailed) {
+      // Delete the order instead of storing a failed one
+      await db.delete(orders).where(eq(orders.orderId, orderId));
+    } else {
+      // Update order in our database
+      await db
+        .update(orders)
+        .set({
+          status: paymentStatus,
+          updatedAt: new Date(),
+        })
+        .where(eq(orders.orderId, orderId));
+    }
+
     return NextResponse.json({
       orderId: orderId,
       status: paymentStatus,
       amount: cfOrder.order_amount,
       currency: cfOrder.order_currency,
-      customerName: dbOrder?.customerName,
-      customerEmail: dbOrder?.customerEmail,
+      customerName:
+        dbOrder?.customerName || cfOrder.customer_details?.customer_name,
+      customerEmail:
+        dbOrder?.customerEmail || cfOrder.customer_details?.customer_email,
       reportSlug: dbOrder?.reportSlug,
       formData: dbOrder?.formData,
     });
