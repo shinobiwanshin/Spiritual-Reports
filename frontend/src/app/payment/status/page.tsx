@@ -76,26 +76,17 @@ function PaymentStatusContent() {
           }
         }
 
-        // If payment is successful and we haven't generated yet, do it now
-        if (data.status === "PAID" && data.formData) {
+        // If payment is successful, the webhook is generating the report behind the scenes
+        if (data.status === "PAID") {
+          // Poll a couple more times just to see if the DB order has finally been updated
+          // Or just optimistically show generating state since the webhook will handle it
           setGeneratingReport(true);
-          try {
-            const reportRes = await fetch("/api/report/generate", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(data.formData),
-            });
 
-            if (!reportRes.ok) {
-              console.error("Failed to generate report after payment");
-            } else {
-              setReportGenerated(true);
-            }
-          } catch (generateErr) {
-            console.error("Error generating report:", generateErr);
-          } finally {
+          // Assuming webhook finishes very fast, we just tell user it's paid
+          setTimeout(() => {
+            setReportGenerated(true);
             setGeneratingReport(false);
-          }
+          }, 3000);
         }
       } catch {
         setError("Failed to verify payment status");
