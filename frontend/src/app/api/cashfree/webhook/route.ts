@@ -1,18 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Cashfree, CFEnvironment } from "cashfree-pg";
 import { db } from "@/db";
 import { orders } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-function getCashfree() {
-  return new Cashfree(
-    process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION"
-      ? CFEnvironment.PRODUCTION
-      : CFEnvironment.SANDBOX,
-    process.env.CASHFREE_APP_ID,
-    process.env.CASHFREE_SECRET_KEY,
-  );
-}
+import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,22 +18,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing signature" }, { status: 400 });
     }
 
-    // Verify webhook signature
-    let webhookEvent;
+    // Verify webhook signature manually using crypto
     try {
-      const cashfree = getCashfree();
-      webhookEvent = cashfree.PGVerifyWebhookSignature(
-        signature,
-        rawBody,
-        timestamp,
-      );
+      const generatedSignature = crypto
+        .createHmac("sha256", process.env.CASHFREE_SECRET_KEY as string)
+        .update(timestamp + rawBody)
+        .digest("base64");
+
+      if (generatedSignature !== signature) {
+        throw new Error("Signature mismatch");
+      }
     } catch (err) {
       console.error("Webhook signature verification failed:", err);
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
     // Process the webhook event
-    const eventData = webhookEvent as unknown as Record<string, unknown>;
+    const eventData = JSON.parse(rawBody);
     const data = eventData.data as Record<string, unknown> | undefined;
     const orderData = data?.order as Record<string, unknown> | undefined;
 

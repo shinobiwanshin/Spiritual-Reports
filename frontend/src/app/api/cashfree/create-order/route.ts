@@ -1,19 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Cashfree, CFEnvironment } from "cashfree-pg";
 import { db } from "@/db";
 import { orders, services } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-// Initialize Cashfree on each request to pick up fresh env vars
-function getCashfree() {
-  return new Cashfree(
-    process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION"
-      ? CFEnvironment.PRODUCTION
-      : CFEnvironment.SANDBOX,
-    process.env.CASHFREE_APP_ID,
-    process.env.CASHFREE_SECRET_KEY,
-  );
-}
 
 export async function POST(req: NextRequest) {
   try {
@@ -82,9 +70,34 @@ export async function POST(req: NextRequest) {
       amount,
     });
 
-    const cashfree = getCashfree();
-    const response = await cashfree.PGCreateOrder(orderRequest);
-    const orderData = response.data;
+    const isProd = process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION";
+    const baseUrl = isProd
+      ? "https://api.cashfree.com/pg"
+      : "https://sandbox.cashfree.com/pg";
+
+    const response = await fetch(`${baseUrl}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-version": "2023-08-01",
+        "x-client-id": process.env.CASHFREE_APP_ID!,
+        "x-client-secret": process.env.CASHFREE_SECRET_KEY!,
+      },
+      body: JSON.stringify(orderRequest),
+    });
+
+    const orderData = await response.json();
+
+    if (!response.ok) {
+      console.error("Cashfree API error:", {
+        status: response.status,
+        data: orderData,
+      });
+      return NextResponse.json(
+        { error: orderData.message || "Failed to create order" },
+        { status: response.status },
+      );
+    }
 
     // Save order to database
     await db.insert(orders).values({
@@ -107,29 +120,10 @@ export async function POST(req: NextRequest) {
       cfOrderId: orderData.cf_order_id,
     });
   } catch (error: unknown) {
-    // Log detailed Cashfree error response
-    const axiosError = error as {
-      response?: { data?: unknown; status?: number };
-    };
-    if (axiosError?.response) {
-      console.error("Cashfree API error:", {
-        status: axiosError.response.status,
-        data: JSON.stringify(axiosError.response.data),
-      });
-    } else {
-      console.error("Error creating Cashfree order:", error);
-    }
+    console.error("Error creating Cashfree order:", error);
 
-    const cfMessage = axiosError?.response?.data;
     const message =
-      typeof cfMessage === "object" &&
-      cfMessage !== null &&
-      "message" in cfMessage
-        ? String((cfMessage as { message: string }).message)
-        : error instanceof Error
-          ? error.message
-          : "Failed to create order";
-
+      error instanceof Error ? error.message : "Failed to create order";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }
