@@ -134,9 +134,12 @@ function PaymentStatusContent() {
   const isFailed =
     orderStatus?.status === "FAILED" ||
     orderStatus?.status === "CANCELLED" ||
-    orderStatus?.status === "VOID";
+    orderStatus?.status === "VOID" ||
+    orderStatus?.status === "USER_DROPPED";
   const isPending =
-    orderStatus?.status === "ACTIVE" || orderStatus?.status === "CREATED";
+    orderStatus?.status === "ACTIVE" ||
+    orderStatus?.status === "CREATED" ||
+    orderStatus?.status === "PENDING";
 
   return (
     <div className="min-h-screen pt-28 pb-20 px-4 bg-[#0f0a2e]">
@@ -182,8 +185,10 @@ function PaymentStatusContent() {
               !generatingReport &&
               !reportGenerated &&
               "Your payment was successful. We will process your report shortly."}
-            {isFailed &&
-              "The payment could not be completed. Please try again."}
+            {isFailed && orderStatus?.status === "USER_DROPPED"
+              ? "The payment was cancelled by the user. Please try again."
+              : isFailed &&
+                "The payment could not be completed. Please try again."}
             {isPending &&
               "Your payment is being processed. Please wait a moment."}
           </p>

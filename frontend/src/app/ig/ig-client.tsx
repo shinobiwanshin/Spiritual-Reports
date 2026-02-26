@@ -141,8 +141,20 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
     setIsSubmitting(true);
 
     // Basic validation
-    if (!firstName || !email || !phone || !day || !month || !year) {
-      setError("Please fill in all required fields.");
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !phone ||
+      !day ||
+      !month ||
+      !year ||
+      !hour ||
+      !minute ||
+      !amPm ||
+      !birthPlace
+    ) {
+      setError("Please fill in all details.");
       setIsSubmitting(false);
       return;
     }
@@ -486,6 +498,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                     placeholder="Surname"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    required
                     className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                   />
                 </div>
@@ -566,6 +579,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                     <select
                       value={hour}
                       onChange={(e) => setHour(e.target.value)}
+                      required
                       className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
                     >
                       <option value="">Hr</option>
@@ -579,6 +593,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                   <select
                     value={minute}
                     onChange={(e) => setMinute(e.target.value)}
+                    required
                     className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
                   >
                     <option value="">Min</option>
@@ -591,6 +606,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                   <select
                     value={amPm}
                     onChange={(e) => setAmPm(e.target.value)}
+                    required
                     className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
                   >
                     <option value="AM">AM</option>
@@ -615,6 +631,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       if (geoResults.length > 0) setShowGeoDropdown(true);
                     }}
                     autoComplete="off"
+                    required
                     className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                   />
                   {geoLoading && (
