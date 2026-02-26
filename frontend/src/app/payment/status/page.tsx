@@ -135,7 +135,8 @@ function PaymentStatusContent() {
     orderStatus?.status === "FAILED" ||
     orderStatus?.status === "CANCELLED" ||
     orderStatus?.status === "VOID" ||
-    orderStatus?.status === "USER_DROPPED";
+    orderStatus?.status === "USER_DROPPED" ||
+    orderStatus?.status === "EXPIRED";
   const isPending =
     orderStatus?.status === "ACTIVE" ||
     orderStatus?.status === "CREATED" ||
@@ -187,8 +188,10 @@ function PaymentStatusContent() {
               "Your payment was successful. We will process your report shortly."}
             {isFailed && orderStatus?.status === "USER_DROPPED"
               ? "The payment was cancelled by the user. Please try again."
-              : isFailed &&
-                "The payment could not be completed. Please try again."}
+              : isFailed && orderStatus?.status === "EXPIRED"
+                ? "This payment session has expired due to 30 minutes of inactivity. Please start a new checkout."
+                : isFailed &&
+                  "The payment could not be completed. Please try again."}
             {isPending &&
               "Your payment is being processed. Please wait a moment."}
           </p>

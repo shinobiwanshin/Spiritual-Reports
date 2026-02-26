@@ -57,15 +57,32 @@ export async function GET(req: NextRequest) {
       paymentStatus === "CANCELLED" ||
       paymentStatus === "VOID";
 
+    let finalStatus = paymentStatus;
+
     if (isFailed) {
       // Delete the order instead of storing a failed one
       await db.delete(orders).where(eq(orders.orderId, orderId));
+    } else if (
+      paymentStatus === "ACTIVE" ||
+      paymentStatus === "CREATED" ||
+      paymentStatus === "PENDING"
+    ) {
+      // Check if order is older than 30 minutes (1800000 ms)
+      if (dbOrder && dbOrder.createdAt) {
+        const ageMs =
+          new Date().getTime() - new Date(dbOrder.createdAt).getTime();
+        if (ageMs > 30 * 60 * 1000) {
+          finalStatus = "EXPIRED";
+          // Expired/abandoned orders should also be cleaned up
+          await db.delete(orders).where(eq(orders.orderId, orderId));
+        }
+      }
     } else {
       // Update order in our database
       await db
         .update(orders)
         .set({
-          status: paymentStatus,
+          status: finalStatus,
           updatedAt: new Date(),
         })
         .where(eq(orders.orderId, orderId));
@@ -73,7 +90,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       orderId: orderId,
-      status: paymentStatus,
+      status: finalStatus,
       amount: cfOrder.order_amount,
       currency: cfOrder.order_currency,
       customerName:
