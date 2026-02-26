@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
       req.headers.get("referer")?.replace(/\/[^/]*$/, "") ||
       "http://localhost:3000";
     const returnUrl = `${origin}/payment/status?order_id=${orderId}`;
+    const notifyUrl = `${origin}/api/cashfree/webhook`;
 
     // Create order with Cashfree
     const orderRequest = {
@@ -59,6 +60,7 @@ export async function POST(req: NextRequest) {
       },
       order_meta: {
         return_url: returnUrl,
+        notify_url: notifyUrl,
       },
       order_note: `Report: ${reportSlug}`,
     };

@@ -24,6 +24,7 @@ function PaymentStatusContent() {
   const [error, setError] = useState<string | null>(null);
   const [generatingReport, setGeneratingReport] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(false);
+  const [pollCount, setPollCount] = useState(0);
 
   useEffect(() => {
     if (!orderId) {
@@ -60,6 +61,21 @@ function PaymentStatusContent() {
 
         setOrderStatus(data);
 
+        // If payment is pending (like UPI), poll again after 4 seconds
+        if (
+          data.status === "ACTIVE" ||
+          data.status === "PENDING" ||
+          data.status === "CREATED"
+        ) {
+          if (pollCount < 15) {
+            // Stop polling after ~60 seconds
+            setTimeout(() => {
+              setPollCount((prev) => prev + 1);
+            }, 4000);
+            return;
+          }
+        }
+
         // If payment is successful and we haven't generated yet, do it now
         if (data.status === "PAID" && data.formData) {
           setGeneratingReport(true);
@@ -89,7 +105,7 @@ function PaymentStatusContent() {
     };
 
     verifyPayment();
-  }, [orderId, searchParams]);
+  }, [orderId, searchParams, pollCount]);
 
   if (loading) {
     return (
@@ -235,9 +251,18 @@ function PaymentStatusContent() {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            {isPending && (
+              <button
+                onClick={() => setPollCount((prev) => prev + 1)}
+                className="bg-gradient-to-r from-[#cfa375] to-[#e8c99b] text-[#0f0a2e] font-semibold py-3 px-8 rounded-xl hover:shadow-[#cfa375]/40 shadow-lg shadow-[#cfa375]/20 transition-all flex items-center justify-center gap-2"
+              >
+                <Loader2 className="w-4 h-4 animate-spin" />
+                Check Status Again
+              </button>
+            )}
             {isFailed && (
               <Link
-                href="/services"
+                href="/ig"
                 className="bg-gradient-to-r from-[#cfa375] to-[#e8c99b] text-[#0f0a2e] font-semibold py-3 px-8 rounded-xl hover:shadow-[#cfa375]/40 shadow-lg shadow-[#cfa375]/20 transition-all"
               >
                 Try Again
