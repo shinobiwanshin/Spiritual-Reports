@@ -98,6 +98,11 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ location: query }),
         });
+        if (res.status === 429) {
+          setError("Rate limit exceeded. Please type slower or wait a moment.");
+          setGeoResults([]);
+          return;
+        }
         const data = await res.json();
         setGeoResults(Array.isArray(data) ? data : []);
         setShowGeoDropdown(true);
@@ -106,7 +111,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
       } finally {
         setGeoLoading(false);
       }
-    }, 300);
+    }, 800);
   }, []);
 
   const handleBirthPlaceChange = (value: string) => {
