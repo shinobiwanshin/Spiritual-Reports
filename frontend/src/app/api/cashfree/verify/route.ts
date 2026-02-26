@@ -1,18 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Cashfree, CFEnvironment } from "cashfree-pg";
 import { db } from "@/db";
 import { orders } from "@/db/schema";
 import { eq } from "drizzle-orm";
-
-function getCashfree() {
-  return new Cashfree(
-    process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION"
-      ? CFEnvironment.PRODUCTION
-      : CFEnvironment.SANDBOX,
-    process.env.CASHFREE_APP_ID,
-    process.env.CASHFREE_SECRET_KEY,
-  );
-}
 
 export async function GET(req: NextRequest) {
   try {
@@ -26,10 +15,31 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // Fetch order status from Cashfree
-    const cashfree = getCashfree();
-    const response = await cashfree.PGFetchOrder(orderId);
-    const cfOrder = response.data;
+    const isProd = process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION";
+    const baseUrl = isProd
+      ? "https://api.cashfree.com/pg"
+      : "https://sandbox.cashfree.com/pg";
+
+    const response = await fetch(`${baseUrl}/orders/${orderId}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-version": "2023-08-01",
+        "x-client-id": process.env.CASHFREE_APP_ID!,
+        "x-client-secret": process.env.CASHFREE_SECRET_KEY!,
+      },
+      cache: "no-store",
+    });
+
+    const cfOrder = await response.json();
+
+    if (!response.ok) {
+      console.error("Cashfree API error:", cfOrder);
+      return NextResponse.json(
+        { error: cfOrder.message || "Failed to fetch order status" },
+        { status: response.status },
+      );
+    }
 
     // Determine payment status
     const paymentStatus = cfOrder.order_status || "UNKNOWN";
