@@ -102,7 +102,7 @@ export default async function ServicesPage() {
 
                 {/* CTA */}
                 <Link
-                  href={`/reports/janam-kundali`}
+                  href={`/ig`}
                   className={`block w-full text-center py-3.5 rounded-xl font-semibold text-sm transition-all ${
                     report.featured
                       ? "bg-gradient-to-r from-[#cfa375] to-[#e8c99b] text-[#0f0a2e] shadow-lg shadow-[#cfa375]/20 hover:shadow-[#cfa375]/40"

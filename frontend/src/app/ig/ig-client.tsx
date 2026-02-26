@@ -1,15 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import {
   Calendar,
   Clock,
   MapPin,
   Mail,
   Smartphone,
-  Languages,
   User,
   CheckCircle,
   Sparkles,
@@ -20,9 +18,11 @@ import {
   Timer,
   Lock,
   Send,
+  Loader2,
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
 import { getIcon } from "@/lib/icon-map";
+import { load } from "@cashfreepayments/cashfree-js";
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
@@ -49,6 +49,180 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
     featuredIndex >= 0 ? featuredIndex : 0,
   );
   const selected = services[selectedVariant];
+
+  // Form state
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [day, setDay] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+  const [hour, setHour] = useState("");
+  const [minute, setMinute] = useState("");
+  const [amPm, setAmPm] = useState("AM");
+  const [birthPlace, setBirthPlace] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Geo autocomplete state
+  type GeoResult = {
+    name: string;
+    completeName: string;
+    latitude: number;
+    longitude: number;
+    timezoneOffset: number;
+    timezone: string;
+    country: string;
+  };
+  const [geoResults, setGeoResults] = useState<GeoResult[]>([]);
+  const [showGeoDropdown, setShowGeoDropdown] = useState(false);
+  const [selectedGeo, setSelectedGeo] = useState<GeoResult | null>(null);
+  const [geoLoading, setGeoLoading] = useState(false);
+  const geoTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const geoDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Debounced geo search
+  const searchGeo = useCallback((query: string) => {
+    if (geoTimerRef.current) clearTimeout(geoTimerRef.current);
+    if (query.trim().length < 2) {
+      setGeoResults([]);
+      setShowGeoDropdown(false);
+      return;
+    }
+    geoTimerRef.current = setTimeout(async () => {
+      setGeoLoading(true);
+      try {
+        const res = await fetch("/api/geo-search", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ location: query }),
+        });
+        const data = await res.json();
+        setGeoResults(Array.isArray(data) ? data : []);
+        setShowGeoDropdown(true);
+      } catch {
+        setGeoResults([]);
+      } finally {
+        setGeoLoading(false);
+      }
+    }, 300);
+  }, []);
+
+  const handleBirthPlaceChange = (value: string) => {
+    setBirthPlace(value);
+    setSelectedGeo(null);
+    searchGeo(value);
+  };
+
+  const selectGeoResult = (geo: GeoResult) => {
+    setBirthPlace(geo.completeName);
+    setSelectedGeo(geo);
+    setShowGeoDropdown(false);
+  };
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (
+        geoDropdownRef.current &&
+        !geoDropdownRef.current.contains(e.target as Node)
+      ) {
+        setShowGeoDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setIsSubmitting(true);
+
+    // Basic validation
+    if (!firstName || !email || !phone || !day || !month || !year) {
+      setError("Please fill in all required fields.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // Determine report duration from selected variant
+      const durationMap: Record<string, number> = {
+        "1-year": 1,
+        "3-year": 3,
+        "5-year": 5,
+        "1 year": 1,
+        "3 years": 3,
+        "5 years": 5,
+      };
+      const duration = durationMap[selected.duration.toLowerCase()] || 1;
+
+      let cashfree;
+      try {
+        cashfree = await load({
+          mode:
+            process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION"
+              ? "production"
+              : "sandbox",
+        });
+      } catch (err) {
+        throw new Error("Failed to initialize payment gateway");
+      }
+
+      // Call create-order API
+      const response = await fetch("/api/cashfree/create-order", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          phone,
+          reportSlug: selected.slug,
+          amount: selected.price,
+          formData: {
+            firstName,
+            lastName,
+            email,
+            phone,
+            dateOfBirth: { day, month, year },
+            timeOfBirth: { hour, minute, amPm },
+            birthPlace,
+            duration,
+            ...(selectedGeo && {
+              latitude: selectedGeo.latitude,
+              longitude: selectedGeo.longitude,
+              timezoneOffset: selectedGeo.timezoneOffset,
+            }),
+          },
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to create order");
+      }
+
+      if (data.paymentSessionId) {
+        let checkoutOptions = {
+          paymentSessionId: data.paymentSessionId,
+          returnUrl: `${window.location.origin}/payment/status?order_id=${data.orderId}`,
+        };
+        await cashfree.checkout(checkoutOptions);
+      } else {
+        throw new Error("Payment session ID not found.");
+      }
+
+      setIsSubmitting(false);
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "Something went wrong";
+      setError(message);
+      setIsSubmitting(false);
+    }
+  };
 
   if (!services.length) {
     return (
@@ -276,7 +450,14 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
               </div>
             </div>
 
-            <form className="space-y-5">
+            {/* Error Message */}
+            {error && (
+              <div className="mb-5 p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-300 text-sm text-center">
+                {error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-5">
               {/* Name fields */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
@@ -288,6 +469,9 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                     <input
                       type="text"
                       placeholder="Name"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
                       className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                     />
                   </div>
@@ -299,6 +483,8 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                   <input
                     type="text"
                     placeholder="Surname"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                   />
                 </div>
@@ -312,7 +498,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                 <div className="grid grid-cols-3 gap-2">
                   <div className="relative">
                     <Calendar className="absolute left-2.5 top-3 w-3.5 h-3.5 text-white/40" />
-                    <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                    <select
+                      value={day}
+                      onChange={(e) => setDay(e.target.value)}
+                      required
+                      className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                    >
                       <option value="">Day</option>
                       {Array.from({ length: 31 }, (_, i) => (
                         <option key={i + 1} value={i + 1}>
@@ -321,7 +512,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       ))}
                     </select>
                   </div>
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                  <select
+                    value={month}
+                    onChange={(e) => setMonth(e.target.value)}
+                    required
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                  >
                     <option value="">Month</option>
                     {[
                       "Jan",
@@ -342,7 +538,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       </option>
                     ))}
                   </select>
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                  <select
+                    value={year}
+                    onChange={(e) => setYear(e.target.value)}
+                    required
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                  >
                     <option value="">Year</option>
                     {Array.from({ length: 100 }, (_, i) => (
                       <option key={2026 - i} value={2026 - i}>
@@ -361,7 +562,11 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                 <div className="grid grid-cols-3 gap-2">
                   <div className="relative">
                     <Clock className="absolute left-2.5 top-3 w-3.5 h-3.5 text-white/40" />
-                    <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                    <select
+                      value={hour}
+                      onChange={(e) => setHour(e.target.value)}
+                      className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-8 pr-2 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                    >
                       <option value="">Hr</option>
                       {Array.from({ length: 12 }, (_, i) => (
                         <option key={i + 1} value={i + 1}>
@@ -370,7 +575,11 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       ))}
                     </select>
                   </div>
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                  <select
+                    value={minute}
+                    onChange={(e) => setMinute(e.target.value)}
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                  >
                     <option value="">Min</option>
                     {Array.from({ length: 60 }, (_, i) => (
                       <option key={i} value={i}>
@@ -378,15 +587,19 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                       </option>
                     ))}
                   </select>
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm">
+                  <select
+                    value={amPm}
+                    onChange={(e) => setAmPm(e.target.value)}
+                    className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 px-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none text-sm"
+                  >
                     <option value="AM">AM</option>
                     <option value="PM">PM</option>
                   </select>
                 </div>
               </div>
 
-              {/* Place of Birth */}
-              <div className="space-y-1.5">
+              {/* Place of Birth — Autocomplete */}
+              <div className="space-y-1.5" ref={geoDropdownRef}>
                 <label className="text-xs text-[#cfa375] font-semibold uppercase tracking-wider pl-1">
                   Place of Birth
                 </label>
@@ -394,10 +607,51 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                   <MapPin className="absolute left-3 top-3 w-4 h-4 text-white/40" />
                   <input
                     type="text"
-                    placeholder="Enter City"
+                    placeholder="Type city name..."
+                    value={birthPlace}
+                    onChange={(e) => handleBirthPlaceChange(e.target.value)}
+                    onFocus={() => {
+                      if (geoResults.length > 0) setShowGeoDropdown(true);
+                    }}
+                    autoComplete="off"
                     className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                   />
+                  {geoLoading && (
+                    <div className="absolute right-3 top-3">
+                      <div className="w-4 h-4 border-2 border-[#cfa375]/30 border-t-[#cfa375] rounded-full animate-spin" />
+                    </div>
+                  )}
+                  {/* Autocomplete dropdown */}
+                  {showGeoDropdown && geoResults.length > 0 && (
+                    <div className="absolute top-full left-0 right-0 mt-1 bg-[#1a1347] border border-[#cfa375]/30 rounded-xl overflow-hidden z-50 shadow-xl shadow-black/30">
+                      {geoResults.map((geo, i) => (
+                        <button
+                          key={`${geo.completeName}-${i}`}
+                          type="button"
+                          onClick={() => selectGeoResult(geo)}
+                          className="w-full text-left px-4 py-3 hover:bg-[#cfa375]/10 transition-colors border-b border-white/5 last:border-b-0"
+                        >
+                          <div className="text-sm text-white font-medium">
+                            {geo.name}
+                          </div>
+                          <div className="text-xs text-white/40 mt-0.5">
+                            {geo.completeName}{" "}
+                            {geo.country && `· ${geo.country}`}
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
+                {selectedGeo && (
+                  <div className="flex items-center gap-2 text-xs text-white/30 pl-1">
+                    <span>
+                      📍 {selectedGeo.latitude.toFixed(4)}°,{" "}
+                      {selectedGeo.longitude.toFixed(4)}°
+                    </span>
+                    <span>· TZ: {selectedGeo.timezone}</span>
+                  </div>
+                )}
               </div>
 
               {/* Contact Info */}
@@ -411,6 +665,9 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                     <input
                       type="email"
                       placeholder="you@email.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
                       className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                     />
                   </div>
@@ -424,23 +681,12 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
                     <input
                       type="tel"
                       placeholder="+91..."
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
                       className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white placeholder-white/20 focus:outline-none focus:border-[#cfa375]/50 transition-colors"
                     />
                   </div>
-                </div>
-              </div>
-
-              {/* Report Language */}
-              <div className="space-y-1.5">
-                <label className="text-xs text-[#cfa375] font-semibold uppercase tracking-wider pl-1">
-                  Report Language
-                </label>
-                <div className="relative">
-                  <Languages className="absolute left-3 top-3 w-4 h-4 text-white/40" />
-                  <select className="w-full bg-[#0f0a2e]/50 border border-white/10 rounded-xl py-2.5 pl-10 pr-3 text-white/80 focus:outline-none focus:border-[#cfa375]/50 appearance-none">
-                    <option value="English">English</option>
-                    <option value="Hindi">Hindi</option>
-                  </select>
                 </div>
               </div>
 
@@ -448,10 +694,20 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
               <div className="pt-4">
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-[#cfa375] to-[#b8894f] hover:from-[#e8c99b] hover:to-[#cfa375] text-[#0f0a2e] font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-[#cfa375]/20 hover:shadow-[#cfa375]/40 hover:-translate-y-0.5 text-lg"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-[#cfa375] to-[#b8894f] hover:from-[#e8c99b] hover:to-[#cfa375] text-[#0f0a2e] font-bold py-4 rounded-2xl transition-all duration-300 shadow-lg shadow-[#cfa375]/20 hover:shadow-[#cfa375]/40 hover:-translate-y-0.5 text-lg disabled:opacity-60 disabled:cursor-not-allowed"
                 >
-                  Proceed to Payment — ₹{selected.price}
-                  <ArrowRight className="w-5 h-5" />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      Proceeding to Payment...
+                    </>
+                  ) : (
+                    <>
+                      Proceed to Payment — ₹{selected.price}
+                      <ArrowRight className="w-5 h-5" />
+                    </>
+                  )}
                 </button>
 
                 <p className="text-center text-xs text-white/30 mt-4">
@@ -487,7 +743,7 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
             </span>
             <div className="h-3.5 w-px bg-white/10" />
             <span className="flex items-center gap-1.5">
-              <Send className="w-4 h-4" /> 24hr Delivery
+              <Send className="w-4 h-4" /> Sent via Email
             </span>
           </div>
         </div>

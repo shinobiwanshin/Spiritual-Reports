@@ -1,8 +1,14 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
+const isWebhookRoute = createRouteMatcher(["/api/cashfree/webhook"]);
 
 export default clerkMiddleware(async (auth, req) => {
+  // Skip auth for webhook routes (Cashfree needs to POST without auth)
+  if (isWebhookRoute(req)) {
+    return;
+  }
+
   if (isAdminRoute(req)) {
     await auth.protect();
   }
