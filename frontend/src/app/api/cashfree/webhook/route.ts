@@ -35,26 +35,79 @@ export async function POST(req: NextRequest) {
 
     // Process the webhook event
     const eventData = JSON.parse(rawBody);
+    console.log("WEBHOOK BODY:", JSON.stringify(eventData, null, 2));
+
+    const type = eventData.type;
     const data = eventData.data as Record<string, unknown> | undefined;
     const orderData = data?.order as Record<string, unknown> | undefined;
+    const paymentData = data?.payment as Record<string, unknown> | undefined;
 
-    if (orderData) {
-      const orderId = orderData.order_id as string | undefined;
-      const orderStatus = orderData.order_status as string | undefined;
+    let orderId = orderData?.order_id as string | undefined;
+    let newStatus = "UNKNOWN";
 
-      if (orderId && orderStatus) {
-        // Update the order status in our database (idempotent)
-        await db
-          .update(orders)
-          .set({
-            status: orderStatus,
-            updatedAt: new Date(),
-          })
-          .where(eq(orders.orderId, orderId));
+    if (
+      type === "PAYMENT_SUCCESS_WEBHOOK" &&
+      paymentData?.payment_status === "SUCCESS"
+    ) {
+      newStatus = "PAID";
+    } else if (orderData?.order_status) {
+      newStatus = orderData.order_status as string;
+    }
 
-        console.log(
-          `Webhook: Order ${orderId} updated to status ${orderStatus}`,
-        );
+    if (orderId && newStatus !== "UNKNOWN") {
+      // Update the order status in our database
+      await db
+        .update(orders)
+        .set({
+          status: newStatus,
+          updatedAt: new Date(),
+        })
+        .where(eq(orders.orderId, orderId));
+
+      console.log(`Webhook: Order ${orderId} updated to status ${newStatus}`);
+
+      // If PAID, trigger report generation
+      if (newStatus === "PAID") {
+        const [dbOrder] = await db
+          .select()
+          .from(orders)
+          .where(eq(orders.orderId, orderId))
+          .limit(1);
+
+        if (dbOrder && dbOrder.formData) {
+          console.log(
+            `Webhook: Triggering report generation for Order ${orderId}`,
+          );
+          try {
+            const reportUrl = new URL(
+              "/api/report/generate",
+              req.url,
+            ).toString();
+            const reportRes = await fetch(reportUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(dbOrder.formData),
+            });
+
+            if (!reportRes.ok) {
+              console.error(
+                `Webhook: Failed to generate report for ${orderId}`,
+                await reportRes.text(),
+              );
+            } else {
+              console.log(
+                `Webhook: Successfully generated report for ${orderId}`,
+              );
+            }
+          } catch (genErr) {
+            console.error(
+              `Webhook: Error fetching report generation for ${orderId}`,
+              genErr,
+            );
+          }
+        } else {
+          console.warn(`Webhook: No formData found for Order ${orderId}`);
+        }
       }
     }
 
