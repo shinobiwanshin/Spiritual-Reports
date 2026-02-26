@@ -3,6 +3,7 @@ declare module "@cashfreepayments/cashfree-js" {
     checkout: (options: {
       paymentSessionId: string;
       returnUrl?: string;
+      redirectTarget?: "_self" | "_blank" | "_top" | "_modal" | HTMLElement;
     }) => Promise<void>;
   }
 
