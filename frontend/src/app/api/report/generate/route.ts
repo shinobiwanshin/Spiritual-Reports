@@ -330,6 +330,7 @@ export async function POST(req: NextRequest) {
         time: `${rawHour}:${String(minute).padStart(2, "0")} ${amPm}`,
         location: birthPlace || "Not specified",
       },
+      logoUrl: `${req.nextUrl.origin}/images/Circle%20Crop%20Image.png`,
     };
 
     const html = generatePrintHTML(extendedReport);
