@@ -72,7 +72,8 @@ export async function POST(req: NextRequest) {
       amount,
     });
 
-    const isProd = process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION";
+    const isProd =
+      process.env.NEXT_PUBLIC_CASHFREE_ENV?.toUpperCase() === "PRODUCTION";
     const baseUrl = isProd
       ? "https://api.cashfree.com/pg"
       : "https://sandbox.cashfree.com/pg";

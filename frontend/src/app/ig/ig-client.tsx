@@ -178,11 +178,10 @@ export default function IgClient({ services }: { services: ServiceVariant[] }) {
 
       let cashfree;
       try {
+        const isProd =
+          process.env.NEXT_PUBLIC_CASHFREE_ENV?.toUpperCase() === "PRODUCTION";
         cashfree = await load({
-          mode:
-            process.env.NEXT_PUBLIC_CASHFREE_ENV === "PRODUCTION"
-              ? "production"
-              : "sandbox",
+          mode: isProd ? "production" : "sandbox",
         });
       } catch (err) {
         throw new Error("Failed to initialize payment gateway");
