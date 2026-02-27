@@ -21,6 +21,7 @@ export type ExtendedAstrologyReport = AstrologyReport & {
     friendSigns?: { sign: string; description: string }[];
     enemySigns?: { sign: string; description: string }[];
   };
+  logoUrl?: string;
 };
 
 function capitalizeFirst(str: string): string {
@@ -394,7 +395,11 @@ export function generatePrintHTML(report: ExtendedAstrologyReport): string {
 <body>
   <div class="container">
     <div class="header">
-      <div class="om-symbol">ॐ</div>
+      ${
+        report.logoUrl
+          ? `<img src="${report.logoUrl}" alt="ShivaBakthi Logo" style="width: 100px; height: 100px; border-radius: 50%; border: 3px solid #f97316; margin-bottom: 10px; display: inline-block;">`
+          : `<div class="om-symbol">ॐ</div>`
+      }
       <h1>${report.name ? `${report.name}'s` : ""} Astrology Report</h1>
       <div class="subtitle">${report.duration} Prediction</div>
       <div class="date">Years: ${report.years.join(", ")}</div>
