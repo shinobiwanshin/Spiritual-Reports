@@ -2,7 +2,14 @@
 
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, Suspense } from "react";
-import { CheckCircle, XCircle, Clock, ArrowLeft, Loader2 } from "lucide-react";
+import {
+  CheckCircle,
+  XCircle,
+  Clock,
+  ArrowLeft,
+  Loader2,
+  Mail,
+} from "lucide-react";
 import Link from "next/link";
 
 interface OrderStatus {
@@ -180,12 +187,7 @@ function PaymentStatusContent() {
               "Your payment was successful. We are generating your personalized report now..."}
             {isPaid &&
               !generatingReport &&
-              reportGenerated &&
-              "Your report has been generated. You'll receive it via email shortly. It is available in your account."}
-            {isPaid &&
-              !generatingReport &&
-              !reportGenerated &&
-              "Your payment was successful. We will process your report shortly."}
+              "Your payment was successful! Your personalized astrology report is being generated and will be sent directly to your email."}
             {isFailed && orderStatus?.status === "USER_DROPPED"
               ? "The payment was cancelled by the user. Please try again."
               : isFailed && orderStatus?.status === "EXPIRED"
@@ -195,6 +197,25 @@ function PaymentStatusContent() {
             {isPending &&
               "Your payment is being processed. Please wait a moment."}
           </p>
+
+          {isPaid && !generatingReport && (
+            <div className="bg-[#cfa375]/10 border border-[#cfa375]/30 rounded-xl p-5 mb-8 text-left flex items-start gap-4">
+              <Mail className="w-6 h-6 text-[#cfa375] shrink-0 mt-0.5" />
+              <div>
+                <h3 className="text-white font-semibold mb-1">
+                  Check Your Email
+                </h3>
+                <p className="text-sm text-[#b0a8c8]">
+                  Your astrological report has been dispatched to{" "}
+                  <span className="text-white font-medium">
+                    {orderStatus?.customerEmail}
+                  </span>
+                  . Please check your inbox (and spam/promotions folder) over
+                  the next few minutes.
+                </p>
+              </div>
+            </div>
+          )}
 
           {/* Order Details */}
           {orderStatus && (
