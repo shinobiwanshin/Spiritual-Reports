@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { services } from "@/db/schema";
 import { asc } from "drizzle-orm";
-import IgClient from "./ig-client";
+import IgLanding from "./ig-landing";
 
 export default async function IgPage() {
   const allServices = await db
@@ -23,5 +23,5 @@ export default async function IgPage() {
     featured: s.featured,
   }));
 
-  return <IgClient services={serviceData} />;
+  return <IgLanding services={serviceData} />;
 }
