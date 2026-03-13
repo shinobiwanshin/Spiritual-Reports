@@ -10,8 +10,10 @@ import {
   CheckCircle,
   ArrowRight,
   Crown,
+  Send,
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
+import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
 
 /* ───────────────────────────── Types ───────────────────────────── */
@@ -122,7 +124,7 @@ export default function IgLanding({
             </span>
             <div className="h-4 w-px bg-white/10" />
             <span className="flex items-center gap-1.5">
-              <Timer className="w-4 h-4" /> Delivered in 24hrs
+              <Send className="w-4 h-4" /> Delivered via Email
             </span>
           </div>
         </div>
@@ -247,6 +249,10 @@ export default function IgLanding({
           </div>
         </div>
       </section>
+
+      {/* ─── Testimonials ─── */}
+      <TestimonialCarousel />
+
 
       {/* ─── Bottom Philosophy Section ─── */}
       <section className="relative z-10 px-6 pb-20">

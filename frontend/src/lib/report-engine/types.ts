@@ -37,6 +37,8 @@ export type MonthlyPrediction = {
   health: string;
   family: string;
   love: string;
+  spirituality: string;
+  personalGrowth: string;
   overallTone: string;
 };
 
@@ -53,6 +55,8 @@ export type YearlyReport = {
   health: string;
   family: string;
   love: string;
+  spirituality: string;
+  personalGrowth: string;
   advice: string;
   numerology?: YearlyNumerology;
   monthlyBreakdowns: MonthlyPrediction[];

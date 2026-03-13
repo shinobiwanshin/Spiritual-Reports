@@ -37,6 +37,16 @@ import {
   generateLovePrediction,
   getMonthlyLovePrediction,
 } from "./rules/love-rules";
+import {
+  evaluateSpirituality,
+  generateSpiritualityPrediction,
+  getMonthlySpiritualityPrediction,
+} from "./rules/spirituality-rules";
+import {
+  evaluatePersonalGrowth,
+  generatePersonalGrowthPrediction,
+  getMonthlyPersonalGrowthPrediction,
+} from "./rules/personal-growth-rules";
 import { calculatePersonalYearPrediction } from "./numerology";
 
 /**
@@ -233,6 +243,8 @@ function buildMonthlyBreakdowns(
       health: getMonthlyHealthPrediction(profile, year, m),
       family: getMonthlyFamilyPrediction(profile, year, m),
       love: getMonthlyLovePrediction(profile, year, m),
+      spirituality: getMonthlySpiritualityPrediction(profile, year, m),
+      personalGrowth: getMonthlyPersonalGrowthPrediction(profile, year, m),
       overallTone: getMonthlyTone(m, themeKey),
     });
   }
@@ -255,12 +267,24 @@ export function buildYearlyReport(
   const healthResult = evaluateHealth(profile, year, numerology.personalYear);
   const familyResult = evaluateFamily(profile, year, numerology.personalYear);
   const loveResult = evaluateLove(profile, year, numerology.personalYear);
+  const spiritualityResult = evaluateSpirituality(
+    profile,
+    year,
+    numerology.personalYear,
+  );
+  const personalGrowthResult = evaluatePersonalGrowth(
+    profile,
+    year,
+    numerology.personalYear,
+  );
 
   const career = generateCareerPrediction(careerResult);
   const finance = generateFinancePrediction(financeResult);
   const health = generateHealthPrediction(healthResult);
   const family = generateFamilyPrediction(familyResult);
   const love = generateLovePrediction(loveResult);
+  const spirituality = generateSpiritualityPrediction(spiritualityResult);
+  const personalGrowth = generatePersonalGrowthPrediction(personalGrowthResult);
 
   const advice = generateAdvice(profile, year, theme.key);
   const monthlyBreakdowns = buildMonthlyBreakdowns(profile, year, theme.key);
@@ -278,6 +302,8 @@ export function buildYearlyReport(
     health,
     family,
     love,
+    spirituality,
+    personalGrowth,
     advice,
     numerology,
     monthlyBreakdowns,

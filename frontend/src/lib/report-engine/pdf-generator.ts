@@ -190,6 +190,20 @@ function generateMonthlyTable(monthlyBreakdowns: MonthlyPrediction[]): string {
             <p>${m.love}</p>
           </div>
         </div>
+        <div class="monthly-area">
+          <span class="area-icon">🕉️</span>
+          <div class="area-content">
+            <strong>Spirituality</strong>
+            <p>${m.spirituality}</p>
+          </div>
+        </div>
+        <div class="monthly-area">
+          <span class="area-icon">🌱</span>
+          <div class="area-content">
+            <strong>Personal Growth</strong>
+            <p>${m.personalGrowth}</p>
+          </div>
+        </div>
       </div>
     </div>
   `,
@@ -260,6 +274,14 @@ function generateYearSection(yearReport: YearlyReport): string {
         <div class="prediction-item">
           <h3 class="prediction-title">❤️ Love</h3>
           <p>${yearReport.love}</p>
+        </div>
+        <div class="prediction-item">
+          <h3 class="prediction-title">🕉️ Spirituality</h3>
+          <p>${yearReport.spirituality}</p>
+        </div>
+        <div class="prediction-item">
+          <h3 class="prediction-title">🌱 Personal Growth</h3>
+          <p>${yearReport.personalGrowth}</p>
         </div>
         <div class="prediction-item advice-main">
           <h3 class="prediction-title">🙏 Advice for ${yearReport.year}</h3>

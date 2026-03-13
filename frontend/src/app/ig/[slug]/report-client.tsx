@@ -23,6 +23,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
+import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
 import { load } from "@cashfreepayments/cashfree-js";
 
@@ -262,7 +263,7 @@ export default function ReportClient({
     <div className="min-h-screen bg-[#0f0a2e] text-white relative overflow-hidden">
       {/* Video background */}
       <div className="fixed inset-0 z-0">
-        <VideoBackground overlayOpacity={0.6} />
+        <VideoBackground overlayOpacity={0.6} src="/output-1080p.mp4" />
       </div>
 
       {/* ─── Breadcrumb ─── */}
@@ -341,7 +342,7 @@ export default function ReportClient({
                     icon: FileText,
                     label: `${selected.duration.toLowerCase().includes("1") ? "18" : selected.duration.toLowerCase().includes("3") ? "40" : "65"}+ Page Report`,
                   },
-                  { icon: Timer, label: "Delivered in 24hrs" },
+                  { icon: Send, label: "Delivered via Email" },
                 ].map((item, i) => (
                   <div
                     key={i}
@@ -690,6 +691,9 @@ export default function ReportClient({
           </div>
         </div>
       </section>
+
+      {/* ─── Testimonials ─── */}
+      <TestimonialCarousel />
     </div>
   );
 }
