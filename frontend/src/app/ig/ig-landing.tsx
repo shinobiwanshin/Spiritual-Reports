@@ -130,9 +130,6 @@ export default function IgLanding({
         </div>
       </section>
 
-      {/* ─── Testimonials ─── */}
-      <TestimonialCarousel />
-
       {/* ─── Reports Catalog ─── */}
       <section className="relative z-10 px-6 pb-20">
         <div className="max-w-5xl mx-auto">
@@ -252,6 +249,10 @@ export default function IgLanding({
           </div>
         </div>
       </section>
+
+      {/* ─── Testimonials ─── */}
+      <TestimonialCarousel />
+
 
       {/* ─── Bottom Philosophy Section ─── */}
       <section className="relative z-10 px-6 pb-20">
