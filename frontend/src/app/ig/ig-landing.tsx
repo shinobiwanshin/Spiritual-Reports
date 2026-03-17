@@ -36,9 +36,9 @@ export interface ServiceVariant {
 
 function getPageCount(duration: string): number {
   const d = duration.toLowerCase();
-  if (d.includes("1")) return 18;
-  if (d.includes("3")) return 40;
-  return 65;
+  if (d.includes("1")) return 30;
+  if (d.includes("3")) return 50;
+  return 80;
 }
 
 /* ──────────────────────────────── Component ──────────────────────────────── */
@@ -115,12 +115,13 @@ export default function IgLanding({
               <span>4.9/5 Rating</span>
             </div>
             <div className="h-4 w-px bg-white/10" />
-            <span className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4" /> 10,000+ Seekers
+            <span className="flex items-center gap-1.5 font-semibold text-white/90">
+              <ShieldCheck className="w-5 h-5 text-[#10b981]" /> 100+ orders in
+              the last 24 hours
             </span>
             <div className="h-4 w-px bg-white/10" />
             <span className="flex items-center gap-1.5">
-              <FileText className="w-4 h-4" /> 18–65 Page Reports
+              <FileText className="w-4 h-4" /> 30–80 Page Reports
             </span>
             <div className="h-4 w-px bg-white/10" />
             <span className="flex items-center gap-1.5">
@@ -252,7 +253,6 @@ export default function IgLanding({
 
       {/* ─── Testimonials ─── */}
       <TestimonialCarousel />
-
 
       {/* ─── Bottom Philosophy Section ─── */}
       <section className="relative z-10 px-6 pb-20">
