@@ -336,19 +336,39 @@ export default function ReportClient({
               {/* Trust indicators */}
               <div className="grid grid-cols-2 gap-3 animate-fade-in-up">
                 {[
-                  { icon: Star, label: "4.9/5 Rating" },
-                  { icon: ShieldCheck, label: "10,000+ Seekers" },
+                  {
+                    icon: Star,
+                    label: "4.9/5 Rating",
+                    cols: "col-span-1 md:col-span-1",
+                  },
+                  {
+                    icon: ShieldCheck,
+                    label: "100+ orders in the last 24 hours",
+                    cols: "col-span-2 text-[13px] md:col-span-1 md:text-xs",
+                    highlight: true,
+                  },
                   {
                     icon: FileText,
-                    label: `${selected.duration.toLowerCase().includes("1") ? "18" : selected.duration.toLowerCase().includes("3") ? "40" : "65"}+ Page Report`,
+                    label: `${selected.duration.toLowerCase().includes("1") ? "30" : selected.duration.toLowerCase().includes("3") ? "50" : "80"}+ Page Report`,
+                    cols: "col-span-1 md:col-span-1",
                   },
-                  { icon: Send, label: "Delivered via Email" },
+                  {
+                    icon: Send,
+                    label: "Delivered via Email",
+                    cols: "col-span-1 md:col-span-1",
+                  },
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="flex items-center gap-2.5 px-4 py-3 bg-white/[0.03] border border-white/[0.06] rounded-xl text-xs text-white/50"
+                    className={`flex items-center gap-2.5 px-4 py-3 bg-white/[0.03] border border-white/[0.06] rounded-xl text-xs ${item.cols} ${item.highlight ? "text-white font-semibold border-white/10 bg-white/[0.05]" : "text-white/50"}`}
                   >
-                    <item.icon className="w-4 h-4 text-[#cfa375]/60" />
+                    <item.icon
+                      className={
+                        item.highlight
+                          ? "w-5 h-5 text-[#10b981]"
+                          : "w-4 h-4 text-[#cfa375]/60"
+                      }
+                    />
                     <span>{item.label}</span>
                   </div>
                 ))}
