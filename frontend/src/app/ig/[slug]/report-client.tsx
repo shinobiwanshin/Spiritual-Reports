@@ -73,19 +73,20 @@ export default function ReportClient({
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hasTrackedAddToCart, setHasTrackedAddToCart] = useState(false);
 
-  // Track AddToCart once on first form interaction
+  // Track AddToCart once per session on first form interaction
   const trackAddToCart = useCallback(() => {
-    if (!hasTrackedAddToCart && typeof window !== "undefined" && (window as any).fbq) {
+    if (typeof window === "undefined") return;
+    const sessionKey = `tracked_cart_${selected.slug}`;
+    if (!sessionStorage.getItem(sessionKey) && (window as any).fbq) {
       (window as any).fbq("track", "AddToCart", {
         content_name: selected.title,
         value: selected.price,
         currency: "INR",
       });
-      setHasTrackedAddToCart(true);
+      sessionStorage.setItem(sessionKey, "true");
     }
-  }, [hasTrackedAddToCart, selected]);
+  }, [selected.slug, selected.title, selected.price]);
 
   // Geo autocomplete state
   type GeoResult = {
@@ -448,7 +449,7 @@ export default function ReportClient({
                   </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} onFocusCapture={trackAddToCart} className="space-y-4">
                   {/* Name fields */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
@@ -459,10 +460,7 @@ export default function ReportClient({
                           type="text"
                           placeholder="Name"
                           value={firstName}
-                          onChange={(e) => {
-                            setFirstName(e.target.value);
-                            trackAddToCart();
-                          }}
+                          onChange={(e) => setFirstName(e.target.value)}
                           required
                           className={inputWithIconCls}
                         />

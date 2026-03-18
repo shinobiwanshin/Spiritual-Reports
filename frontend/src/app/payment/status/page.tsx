@@ -32,7 +32,6 @@ function PaymentStatusContent() {
   const [generatingReport, setGeneratingReport] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(false);
   const [pollCount, setPollCount] = useState(0);
-  const [hasTrackedPurchase, setHasTrackedPurchase] = useState(false);
 
   useEffect(() => {
     if (!orderId) {
@@ -86,13 +85,16 @@ function PaymentStatusContent() {
 
           // If payment is successful, the webhook is generating the report behind the scenes
           if (data.status === "PAID") {
-            // Track Purchase event once
-            if (!hasTrackedPurchase && typeof window !== "undefined" && (window as any).fbq) {
-              (window as any).fbq("track", "Purchase", {
-                value: data.amount,
-                currency: "INR",
-              });
-              setHasTrackedPurchase(true);
+            // Track Purchase event once per session / orderId
+            if (typeof window !== "undefined") {
+              const sessionKey = `tracked_purchase_${orderId}`;
+              if (!sessionStorage.getItem(sessionKey) && (window as any).fbq) {
+                (window as any).fbq("track", "Purchase", {
+                  value: data.amount,
+                  currency: data.currency || "INR",
+                });
+                sessionStorage.setItem(sessionKey, "true");
+              }
             }
 
             // Poll a couple more times just to see if the DB order has finally been updated
