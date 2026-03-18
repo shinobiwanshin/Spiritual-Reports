@@ -101,6 +101,7 @@ export async function POST(req: NextRequest) {
                 {
                   event_name: "Purchase",
                   event_time: Math.floor(Date.now() / 1000),
+                  event_id: dbOrder.orderId,
                   action_source: "website",
                   user_data: {
                     client_ip_address: metaCapiData.clientIpAddress || undefined,
@@ -123,15 +124,17 @@ export async function POST(req: NextRequest) {
             const capiToken = process.env.META_CAPI_TOKEN;
 
             if (capiToken) {
-              fetch(`https://graph.facebook.com/v19.0/${pixelId}/events?access_token=${capiToken}`, {
+              const capiRes = await fetch(`https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${capiToken}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(eventPayload),
-              }).then(res => res.json()).then(data => {
-                console.log(`Webhook: Sent CAPI Purchase event for Order ${orderId}`, data);
-              }).catch(err => {
-                console.error(`Webhook: Failed to send CAPI event for Order ${orderId}`, err);
               });
+              const data = await capiRes.json();
+              if (!capiRes.ok) {
+                console.error(`Webhook: Failed to send CAPI event for Order ${orderId}`, data);
+              } else {
+                console.log(`Webhook: Sent CAPI Purchase event for Order ${orderId}`, data);
+              }
             } else {
               console.warn("Webhook: META_CAPI_TOKEN is missing. Server CAPI tracking skipped.");
             }
