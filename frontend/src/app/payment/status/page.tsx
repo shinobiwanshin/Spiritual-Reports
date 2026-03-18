@@ -32,6 +32,7 @@ function PaymentStatusContent() {
   const [generatingReport, setGeneratingReport] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(false);
   const [pollCount, setPollCount] = useState(0);
+  const [hasTrackedPurchase, setHasTrackedPurchase] = useState(false);
 
   useEffect(() => {
     if (!orderId) {
@@ -83,19 +84,28 @@ function PaymentStatusContent() {
           }
         }
 
-        // If payment is successful, the webhook is generating the report behind the scenes
-        if (data.status === "PAID") {
-          // Poll a couple more times just to see if the DB order has finally been updated
-          // Or just optimistically show generating state since the webhook will handle it
-          setGeneratingReport(true);
+          // If payment is successful, the webhook is generating the report behind the scenes
+          if (data.status === "PAID") {
+            // Track Purchase event once
+            if (!hasTrackedPurchase && typeof window !== "undefined" && (window as any).fbq) {
+              (window as any).fbq("track", "Purchase", {
+                value: data.amount,
+                currency: "INR",
+              });
+              setHasTrackedPurchase(true);
+            }
 
-          // Assuming webhook finishes very fast, we just tell user it's paid
-          setTimeout(() => {
-            setReportGenerated(true);
-            setGeneratingReport(false);
-          }, 3000);
-        }
-      } catch {
+            // Poll a couple more times just to see if the DB order has finally been updated
+            // Or just optimistically show generating state since the webhook will handle it
+            setGeneratingReport(true);
+
+            // Assuming webhook finishes very fast, we just tell user it's paid
+            setTimeout(() => {
+              setReportGenerated(true);
+              setGeneratingReport(false);
+            }, 3000);
+          }
+        } catch {
         setError("Failed to verify payment status");
       } finally {
         setLoading(false);

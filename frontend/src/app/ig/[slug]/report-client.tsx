@@ -73,6 +73,19 @@ export default function ReportClient({
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [hasTrackedAddToCart, setHasTrackedAddToCart] = useState(false);
+
+  // Track AddToCart once on first form interaction
+  const trackAddToCart = useCallback(() => {
+    if (!hasTrackedAddToCart && typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("track", "AddToCart", {
+        content_name: selected.title,
+        value: selected.price,
+        currency: "INR",
+      });
+      setHasTrackedAddToCart(true);
+    }
+  }, [hasTrackedAddToCart, selected]);
 
   // Geo autocomplete state
   type GeoResult = {
@@ -174,6 +187,14 @@ export default function ReportClient({
     }
 
     try {
+      if (typeof window !== "undefined" && (window as any).fbq) {
+        (window as any).fbq("track", "InitiateCheckout", {
+          content_name: selected.title,
+          value: selected.price,
+          currency: "INR",
+        });
+      }
+
       // Determine report duration from selected variant
       const durationMap: Record<string, number> = {
         "1-year": 1,
@@ -438,7 +459,10 @@ export default function ReportClient({
                           type="text"
                           placeholder="Name"
                           value={firstName}
-                          onChange={(e) => setFirstName(e.target.value)}
+                          onChange={(e) => {
+                            setFirstName(e.target.value);
+                            trackAddToCart();
+                          }}
                           required
                           className={inputWithIconCls}
                         />
