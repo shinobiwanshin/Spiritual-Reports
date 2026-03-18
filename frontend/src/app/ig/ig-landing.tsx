@@ -82,23 +82,6 @@ export default function IgLanding({
             not false promises.
           </p>
 
-          {/* Philosophy lines */}
-          <div className="max-w-xl mx-auto mb-8 space-y-4 animate-fade-in-up">
-            <div className="w-12 h-px bg-[#cfa375]/30 mx-auto" />
-            <p className="text-white/80 text-sm sm:text-base leading-relaxed italic">
-              Life moves in phases. Some expand you. Some test you. Some prepare
-              you.
-            </p>
-            <p className="text-white/60 text-xs sm:text-sm leading-relaxed">
-              Astrology does not control destiny. It reveals{" "}
-              <span className="text-[#cfa375] font-semibold">timing</span>.
-              <br />
-              And when timing is understood, decisions become calmer — and
-              calmer decisions{" "}
-              <span className="text-white font-medium">change outcomes</span>.
-            </p>
-            <div className="w-12 h-px bg-[#cfa375]/30 mx-auto" />
-          </div>
 
           {/* Trust row */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-white/50 animate-fade-in-up">
