@@ -76,9 +76,20 @@ export default function ReportClient({
   const fallbackTrackedCart = useRef<Record<string, boolean>>({});
 
   // Track AddToCart once per session on first form interaction
-  const trackAddToCart = useCallback(() => {
+  const trackAddToCart = useCallback((e?: React.FocusEvent) => {
+    if (e && e.target) {
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag !== "INPUT" && tag !== "SELECT" && tag !== "TEXTAREA") {
+        return;
+      }
+    }
+
     if (typeof window === "undefined") return;
-    if (fallbackTrackedCart.current[selected.slug]) return;
+
+    const globalFallback = (window as any).__trackedCartFallback || {};
+    (window as any).__trackedCartFallback = globalFallback;
+
+    if (fallbackTrackedCart.current[selected.slug] || globalFallback[selected.slug]) return;
 
     const sessionKey = `tracked_cart_${selected.slug}`;
     let alreadyTracked = false;
@@ -91,7 +102,13 @@ export default function ReportClient({
       // Swallowing SecurityError/QuotaExceededError
     }
 
-    if (!alreadyTracked && (window as any).fbq) {
+    if (alreadyTracked) {
+      globalFallback[selected.slug] = true;
+      fallbackTrackedCart.current[selected.slug] = true;
+      return;
+    }
+
+    if ((window as any).fbq) {
       (window as any).fbq("track", "AddToCart", {
         content_name: selected.title,
         value: selected.price,
@@ -99,6 +116,8 @@ export default function ReportClient({
       });
       
       fallbackTrackedCart.current[selected.slug] = true;
+      globalFallback[selected.slug] = true;
+
       try {
         if ("sessionStorage" in window) {
           sessionStorage.setItem(sessionKey, "true");
