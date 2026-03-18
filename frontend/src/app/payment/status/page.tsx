@@ -32,7 +32,7 @@ function PaymentStatusContent() {
   const [generatingReport, setGeneratingReport] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(false);
   const [pollCount, setPollCount] = useState(0);
-  const fallbackTrackedPurchase = useRef(false);
+  const fallbackTrackedPurchase = useRef<Record<string, boolean>>({});
 
   useEffect(() => {
     if (!orderId) {
@@ -88,7 +88,7 @@ function PaymentStatusContent() {
           if (data.status === "PAID") {
             // Track Purchase event once per session / orderId
             if (typeof window !== "undefined") {
-              if (!fallbackTrackedPurchase.current) {
+              if (!fallbackTrackedPurchase.current[orderId]) {
                 const sessionKey = `tracked_purchase_${orderId}`;
                 let alreadyTracked = false;
                 try {
@@ -105,7 +105,7 @@ function PaymentStatusContent() {
                     currency: data.currency || "INR",
                   });
                   
-                  fallbackTrackedPurchase.current = true;
+                  fallbackTrackedPurchase.current[orderId] = true;
                   try {
                     if ("sessionStorage" in window) {
                       sessionStorage.setItem(sessionKey, "true");

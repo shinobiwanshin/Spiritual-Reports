@@ -73,12 +73,12 @@ export default function ReportClient({
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const fallbackTrackedCart = useRef(false);
+  const fallbackTrackedCart = useRef<Record<string, boolean>>({});
 
   // Track AddToCart once per session on first form interaction
   const trackAddToCart = useCallback(() => {
     if (typeof window === "undefined") return;
-    if (fallbackTrackedCart.current) return;
+    if (fallbackTrackedCart.current[selected.slug]) return;
 
     const sessionKey = `tracked_cart_${selected.slug}`;
     let alreadyTracked = false;
@@ -98,7 +98,7 @@ export default function ReportClient({
         currency: "INR",
       });
       
-      fallbackTrackedCart.current = true;
+      fallbackTrackedCart.current[selected.slug] = true;
       try {
         if ("sessionStorage" in window) {
           sessionStorage.setItem(sessionKey, "true");
