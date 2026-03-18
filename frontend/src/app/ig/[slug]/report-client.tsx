@@ -73,19 +73,64 @@ export default function ReportClient({
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [hasTrackedAddToCart, setHasTrackedAddToCart] = useState(false);
+  const fallbackTrackedCart = useRef<Record<string, boolean>>({});
 
-  // Track AddToCart once on first form interaction
-  const trackAddToCart = useCallback(() => {
-    if (!hasTrackedAddToCart && typeof window !== "undefined" && (window as any).fbq) {
-      (window as any).fbq("track", "AddToCart", {
-        content_name: selected.title,
-        value: selected.price,
-        currency: "INR",
-      });
-      setHasTrackedAddToCart(true);
+  // Track AddToCart once per session on first form interaction
+  const trackAddToCart = useCallback((e?: React.FocusEvent) => {
+    if (e && e.target) {
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag !== "INPUT" && tag !== "SELECT" && tag !== "TEXTAREA") {
+        return;
+      }
     }
-  }, [hasTrackedAddToCart, selected]);
+
+    if (typeof window === "undefined") return;
+
+    const globalFallback = (window as any).__trackedCartFallback || {};
+    (window as any).__trackedCartFallback = globalFallback;
+
+    if (fallbackTrackedCart.current[selected.slug] || globalFallback[selected.slug]) return;
+
+    const sessionKey = `tracked_cart_${selected.slug}`;
+    let alreadyTracked = false;
+    
+    try {
+      if ("sessionStorage" in window) {
+        alreadyTracked = !!sessionStorage.getItem(sessionKey);
+      }
+    } catch {
+      // Swallowing SecurityError/QuotaExceededError
+    }
+
+    if (alreadyTracked) {
+      globalFallback[selected.slug] = true;
+      fallbackTrackedCart.current[selected.slug] = true;
+      return;
+    }
+
+    if ((window as any).fbq) {
+      try {
+        (window as any).fbq("track", "AddToCart", {
+          content_name: selected.title,
+          value: selected.price,
+          currency: "INR",
+        });
+      } catch (err) {
+        console.warn("Facebook pixel tracking failed:", err);
+      }
+      
+      fallbackTrackedCart.current[selected.slug] = true;
+      globalFallback[selected.slug] = true;
+
+      try {
+        if ("sessionStorage" in window) {
+          sessionStorage.setItem(sessionKey, "true");
+        }
+      } catch {
+        // Swallowing SecurityError/QuotaExceededError
+      }
+    }
+  }, [selected.slug, selected.title, selected.price]);
 
   // Geo autocomplete state
   type GeoResult = {
@@ -448,7 +493,7 @@ export default function ReportClient({
                   </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} onFocusCapture={trackAddToCart} className="space-y-4">
                   {/* Name fields */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
@@ -459,10 +504,7 @@ export default function ReportClient({
                           type="text"
                           placeholder="Name"
                           value={firstName}
-                          onChange={(e) => {
-                            setFirstName(e.target.value);
-                            trackAddToCart();
-                          }}
+                          onChange={(e) => setFirstName(e.target.value)}
                           required
                           className={inputWithIconCls}
                         />

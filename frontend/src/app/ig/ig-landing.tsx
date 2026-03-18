@@ -67,8 +67,7 @@ export default function IgLanding({
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 animate-fade-in-up">
-            This Is Not a{" "}
-            <span className="gold-gradient-text">Coincidence</span>
+            Know Your <span className="gold-gradient-text">Future</span> Now
           </h1>
 
           <p className="text-[#b0a8c8] text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-4 animate-fade-in-up">

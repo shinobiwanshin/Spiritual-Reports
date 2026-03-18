@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import {
   CheckCircle,
   XCircle,
@@ -22,6 +22,8 @@ interface OrderStatus {
   reportSlug: string;
 }
 
+const fallbackTrackedPurchaseStore: Record<string, boolean> = {};
+
 function PaymentStatusContent() {
   const searchParams = useSearchParams();
   const orderId = searchParams.get("order_id");
@@ -32,7 +34,6 @@ function PaymentStatusContent() {
   const [generatingReport, setGeneratingReport] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(false);
   const [pollCount, setPollCount] = useState(0);
-  const [hasTrackedPurchase, setHasTrackedPurchase] = useState(false);
 
   useEffect(() => {
     if (!orderId) {
@@ -86,13 +87,42 @@ function PaymentStatusContent() {
 
           // If payment is successful, the webhook is generating the report behind the scenes
           if (data.status === "PAID") {
-            // Track Purchase event once
-            if (!hasTrackedPurchase && typeof window !== "undefined" && (window as any).fbq) {
-              (window as any).fbq("track", "Purchase", {
-                value: data.amount,
-                currency: "INR",
-              });
-              setHasTrackedPurchase(true);
+            // Track Purchase event once per session / orderId
+            // Hydrate from sessionStorage if present
+            if (typeof window !== "undefined") {
+              if (!fallbackTrackedPurchaseStore[orderId]) {
+                const sessionKey = `tracked_purchase_${orderId}`;
+                let alreadyTracked = false;
+                try {
+                  if ("sessionStorage" in window) {
+                    alreadyTracked = !!sessionStorage.getItem(sessionKey);
+                  }
+                } catch {
+                  // Swallow errors
+                }
+
+                if (alreadyTracked) {
+                  fallbackTrackedPurchaseStore[orderId] = true;
+                } else if ((window as any).fbq) {
+                  try {
+                    (window as any).fbq("track", "Purchase", {
+                      value: data.amount,
+                      currency: data.currency || "INR",
+                    });
+                  } catch (err) {
+                    console.error("Facebook pixel tracking failed:", err);
+                  }
+                  
+                  fallbackTrackedPurchaseStore[orderId] = true;
+                  try {
+                    if ("sessionStorage" in window) {
+                      sessionStorage.setItem(sessionKey, "true");
+                    }
+                  } catch {
+                    // Swallow errors
+                  }
+                }
+              }
             }
 
             // Poll a couple more times just to see if the DB order has finally been updated
