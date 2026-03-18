@@ -73,18 +73,39 @@ export default function ReportClient({
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const fallbackTrackedCart = useRef(false);
 
   // Track AddToCart once per session on first form interaction
   const trackAddToCart = useCallback(() => {
     if (typeof window === "undefined") return;
+    if (fallbackTrackedCart.current) return;
+
     const sessionKey = `tracked_cart_${selected.slug}`;
-    if (!sessionStorage.getItem(sessionKey) && (window as any).fbq) {
+    let alreadyTracked = false;
+    
+    try {
+      if ("sessionStorage" in window) {
+        alreadyTracked = !!sessionStorage.getItem(sessionKey);
+      }
+    } catch {
+      // Swallowing SecurityError/QuotaExceededError
+    }
+
+    if (!alreadyTracked && (window as any).fbq) {
       (window as any).fbq("track", "AddToCart", {
         content_name: selected.title,
         value: selected.price,
         currency: "INR",
       });
-      sessionStorage.setItem(sessionKey, "true");
+      
+      fallbackTrackedCart.current = true;
+      try {
+        if ("sessionStorage" in window) {
+          sessionStorage.setItem(sessionKey, "true");
+        }
+      } catch {
+        // Swallowing SecurityError/QuotaExceededError
+      }
     }
   }, [selected.slug, selected.title, selected.price]);
 

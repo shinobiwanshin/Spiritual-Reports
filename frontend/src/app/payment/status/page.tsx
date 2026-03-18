@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState, Suspense } from "react";
+import { useEffect, useState, Suspense, useRef } from "react";
 import {
   CheckCircle,
   XCircle,
@@ -32,6 +32,7 @@ function PaymentStatusContent() {
   const [generatingReport, setGeneratingReport] = useState(false);
   const [reportGenerated, setReportGenerated] = useState(false);
   const [pollCount, setPollCount] = useState(0);
+  const fallbackTrackedPurchase = useRef(false);
 
   useEffect(() => {
     if (!orderId) {
@@ -87,13 +88,32 @@ function PaymentStatusContent() {
           if (data.status === "PAID") {
             // Track Purchase event once per session / orderId
             if (typeof window !== "undefined") {
-              const sessionKey = `tracked_purchase_${orderId}`;
-              if (!sessionStorage.getItem(sessionKey) && (window as any).fbq) {
-                (window as any).fbq("track", "Purchase", {
-                  value: data.amount,
-                  currency: data.currency || "INR",
-                });
-                sessionStorage.setItem(sessionKey, "true");
+              if (!fallbackTrackedPurchase.current) {
+                const sessionKey = `tracked_purchase_${orderId}`;
+                let alreadyTracked = false;
+                try {
+                  if ("sessionStorage" in window) {
+                    alreadyTracked = !!sessionStorage.getItem(sessionKey);
+                  }
+                } catch {
+                  // Swallow errors
+                }
+
+                if (!alreadyTracked && (window as any).fbq) {
+                  (window as any).fbq("track", "Purchase", {
+                    value: data.amount,
+                    currency: data.currency || "INR",
+                  });
+                  
+                  fallbackTrackedPurchase.current = true;
+                  try {
+                    if ("sessionStorage" in window) {
+                      sessionStorage.setItem(sessionKey, "true");
+                    }
+                  } catch {
+                    // Swallow errors
+                  }
+                }
               }
             }
 
