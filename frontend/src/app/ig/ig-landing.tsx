@@ -67,12 +67,12 @@ export default function IgLanding({
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 animate-fade-in-up">
-            Know Your <span className="gold-gradient-text">Future</span> Now
+            ULTIMATE PERSONALISED <span className="gold-gradient-text">ASTROLOGY REPORT</span>
           </h1>
 
-          <p className="text-[#b0a8c8] text-base sm:text-lg leading-relaxed max-w-2xl mx-auto mb-4 animate-fade-in-up">
-            Among countless websites and astrologers, you are here — and that
-            matters.
+          <p className="text-[#b0a8c8] text-lg sm:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-4 animate-fade-in-up">
+            Your future is already decided...<br className="hidden sm:block" />
+            The only question is — <span className="text-white">do you want to know it before it happens?</span>
           </p>
 
           <p className="text-[#b0a8c8]/70 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6 animate-fade-in-up">
