@@ -17,6 +17,22 @@ export async function POST(req: NextRequest) {
       formData,
     } = body;
 
+    const fbp = req.cookies.get("_fbp")?.value || "";
+    const fbc = req.cookies.get("_fbc")?.value || "";
+    // Vercel/Next.js generic headers for IP
+    const clientIpAddress = req.headers.get("x-forwarded-for")?.split(",")[0].trim() || req.headers.get("x-real-ip") || "0.0.0.0";
+    const clientUserAgent = req.headers.get("user-agent") || "";
+
+    const augmentedFormData = {
+      ...(formData || {}),
+      metaCapiData: {
+        fbp,
+        fbc,
+        clientIpAddress,
+        clientUserAgent
+      }
+    };
+
     // Validate required fields
     if (!firstName || !email || !phone || !reportSlug) {
       return NextResponse.json(
@@ -114,7 +130,7 @@ export async function POST(req: NextRequest) {
       amount: amount,
       currency: "INR",
       status: "CREATED",
-      formData: formData || null,
+      formData: augmentedFormData,
     });
 
     return NextResponse.json({
