@@ -104,10 +104,14 @@ function PaymentStatusContent() {
                 if (alreadyTracked) {
                   fallbackTrackedPurchaseStore[orderId] = true;
                 } else if ((window as any).fbq) {
-                  (window as any).fbq("track", "Purchase", {
-                    value: data.amount,
-                    currency: data.currency || "INR",
-                  });
+                  try {
+                    (window as any).fbq("track", "Purchase", {
+                      value: data.amount,
+                      currency: data.currency || "INR",
+                    });
+                  } catch (err) {
+                    console.error("Facebook pixel tracking failed:", err);
+                  }
                   
                   fallbackTrackedPurchaseStore[orderId] = true;
                   try {

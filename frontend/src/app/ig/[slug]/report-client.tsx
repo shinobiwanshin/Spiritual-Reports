@@ -109,11 +109,15 @@ export default function ReportClient({
     }
 
     if ((window as any).fbq) {
-      (window as any).fbq("track", "AddToCart", {
-        content_name: selected.title,
-        value: selected.price,
-        currency: "INR",
-      });
+      try {
+        (window as any).fbq("track", "AddToCart", {
+          content_name: selected.title,
+          value: selected.price,
+          currency: "INR",
+        });
+      } catch (err) {
+        console.warn("Facebook pixel tracking failed:", err);
+      }
       
       fallbackTrackedCart.current[selected.slug] = true;
       globalFallback[selected.slug] = true;
