@@ -56,6 +56,8 @@ export default async function RootLayout({
   return (
     <html lang="en" className={cn(playfair.variable, inter.variable)}>
       <head>
+        <meta name="facebook-domain-verification" content="dw8qi3uwj499uf11ca9p9jymtyqpjy" />
+        
         {/* Meta Pixel Code */}
         <script
           dangerouslySetInnerHTML={{
