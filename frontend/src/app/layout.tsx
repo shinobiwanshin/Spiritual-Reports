@@ -5,6 +5,7 @@ import { auth, clerkClient } from "@clerk/nextjs/server";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import LayoutShell from "@/components/LayoutShell";
+import FacebookPixel from "@/components/FacebookPixel";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -68,7 +69,7 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '956360896845471');
-fbq('track', 'PageView');
+// PageView is handled dynamically by FacebookPixel component
             `,
           }}
         />
@@ -83,6 +84,7 @@ fbq('track', 'PageView');
         </noscript>
       </head>
       <body className="font-sans antialiased bg-[#0f0a2e] text-[#f0ecff] min-h-screen">
+        <FacebookPixel />
         <ClerkProvider>
           <LayoutShell isAdmin={isAdmin} isSignedIn={isSignedIn}>
             {children}
