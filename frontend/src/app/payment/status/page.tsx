@@ -112,7 +112,7 @@ function PaymentStatusContent() {
                         value: data.amount,
                         currency: data.currency || "INR",
                       },
-                      { eventID: orderId }
+                      { eventID: data.orderId }
                     );
                   } catch (err) {
                     console.error("Facebook pixel tracking failed:", err);

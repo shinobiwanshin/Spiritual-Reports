@@ -69,7 +69,8 @@ t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 fbq('init', '956360896845471');
-// PageView is handled dynamically by FacebookPixel component
+fbq('track', 'PageView');
+window.__fbInitialPageViewFired__ = true;
             `,
           }}
         />
