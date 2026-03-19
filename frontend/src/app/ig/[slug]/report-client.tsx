@@ -232,12 +232,16 @@ export default function ReportClient({
     }
 
     try {
-      if (typeof window !== "undefined" && (window as any).fbq) {
-        (window as any).fbq("track", "InitiateCheckout", {
-          content_name: selected.title,
-          value: selected.price,
-          currency: "INR",
-        });
+      try {
+        if (typeof window !== "undefined" && (window as any).fbq) {
+          (window as any).fbq("track", "InitiateCheckout", {
+            content_name: selected.title,
+            value: selected.price,
+            currency: "INR",
+          });
+        }
+      } catch (trackingErr) {
+        console.warn("InitiateCheckout tracking blocked by browser/extension", trackingErr);
       }
 
       // Determine report duration from selected variant
