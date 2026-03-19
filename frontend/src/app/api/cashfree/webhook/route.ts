@@ -106,6 +106,7 @@ export async function POST(req: NextRequest) {
                   user_data: {
                     client_ip_address: metaCapiData.clientIpAddress || undefined,
                     client_user_agent: metaCapiData.clientUserAgent || undefined,
+                    external_id: [hashData(dbOrder.customerEmail)],
                     em: [hashData(dbOrder.customerEmail)],
                     ph: [hashData(dbOrder.customerPhone || "")].filter(Boolean),
                     fn: [hashData(dbOrder.customerName?.split(" ")[0] || "")].filter(Boolean),
