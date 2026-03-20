@@ -32,14 +32,14 @@ The standard Meta Pixel is heavily augmented to natively support Next.js 13+ App
 
 The backend guarantees that `Purchase` events—the only metric necessary for high-fidelity algorithmic optimization—always reach Facebook exactly matched to real sales data, circumventing all browser-level privacy blocking entirely.
 
-### 2.1 First-Party Data Capture & Cookie Hijacking
+### 2.1 First-Party Data Capture from Request Headers
 - **File**: `frontend/src/app/api/cashfree/create-order/route.ts`
-- **Mechanism**: When the user requests a Cashfree payment link, the initial API call fundamentally extracts crucial, unblockable user signatures identically out of the Next HTTP protocol headers before the browser redirects:
+- **Mechanism**: When the user requests a Cashfree payment link, the initial API call fundamentally extracts first-party identifiers from Next.js HTTP request headers before the browser redirects:
   - `_fbp` (Meta's organic Browser ID)
   - `_fbc` (Meta's organic Click ID containing the `fbclid`)
   - `x-forwarded-for` / `x-real-ip` (Client's exact IP)
   - `user-agent` (Client's exact hardware/browser spec)
-- **Data Persistence**: These highly-sensitive tracking keys are securely appended into the JSON B `formData` blob inside the `orders` PostgreSQL table right next to the user's plain-text email and phone numbers.
+- **Data Persistence**: These highly-sensitive tracking keys are appended into the JSONB `formData` blob inside the `orders` PostgreSQL table. Best practices dictate that sensitive identifiers (email, phone, tracking keys) should be encrypted or tokenized at rest, access must be role-restricted and audited, and data retention must follow strict TTL enforcement policies.
 
 ### 2.2 Secure Webhook Dispatch
 - **File**: `frontend/src/app/api/cashfree/webhook/route.ts`
@@ -58,4 +58,4 @@ The backend guarantees that `Purchase` events—the only metric necessary for hi
 ### 2.3 `Purchase` Event Merge Deduplication (Event Match Quality)
 - **File**: `frontend/src/app/payment/status/page.tsx` & `/api/cashfree/webhook/route.ts`
 - **Mechanism (The Bridge)**: The Server API fires the CAPI payload with `event_id: dbOrder.orderId`. Simultaneously, the User's post-payment redirect page natively fires a browser pixel containing `{ eventID: data.orderId }`. 
-- **Resolution**: Facebook receives both the frontend event (containing dynamic local device info) and the backend event (containing the strictly hashed email/phone parameters). Because the `event_id` physically matches character-for-character, Facebook instantly deduplicates the two metrics and merges the dataset together, returning an Event Match Quality index averaging ~8.0 or completely maximizing the scale safely. Needs Graph API `v25.0` to succeed correctly.
+- **Resolution**: Facebook receives both the frontend event (containing dynamic local device info) and the backend event (containing the strictly hashed email/phone parameters). Because the `event_id` physically matches character-for-character, Facebook deduplicates the two metrics and merges the dataset together. This dual-layer approach may improve Event Match Quality (EMQ) depending on Meta's matching algorithm. Refer to [Meta's Conversions API Documentation](https://developers.facebook.com/docs/marketing-api/conversions-api) for supported Graph API versions and expected EMQ guidance.
