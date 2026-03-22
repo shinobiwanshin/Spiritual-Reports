@@ -3,34 +3,17 @@
 import { useState, useEffect } from "react";
 import { Star, Quote } from "lucide-react";
 
-const testimonials = [
-  {
-    name: "Ananya S.",
-    location: "Mumbai",
-    text: "The 5-year report gave me immense clarity during my career transition. The timing was astoundingly accurate, helping me make decisions with confidence.",
-    rating: 5,
-  },
-  {
-    name: "Rajesh K.",
-    location: "London",
-    text: "Incredibly deep analysis. The guidance on my relationship phase was spot on. It's not just astrology, it's a true roadmap for the soul.",
-    rating: 5,
-  },
-  {
-    name: "Priya M.",
-    location: "Bangalore",
-    text: "The 3-year reading helped me navigate a very tough period with calmness. Beautifully written, deeply spiritual, and practically helpful.",
-    rating: 5,
-  },
-  {
-    name: "Vikram R.",
-    location: "Delhi",
-    text: "I was skeptical at first, but the insights provided were too specific to be generalized. It completely changed my perspective on my upcoming years.",
-    rating: 5,
-  },
-];
+export interface Testimonial {
+  id: number;
+  name: string;
+  location: string | null;
+  text: string | null;
+  rating: number | null;
+  videoUrl: string | null;
+  type: string;
+}
 
-export default function TestimonialCarousel() {
+export default function TestimonialCarousel({ items }: { items: Testimonial[] }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -38,15 +21,17 @@ export default function TestimonialCarousel() {
     const timer = setInterval(() => {
       setIsAnimating(true);
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+        setCurrentIndex((prev) => (prev + 1) % items.length);
         setIsAnimating(false);
       }, 500); // Wait for fade out
     }, 6000); // Change every 6 seconds
 
     return () => clearInterval(timer);
-  }, []);
+  }, [items.length]);
 
-  const current = testimonials[currentIndex];
+  if (!items || items.length === 0) return null;
+
+  const current = items[currentIndex];
 
   return (
     <div className="w-full py-16 relative z-10">
@@ -72,7 +57,7 @@ export default function TestimonialCarousel() {
               <Quote className="w-8 h-8 md:w-10 md:h-10 text-[#cfa375]/30 mx-auto mb-6" />
 
               <div className="flex justify-center gap-1.5 mb-6">
-                {[...Array(current.rating)].map((_, i) => (
+                {[...Array(current.rating || 5)].map((_, i) => (
                   <Star
                     key={i}
                     className="w-4 h-4 md:w-5 md:h-5 text-[#cfa375] fill-[#cfa375]"
@@ -104,7 +89,7 @@ export default function TestimonialCarousel() {
 
           {/* Indicators */}
           <div className="flex justify-center gap-3 mt-10 relative z-10">
-            {testimonials.map((_, idx) => (
+            {items.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => {

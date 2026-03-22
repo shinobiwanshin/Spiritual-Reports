@@ -101,3 +101,17 @@ export const reportHistory = pgTable("report_history", {
   emailSentAt: timestamp("email_sent_at"),
   createdAt: timestamp("created_at").defaultNow(),
 });
+
+/**
+ * Stores testimonials (both text and video) for display.
+ */
+export const testimonials = pgTable("testimonials", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  location: text("location"),
+  text: text("text"),
+  rating: integer("rating"),
+  videoUrl: text("video_url"),
+  type: text("type").notNull(), // 'text' or 'video'
+  createdAt: timestamp("created_at").defaultNow(),
+});

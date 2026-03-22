@@ -13,6 +13,7 @@ import {
   Send,
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
+import VideoTestimonials from "@/components/VideoTestimonials";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
 
@@ -32,6 +33,16 @@ export interface ServiceVariant {
   featured: boolean | null;
 }
 
+export interface Testimonial {
+  id: number;
+  name: string;
+  location: string | null;
+  text: string | null;
+  rating: number | null;
+  videoUrl: string | null;
+  type: string;
+}
+
 /* ──────────────── Page count helper ──────────────── */
 
 function getPageCount(duration: string): number {
@@ -45,9 +56,14 @@ function getPageCount(duration: string): number {
 
 export default function IgLanding({
   services,
+  testimonials,
 }: {
   services: ServiceVariant[];
+  testimonials: Testimonial[];
 }) {
+  const videoTestimonials = testimonials.filter((t) => t.type === "video");
+  const textTestimonials = testimonials.filter((t) => t.type === "text");
+
   return (
     <div className="min-h-screen bg-[#0f0a2e] text-white relative overflow-hidden">
       {/* Video background */}
@@ -234,7 +250,8 @@ export default function IgLanding({
       </section>
 
       {/* ─── Testimonials ─── */}
-      <TestimonialCarousel />
+      {videoTestimonials.length > 0 && <VideoTestimonials videos={videoTestimonials} />}
+      {textTestimonials.length > 0 && <TestimonialCarousel items={textTestimonials} />}
 
       {/* ─── Bottom Philosophy Section ─── */}
       <section className="relative z-10 px-6 pb-20">

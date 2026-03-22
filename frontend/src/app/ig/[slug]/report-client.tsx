@@ -23,6 +23,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
+import VideoTestimonials from "@/components/VideoTestimonials";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
 import { load } from "@cashfreepayments/cashfree-js";
@@ -43,16 +44,31 @@ export interface ServiceVariant {
   featured: boolean | null;
 }
 
+export interface Testimonial {
+  id: number;
+  name: string;
+  location: string | null;
+  text: string | null;
+  rating: number | null;
+  videoUrl: string | null;
+  type: string;
+}
+
 /* ──────────────────────────────── Component ──────────────────────────────── */
 
 export default function ReportClient({
   services,
   currentSlug,
+  testimonials,
 }: {
   services: ServiceVariant[];
   currentSlug: string;
+  testimonials: Testimonial[];
 }) {
   const router = useRouter();
+
+  const videoTestimonials = testimonials.filter((t) => t.type === "video");
+  const textTestimonials = testimonials.filter((t) => t.type === "text");
 
   // Find the current service by slug
   const currentIndex = services.findIndex((s) => s.slug === currentSlug);
@@ -783,7 +799,8 @@ export default function ReportClient({
       </section>
 
       {/* ─── Testimonials ─── */}
-      <TestimonialCarousel />
+      {videoTestimonials.length > 0 && <VideoTestimonials videos={videoTestimonials} />}
+      {textTestimonials.length > 0 && <TestimonialCarousel items={textTestimonials} />}
     </div>
   );
 }

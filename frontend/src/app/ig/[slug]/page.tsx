@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { services } from "@/db/schema";
+import { services, testimonials } from "@/db/schema";
 import { eq, asc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import ReportClient from "./report-client";
@@ -45,6 +45,11 @@ export default async function ReportPage({ params }: Props) {
     .from(services)
     .orderBy(asc(services.price));
 
+  const allTestimonials = await db
+    .select()
+    .from(testimonials)
+    .orderBy(asc(testimonials.createdAt));
+
   const serviceData = allServices.map((s) => ({
     id: s.id,
     slug: s.slug,
@@ -59,5 +64,21 @@ export default async function ReportPage({ params }: Props) {
     featured: s.featured,
   }));
 
-  return <ReportClient services={serviceData} currentSlug={slug} />;
+  const testimonialData = allTestimonials.map((t) => ({
+    id: t.id,
+    name: t.name,
+    location: t.location,
+    text: t.text,
+    rating: t.rating,
+    videoUrl: t.videoUrl,
+    type: t.type,
+  }));
+
+  return (
+    <ReportClient
+      services={serviceData}
+      currentSlug={slug}
+      testimonials={testimonialData}
+    />
+  );
 }
