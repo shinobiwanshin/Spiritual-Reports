@@ -16,7 +16,6 @@ import VideoBackground from "@/components/VideoBackground";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import VideoTestimonials from "@/components/VideoTestimonials";
 import { getIcon } from "@/lib/icon-map";
-import type { Testimonial } from "@/types/testimonial";
 
 /* ───────────────────────────── Types ───────────────────────────── */
 

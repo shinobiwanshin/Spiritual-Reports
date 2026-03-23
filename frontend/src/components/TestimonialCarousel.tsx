@@ -13,6 +13,7 @@ export default function TestimonialCarousel() {
 
   // Fetch text reviews from the database
   useEffect(() => {
+    setError(false);
     fetch("/api/testimonials")
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -54,7 +55,7 @@ export default function TestimonialCarousel() {
 
   if (error) {
     return (
-      <div className="w-full py-16 flex items-center justify-center gap-2 text-white/50">
+      <div role="alert" className="w-full py-16 flex items-center justify-center gap-2 text-white/50">
         <AlertCircle className="w-5 h-5" />
         <span className="text-sm">Unable to load testimonials</span>
       </div>

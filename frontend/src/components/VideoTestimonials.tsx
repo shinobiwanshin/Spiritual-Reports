@@ -1,16 +1,19 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, AlertCircle } from "lucide-react";
 import type { Testimonial } from "@/types/testimonial";
 
 export default function VideoTestimonials() {
   const [videos, setVideos] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("/api/testimonials")
+    const controller = new AbortController();
+
+    fetch("/api/testimonials", { signal: controller.signal })
       .then((res) => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -18,8 +21,12 @@ export default function VideoTestimonials() {
       .then((data: Testimonial[]) => {
         setVideos(data.filter((t) => t.type === "video" && t.videoUrl));
       })
-      .catch(() => {})
+      .catch((err) => {
+        if (err.name !== "AbortError") setError(true);
+      })
       .finally(() => setLoading(false));
+
+    return () => controller.abort();
   }, []);
 
   const scroll = (direction: "left" | "right") => {
@@ -33,6 +40,15 @@ export default function VideoTestimonials() {
     return (
       <div className="w-full py-8 flex items-center justify-center">
         <Loader2 className="w-6 h-6 text-[#cfa375] animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div role="alert" className="w-full py-8 flex items-center justify-center gap-2 text-white/50">
+        <AlertCircle className="w-5 h-5" />
+        <span className="text-sm">Failed to load video testimonials</span>
       </div>
     );
   }
@@ -56,7 +72,6 @@ export default function VideoTestimonials() {
 
           {/* Scrollable container with chevron nav on small screens */}
           <div className="relative z-10">
-            {/* Chevron buttons — visible only on small screens */}
             <button
               onClick={() => scroll("left")}
               className="absolute left-0 top-1/2 -translate-y-1/2 -ml-3 z-20 w-10 h-10 bg-[#1a1347] border border-white/10 rounded-full shadow-lg flex md:hidden items-center justify-center text-white hover:bg-[#251b63] hover:text-[#cfa375] transition-all"
@@ -81,14 +96,16 @@ export default function VideoTestimonials() {
                   key={video.id}
                   className="w-[85%] sm:w-[75%] md:w-1/3 shrink-0 snap-center rounded-2xl overflow-hidden bg-black/40 border border-[#cfa375]/20 shadow-xl shadow-[#cfa375]/5 flex items-center justify-center"
                 >
-                  <video
-                    src={video.videoUrl!}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-auto max-h-[70vh] object-contain bg-black"
-                    aria-label={`Video testimonial from ${video.name}`}
-                  />
+                  {video.videoUrl && (
+                    <video
+                      src={video.videoUrl}
+                      controls
+                      playsInline
+                      preload="metadata"
+                      className="w-full h-auto max-h-[70vh] object-contain bg-black"
+                      aria-label={`Video testimonial from ${video.name}`}
+                    />
+                  )}
                 </div>
               ))}
             </div>
