@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
+import VideoTestimonials from "@/components/VideoTestimonials";
 import { getIcon } from "@/lib/icon-map";
 import type { Testimonial } from "@/types/testimonial";
 
@@ -241,6 +242,7 @@ export default function IgLanding({
 
       {/* ─── Testimonials ─── */}
       <TestimonialCarousel />
+      <VideoTestimonials />
 
       {/* ─── Bottom Philosophy Section ─── */}
       <section className="relative z-10 px-6 pb-20">
