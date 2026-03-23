@@ -1,37 +1,60 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, Loader2 } from "lucide-react";
 
-export interface Testimonial {
+type Testimonial = {
   id: number;
   name: string;
   location: string | null;
   text: string | null;
   rating: number | null;
-  videoUrl: string | null;
   type: string;
-}
+};
 
-export default function TestimonialCarousel({ items }: { items: Testimonial[] }) {
+export default function TestimonialCarousel() {
+  const [reviews, setReviews] = useState<Testimonial[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch text reviews from the database
   useEffect(() => {
+    fetch("/api/testimonials")
+      .then((res) => res.json())
+      .then((data: Testimonial[]) => {
+        setReviews(data.filter((t) => t.type === "text"));
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
+  // Auto-rotate every 6 seconds
+  useEffect(() => {
+    if (loading || reviews.length === 0) return;
+
     const timer = setInterval(() => {
       setIsAnimating(true);
       setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % items.length);
+        setCurrentIndex((prev) => (prev + 1) % reviews.length);
         setIsAnimating(false);
-      }, 500); // Wait for fade out
-    }, 6000); // Change every 6 seconds
+      }, 500);
+    }, 6000);
 
     return () => clearInterval(timer);
-  }, [items.length]);
+  }, [loading, reviews]);
 
-  if (!items || items.length === 0) return null;
+  if (loading) {
+    return (
+      <div className="w-full py-16 flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-[#cfa375] animate-spin" />
+      </div>
+    );
+  }
 
-  const current = items[currentIndex];
+  if (reviews.length === 0) return null;
+
+  const current = reviews[currentIndex];
 
   return (
     <div className="w-full py-16 relative z-10">
@@ -66,7 +89,7 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
               </div>
 
               <p className="text-base sm:text-lg md:text-xl text-white/90 font-medium leading-relaxed italic mb-8 text-center">
-                "{current.text}"
+                &quot;{current.text}&quot;
               </p>
 
               <div className="flex items-center justify-center gap-4">
@@ -89,7 +112,7 @@ export default function TestimonialCarousel({ items }: { items: Testimonial[] })
 
           {/* Indicators */}
           <div className="flex justify-center gap-3 mt-10 relative z-10">
-            {items.map((_, idx) => (
+            {reviews.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => {

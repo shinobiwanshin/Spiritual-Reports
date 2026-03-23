@@ -8,50 +8,90 @@ async function seedTestimonials() {
   const sql = neon(process.env.DATABASE_URL!);
   const db = drizzle(sql);
 
-  console.log("🌱 Seeding ONLY testimonials...");
+  console.log("🗑️  Clearing existing testimonials...");
+  await db.delete(testimonials);
+
+  console.log("🌱 Seeding testimonials...");
   await db.insert(testimonials).values([
+    // --- Video Testimonials ---
     {
-      name: "Ananya S.",
-      location: "Mumbai",
-      text: "The 5-year report gave me immense clarity during my career transition. The timing was astoundingly accurate, helping me make decisions with confidence.",
-      rating: 5,
-      type: "text",
-    },
-    {
-      name: "Rajesh K.",
-      location: "London",
-      text: "Incredibly deep analysis. The guidance on my relationship phase was spot on. It's not just astrology, it's a true roadmap for the soul.",
-      rating: 5,
-      type: "text",
-    },
-    {
-      name: "Priya M.",
-      location: "Bangalore",
-      text: "The 3-year reading helped me navigate a very tough period with calmness. Beautifully written, deeply spiritual, and practically helpful.",
-      rating: 5,
-      type: "text",
-    },
-    {
-      name: "Vikram R.",
-      location: "Delhi",
-      text: "I was skeptical at first, but the insights provided were too specific to be generalized. It completely changed my perspective on my upcoming years.",
-      rating: 5,
-      type: "text",
-    },
-    {
-      name: "Video Testimony 1",
-      location: null,
+      name: "Priya",
+      type: "video",
       videoUrl: "/videos/testimony1.mp4",
-      type: "video",
+      rating: 5,
+      sortOrder: 1,
     },
     {
-      name: "Video Testimony 2",
-      location: null,
-      videoUrl: "/videos/testimony2.mp4",
+      name: "Shruti",
       type: "video",
+      videoUrl: "/videos/testimony2.mp4",
+      rating: 5,
+      sortOrder: 2,
+    },
+    {
+      name: "Kavitha",
+      type: "video",
+      videoUrl: "/videos/testimony3.mp4",
+      rating: 5,
+      sortOrder: 3,
+    },
+    // --- Text Testimonials ---
+    {
+      name: "Ramesh K.",
+      location: "Mumbai",
+      text: "The 3-year report was terrifyingly accurate. It mapped out my career shift and timeline flawlessly. I feel so much more prepared for what's coming.",
+      rating: 5,
+      type: "text",
+      date: "a week ago",
+      sortOrder: 4,
+    },
+    {
+      name: "Sneha V.",
+      location: "Bangalore",
+      text: "I was struggling with relationship compatibility issues, but the detailed insights in my generated report gave me exactly the clarity I needed to move forward.",
+      rating: 5,
+      type: "text",
+      date: "a month ago",
+      sortOrder: 5,
+    },
+    {
+      name: "Amit P.",
+      location: "Delhi",
+      text: "The sheer depth of the 5-year life path reading is incredible. It's not generic astrology; it's a personalized, highly actionable roadmap for your soul.",
+      rating: 5,
+      type: "text",
+      date: "a month ago",
+      sortOrder: 6,
+    },
+    {
+      name: "Deepa N.",
+      location: "Chennai",
+      text: "I generated the 1-year basic report out of curiosity, and I was so blown away by the timeline accuracy that I immediately upgraded to the 5-year master report.",
+      rating: 5,
+      type: "text",
+      date: "2 months ago",
+      sortOrder: 7,
+    },
+    {
+      name: "Vikram S.",
+      location: "Hyderabad",
+      text: "Shivabakthi provides the absolute best digital astrology reports available. The detailed section on my financial cycles directly helped me make a smart investment.",
+      rating: 5,
+      type: "text",
+      date: "4 months ago",
+      sortOrder: 8,
+    },
+    {
+      name: "Anjali R.",
+      location: "Pune",
+      text: "Every single timeline predicted in my custom generated report happened exactly as stated. The remedies suggested also brought immense peace to my daily life.",
+      rating: 5,
+      type: "text",
+      date: "6 months ago",
+      sortOrder: 9,
     },
   ]);
-  console.log("✅ Testimonials seeded");
+  console.log("✅ Testimonials seeded (3 videos + 6 text reviews)");
 }
 
 seedTestimonials().catch((err) => {

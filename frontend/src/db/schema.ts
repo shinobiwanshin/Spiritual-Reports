@@ -113,5 +113,7 @@ export const testimonials = pgTable("testimonials", {
   rating: integer("rating"),
   videoUrl: text("video_url"),
   type: text("type").notNull(), // 'text' or 'video'
+  date: text("date"),
+  sortOrder: integer("sort_order").default(0),
   createdAt: timestamp("created_at").defaultNow(),
 });
