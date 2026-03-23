@@ -340,7 +340,7 @@ export default function ReportClient({
     <div className="min-h-screen bg-[#0f0a2e] text-white relative overflow-hidden">
       {/* Video background */}
       <div className="fixed inset-0 z-0">
-        <VideoBackground overlayOpacity={0.6} src="/output-1080p.mp4" />
+        <VideoBackground overlayOpacity={0.6} src="/videos/output-1080p.mp4" />
       </div>
 
       {/* ─── Breadcrumb ─── */}

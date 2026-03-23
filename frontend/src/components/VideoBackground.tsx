@@ -8,7 +8,7 @@ interface VideoBackgroundProps {
   src?: string;
 }
 
-const DEFAULT_VIDEO_SRC = "/final_output.mp4";
+const DEFAULT_VIDEO_SRC = "/videos/final_output.mp4";
 /** Seconds before the end to begin the cross-fade */
 const FADE_LEAD = 1.5;
 
