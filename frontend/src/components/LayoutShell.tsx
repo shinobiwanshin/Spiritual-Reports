@@ -34,7 +34,7 @@ export default function LayoutShell({
       {/* Global video background for pages that don't have their own */}
       {!hasOwnVideo && (
         <div className="fixed inset-0 z-0">
-          <VideoBackground src="/output-1080p.mp4" overlayOpacity={0.8} />
+          <VideoBackground src="/final_output.mp4" overlayOpacity={0.8} />
         </div>
       )}
       <Navbar isAdmin={isAdmin} isSignedIn={isSignedIn} />
