@@ -26,6 +26,7 @@ import VideoBackground from "@/components/VideoBackground";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
 import { load } from "@cashfreepayments/cashfree-js";
+import type { Testimonial } from "@/types/testimonial";
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
@@ -43,7 +44,7 @@ export interface ServiceVariant {
   featured: boolean | null;
 }
 
-import type { Testimonial } from "@/types/testimonial";
+
 
 
 /* ──────────────────────────────── Component ──────────────────────────────── */
@@ -51,11 +52,9 @@ import type { Testimonial } from "@/types/testimonial";
 export default function ReportClient({
   services,
   currentSlug,
-  testimonials,
 }: {
   services: ServiceVariant[];
   currentSlug: string;
-  testimonials: Testimonial[];
 }) {
   const router = useRouter();
 

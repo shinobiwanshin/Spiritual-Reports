@@ -15,6 +15,7 @@ import {
 import VideoBackground from "@/components/VideoBackground";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
+import type { Testimonial } from "@/types/testimonial";
 
 /* ───────────────────────────── Types ───────────────────────────── */
 
@@ -32,7 +33,7 @@ export interface ServiceVariant {
   featured: boolean | null;
 }
 
-import type { Testimonial } from "@/types/testimonial";
+
 
 
 /* ──────────────── Page count helper ──────────────── */
@@ -48,10 +49,8 @@ function getPageCount(duration: string): number {
 
 export default function IgLanding({
   services,
-  testimonials,
 }: {
   services: ServiceVariant[];
-  testimonials: Testimonial[];
 }) {
 
 

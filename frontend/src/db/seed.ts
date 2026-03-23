@@ -5,10 +5,16 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { blogPosts, services, testimonials } from "./schema";
 
 async function seed() {
+  if (process.env.NODE_ENV === "production" && process.env.FORCE_SEED !== "true") {
+    console.error("⛔ Refusing to seed in production. Set FORCE_SEED=true to override.");
+    process.exit(1);
+  }
+
   const sql = neon(process.env.DATABASE_URL!);
   const db = drizzle(sql);
 
   console.log("🌱 Seeding blog posts...");
+  await db.delete(blogPosts);
   await db.insert(blogPosts).values([
     {
       title: "Understanding Your Birth Chart: A Beginner's Guide",
@@ -68,6 +74,7 @@ async function seed() {
   console.log("✅ Blog posts seeded");
 
   console.log("🌱 Seeding services...");
+  await db.delete(services);
   await db.insert(services).values([
     {
       slug: "1-year",

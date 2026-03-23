@@ -5,6 +5,11 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { testimonials } from "./schema";
 
 async function seedTestimonials() {
+  if (process.env.NODE_ENV === "production" && process.env.FORCE_SEED !== "true") {
+    console.error("⛔ Refusing to seed in production. Set FORCE_SEED=true to override.");
+    process.exit(1);
+  }
+
   const dbUrl = process.env.DATABASE_URL;
   if (!dbUrl) {
     throw new Error("Missing DATABASE_URL environment variable");

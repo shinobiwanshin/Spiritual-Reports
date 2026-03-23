@@ -1,7 +1,6 @@
 import { db } from "@/db";
-import { services, testimonials } from "@/db/schema";
+import { services } from "@/db/schema";
 import { asc } from "drizzle-orm";
-import type { TestimonialType } from "@/types/testimonial";
 import IgLanding from "./ig-landing";
 
 export default async function IgPage() {
@@ -9,11 +8,6 @@ export default async function IgPage() {
     .select()
     .from(services)
     .orderBy(asc(services.price));
-
-  const allTestimonials = await db
-    .select()
-    .from(testimonials)
-    .orderBy(asc(testimonials.createdAt));
 
   const serviceData = allServices.map((s) => ({
     id: s.id,
@@ -29,15 +23,5 @@ export default async function IgPage() {
     featured: s.featured,
   }));
 
-  const testimonialData = allTestimonials.map((t) => ({
-    id: t.id,
-    name: t.name,
-    location: t.location,
-    text: t.text,
-    rating: t.rating,
-    videoUrl: t.videoUrl,
-    type: t.type as TestimonialType,
-  }));
-
-  return <IgLanding services={serviceData} testimonials={testimonialData} />;
+  return <IgLanding services={serviceData} />;
 }

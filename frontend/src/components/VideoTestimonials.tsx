@@ -31,9 +31,7 @@ export default function VideoTestimonials({ videos }: { videos: Testimonial[] })
                   preload="metadata"
                   className="w-full h-auto max-h-[70vh] object-contain bg-black"
                   aria-label={`Video testimonial from ${video.name}`}
-                >
-                  <track kind="captions" />
-                </video>
+                />
               </div>
             ))}
           </div>

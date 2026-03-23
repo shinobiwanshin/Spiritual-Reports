@@ -1,26 +1,32 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Star, Quote, Loader2 } from "lucide-react";
-
+import { Star, Quote, Loader2, AlertCircle } from "lucide-react";
 import type { Testimonial } from "@/types/testimonial";
-
 
 export default function TestimonialCarousel() {
   const [reviews, setReviews] = useState<Testimonial[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   // Fetch text reviews from the database
   useEffect(() => {
     fetch("/api/testimonials")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return res.json();
+      })
       .then((data: Testimonial[]) => {
         setReviews(data.filter((t) => t.type === "text"));
-        setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setError(true);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   // Auto-rotate every 6 seconds
@@ -42,6 +48,15 @@ export default function TestimonialCarousel() {
     return (
       <div className="w-full py-16 flex items-center justify-center">
         <Loader2 className="w-8 h-8 text-[#cfa375] animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full py-16 flex items-center justify-center gap-2 text-white/50">
+        <AlertCircle className="w-5 h-5" />
+        <span className="text-sm">Unable to load testimonials</span>
       </div>
     );
   }
