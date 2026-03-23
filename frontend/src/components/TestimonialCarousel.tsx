@@ -3,14 +3,8 @@
 import { useState, useEffect } from "react";
 import { Star, Quote, Loader2 } from "lucide-react";
 
-type Testimonial = {
-  id: number;
-  name: string;
-  location: string | null;
-  text: string | null;
-  rating: number | null;
-  type: string;
-};
+import type { Testimonial } from "@/types/testimonial";
+
 
 export default function TestimonialCarousel() {
   const [reviews, setReviews] = useState<Testimonial[]>([]);

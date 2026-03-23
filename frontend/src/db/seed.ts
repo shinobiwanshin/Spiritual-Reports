@@ -129,9 +129,8 @@ async function seed() {
   ]);
   console.log("✅ Services seeded");
 
-  console.log("✅ Services seeded");
-
   console.log("🌱 Seeding testimonials...");
+  await db.delete(testimonials);
   await db.insert(testimonials).values([
     {
       name: "Ananya S.",

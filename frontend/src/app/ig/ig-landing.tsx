@@ -32,15 +32,8 @@ export interface ServiceVariant {
   featured: boolean | null;
 }
 
-export interface Testimonial {
-  id: number;
-  name: string;
-  location: string | null;
-  text: string | null;
-  rating: number | null;
-  videoUrl: string | null;
-  type: string;
-}
+import type { Testimonial } from "@/types/testimonial";
+
 
 /* ──────────────── Page count helper ──────────────── */
 

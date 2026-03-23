@@ -1,6 +1,7 @@
 import { db } from "@/db";
 import { services, testimonials } from "@/db/schema";
 import { asc } from "drizzle-orm";
+import type { TestimonialType } from "@/types/testimonial";
 import IgLanding from "./ig-landing";
 
 export default async function IgPage() {
@@ -35,7 +36,7 @@ export default async function IgPage() {
     text: t.text,
     rating: t.rating,
     videoUrl: t.videoUrl,
-    type: t.type,
+    type: t.type as TestimonialType,
   }));
 
   return <IgLanding services={serviceData} testimonials={testimonialData} />;

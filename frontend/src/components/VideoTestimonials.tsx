@@ -1,17 +1,10 @@
 "use client";
 
-export interface Testimonial {
-  id: number;
-  name: string;
-  location: string | null;
-  text: string | null;
-  rating: number | null;
-  videoUrl: string | null;
-  type: string;
-}
+import type { Testimonial } from "@/types/testimonial";
 
 export default function VideoTestimonials({ videos }: { videos: Testimonial[] }) {
-  if (!videos || videos.length === 0) return null;
+  const validVideos = videos.filter((v) => v.videoUrl);
+  if (validVideos.length === 0) return null;
 
   return (
     <div className="w-full pt-16 pb-4 relative z-10">
@@ -29,17 +22,18 @@ export default function VideoTestimonials({ videos }: { videos: Testimonial[] })
           </div>
 
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 relative z-10 w-full max-w-4xl mx-auto">
-            {videos.map((video) => (
+            {validVideos.map((video) => (
               <div key={video.id} className="relative w-full md:w-1/2 rounded-2xl overflow-hidden bg-black/40 border border-[#cfa375]/20 shadow-xl shadow-[#cfa375]/5 flex items-center justify-center">
-                {video.videoUrl && (
-                  <video
-                    src={video.videoUrl}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="w-full h-auto max-h-[70vh] object-contain bg-black"
-                  />
-                )}
+                <video
+                  src={video.videoUrl!}
+                  controls
+                  playsInline
+                  preload="metadata"
+                  className="w-full h-auto max-h-[70vh] object-contain bg-black"
+                  aria-label={`Video testimonial from ${video.name}`}
+                >
+                  <track kind="captions" />
+                </video>
               </div>
             ))}
           </div>

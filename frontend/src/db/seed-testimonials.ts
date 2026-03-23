@@ -5,7 +5,11 @@ import { drizzle } from "drizzle-orm/neon-http";
 import { testimonials } from "./schema";
 
 async function seedTestimonials() {
-  const sql = neon(process.env.DATABASE_URL!);
+  const dbUrl = process.env.DATABASE_URL;
+  if (!dbUrl) {
+    throw new Error("Missing DATABASE_URL environment variable");
+  }
+  const sql = neon(dbUrl);
   const db = drizzle(sql);
 
   console.log("🗑️  Clearing existing testimonials...");

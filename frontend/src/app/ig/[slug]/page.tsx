@@ -4,6 +4,7 @@ import { eq, asc } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import ReportClient from "./report-client";
 import type { Metadata } from "next";
+import type { TestimonialType } from "@/types/testimonial";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -71,7 +72,7 @@ export default async function ReportPage({ params }: Props) {
     text: t.text,
     rating: t.rating,
     videoUrl: t.videoUrl,
-    type: t.type,
+    type: t.type as TestimonialType,
   }));
 
   return (
