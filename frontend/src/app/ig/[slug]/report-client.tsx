@@ -23,7 +23,6 @@ import {
   ChevronRight,
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
-import VideoTestimonials from "@/components/VideoTestimonials";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
 import { load } from "@cashfreepayments/cashfree-js";
@@ -67,8 +66,7 @@ export default function ReportClient({
 }) {
   const router = useRouter();
 
-  const videoTestimonials = testimonials.filter((t) => t.type === "video");
-  const textTestimonials = testimonials.filter((t) => t.type === "text");
+
 
   // Find the current service by slug
   const currentIndex = services.findIndex((s) => s.slug === currentSlug);
@@ -799,8 +797,7 @@ export default function ReportClient({
       </section>
 
       {/* ─── Testimonials ─── */}
-      {videoTestimonials.length > 0 && <VideoTestimonials videos={videoTestimonials} />}
-      {textTestimonials.length > 0 && <TestimonialCarousel items={textTestimonials} />}
+      <TestimonialCarousel />
     </div>
   );
 }

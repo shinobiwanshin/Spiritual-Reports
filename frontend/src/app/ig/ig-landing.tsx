@@ -13,7 +13,6 @@ import {
   Send,
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
-import VideoTestimonials from "@/components/VideoTestimonials";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
 
@@ -61,8 +60,7 @@ export default function IgLanding({
   services: ServiceVariant[];
   testimonials: Testimonial[];
 }) {
-  const videoTestimonials = testimonials.filter((t) => t.type === "video");
-  const textTestimonials = testimonials.filter((t) => t.type === "text");
+
 
   return (
     <div className="min-h-screen bg-[#0f0a2e] text-white relative overflow-hidden">
@@ -250,8 +248,7 @@ export default function IgLanding({
       </section>
 
       {/* ─── Testimonials ─── */}
-      {videoTestimonials.length > 0 && <VideoTestimonials videos={videoTestimonials} />}
-      {textTestimonials.length > 0 && <TestimonialCarousel items={textTestimonials} />}
+      <TestimonialCarousel />
 
       {/* ─── Bottom Philosophy Section ─── */}
       <section className="relative z-10 px-6 pb-20">
