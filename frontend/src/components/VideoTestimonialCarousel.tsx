@@ -7,7 +7,6 @@ import type { Testimonial } from "@/types/testimonial";
 export default function VideoTestimonialCarousel() {
   const [reviews, setReviews] = useState<Testimonial[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
@@ -34,11 +33,7 @@ export default function VideoTestimonialCarousel() {
     if (loading || reviews.length === 0) return;
 
     const timer = setInterval(() => {
-      setIsAnimating(true);
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % reviews.length);
-        setIsAnimating(false);
-      }, 500);
+      setCurrentIndex((prev) => (prev + 1) % reviews.length);
     }, 6000);
 
     return () => clearInterval(timer);
@@ -63,24 +58,12 @@ export default function VideoTestimonialCarousel() {
 
   if (reviews.length === 0) return null;
 
-  const current = reviews[currentIndex];
-
   const handlePrevious = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
-      setIsAnimating(false);
-    }, 500);
+    setCurrentIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
-    if (isAnimating) return;
-    setIsAnimating(true);
-    setTimeout(() => {
-      setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
-      setIsAnimating(false);
-    }, 500);
+    setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
   };
 
   return (
@@ -113,28 +96,34 @@ export default function VideoTestimonialCarousel() {
             <ChevronRight className="w-6 h-6" />
           </button>
 
-          {/* Single Video Display */}
-          <div className="relative z-10 w-full max-w-sm">
-            <div
-              className={`transition-all duration-500 ease-in-out w-full ${
-                isAnimating ? "opacity-0 scale-95" : "opacity-100 scale-100"
-              }`}
-            >
-              <div className="bg-[#1a1347]/40 border border-[#cfa375]/10 rounded-2xl p-4 backdrop-blur-md flex flex-col justify-center items-center shadow-2xl shadow-black/40">
-                <div className="w-full relative pt-[177.78%] rounded-xl overflow-hidden shadow-lg shadow-black/40">
-                  {current.videoUrl && (
-                    <iframe
-                      className="absolute top-0 left-0 w-full h-full"
-                      src={current.videoUrl}
-                      title={current.name || "Video Testimonial"}
-                      frameBorder="0"
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                      allowFullScreen
-                    ></iframe>
-                  )}
+          {/* Stacked Video Display via CSS Grid */}
+          <div className="relative z-10 w-full max-w-sm grid">
+            {reviews.map((review, idx) => (
+              <div
+                key={idx}
+                style={{ gridArea: "1 / 1" }}
+                className={`transition-all duration-700 ease-in-out w-full ${
+                  idx === currentIndex
+                    ? "opacity-100 scale-100 z-10"
+                    : "opacity-0 scale-95 z-0 pointer-events-none"
+                }`}
+              >
+                <div className="bg-[#1a1347]/40 border border-[#cfa375]/10 rounded-2xl p-4 backdrop-blur-md flex flex-col justify-center items-center shadow-2xl shadow-black/40">
+                  <div className="w-full relative pt-[177.78%] rounded-xl overflow-hidden shadow-lg shadow-black/40">
+                    {review.videoUrl && (
+                      <iframe
+                        className="absolute top-0 left-0 w-full h-full bg-[#1a1347]/80"
+                        src={review.videoUrl}
+                        title={review.name || "Video Testimonial"}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
 
@@ -143,14 +132,7 @@ export default function VideoTestimonialCarousel() {
           {reviews.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => {
-                if (idx === currentIndex || isAnimating) return;
-                setIsAnimating(true);
-                setTimeout(() => {
-                  setCurrentIndex(idx);
-                  setIsAnimating(false);
-                }, 500);
-              }}
+              onClick={() => setCurrentIndex(idx)}
               className={`h-1.5 rounded-full transition-all duration-500 hover:bg-[#cfa375]/60 ${
                 idx === currentIndex
                   ? "w-10 bg-[#cfa375] shadow-[0_0_8px_rgba(207,163,117,0.5)]"
