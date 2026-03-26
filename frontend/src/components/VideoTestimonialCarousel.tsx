@@ -9,6 +9,8 @@ export default function VideoTestimonialCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   // Fetch video reviews from the database
   useEffect(() => {
@@ -28,16 +30,27 @@ export default function VideoTestimonialCarousel() {
       });
   }, []);
 
+  // Detect iframe click to pause auto-rotate
+  useEffect(() => {
+    const handleBlur = () => {
+      if (document.activeElement?.tagName === "IFRAME") {
+        setHasInteracted(true);
+      }
+    };
+    window.addEventListener("blur", handleBlur);
+    return () => window.removeEventListener("blur", handleBlur);
+  }, []);
+
   // Auto-rotate every 6 seconds
   useEffect(() => {
-    if (loading || reviews.length === 0) return;
+    if (loading || reviews.length === 0 || isHovered || hasInteracted) return;
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % reviews.length);
     }, 6000);
 
     return () => clearInterval(timer);
-  }, [loading, reviews]);
+  }, [loading, reviews, isHovered, hasInteracted]);
 
   if (loading) {
     return (
@@ -59,10 +72,12 @@ export default function VideoTestimonialCarousel() {
   if (reviews.length === 0) return null;
 
   const handlePrevious = () => {
+    setHasInteracted(true);
     setCurrentIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
   };
 
   const handleNext = () => {
+    setHasInteracted(true);
     setCurrentIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
   };
 
@@ -78,7 +93,11 @@ export default function VideoTestimonialCarousel() {
           </h3>
         </div>
 
-        <div className="relative group flex items-center justify-center">
+        <div 
+          className="relative group flex items-center justify-center"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           {/* Chevrons */}
           <button
             onClick={handlePrevious}
@@ -132,7 +151,10 @@ export default function VideoTestimonialCarousel() {
           {reviews.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => setCurrentIndex(idx)}
+              onClick={() => {
+                setHasInteracted(true);
+                setCurrentIndex(idx);
+              }}
               className={`h-1.5 rounded-full transition-all duration-500 hover:bg-[#cfa375]/60 ${
                 idx === currentIndex
                   ? "w-10 bg-[#cfa375] shadow-[0_0_8px_rgba(207,163,117,0.5)]"
