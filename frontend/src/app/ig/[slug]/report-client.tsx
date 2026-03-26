@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import VideoBackground from "@/components/VideoBackground";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
+import VideoTestimonialCarousel from "@/components/VideoTestimonialCarousel";
 import { getIcon } from "@/lib/icon-map";
 import { load } from "@cashfreepayments/cashfree-js";
 import type { Testimonial } from "@/types/testimonial";
@@ -789,6 +790,7 @@ export default function ReportClient({
       </section>
 
       {/* ─── Testimonials ─── */}
+      <VideoTestimonialCarousel />
       <TestimonialCarousel />
     </div>
   );

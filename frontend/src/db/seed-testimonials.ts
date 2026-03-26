@@ -24,25 +24,32 @@ async function seedTestimonials() {
   await db.insert(testimonials).values([
     // --- Video Testimonials ---
     {
-      name: "Priya",
+      name: "User 1",
       type: "video",
-      videoUrl: "/videos/testimony1.mp4",
+      videoUrl: "https://www.youtube.com/embed/vTElbk2aN98",
       rating: 5,
       sortOrder: 1,
     },
     {
-      name: "Shruti",
+      name: "User 2",
       type: "video",
-      videoUrl: "/videos/testimony2.mp4",
+      videoUrl: "https://www.youtube.com/embed/cmR0Y1ttEo4",
       rating: 5,
       sortOrder: 2,
     },
     {
-      name: "Kavitha",
+      name: "User 3",
       type: "video",
-      videoUrl: "/videos/testimony3.mp4",
+      videoUrl: "https://www.youtube.com/embed/9GnFpsgb1jk",
       rating: 5,
       sortOrder: 3,
+    },
+    {
+      name: "User 4",
+      type: "video",
+      videoUrl: "https://www.youtube.com/embed/g4fCCWLczfo",
+      rating: 5,
+      sortOrder: 4,
     },
     // --- Text Testimonials ---
     {
