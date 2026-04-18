@@ -70,7 +70,7 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '956360896845471');
+fbq('init', '1326893692586088');
 fbq('track', 'PageView');
 window.__fbInitialPageViewFired__ = true;
             `,
@@ -81,7 +81,7 @@ window.__fbInitialPageViewFired__ = true;
             height="1"
             width="1"
             style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=956360896845471&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=1326893692586088&ev=PageView&noscript=1"
             alt=""
           />
         </noscript>
