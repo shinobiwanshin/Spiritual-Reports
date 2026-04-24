@@ -10,7 +10,6 @@ import { UserButton, SignInButton } from "@clerk/nextjs";
 const navLinks = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About Us" },
-  { href: "/ig", label: "Services" },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
@@ -65,7 +64,7 @@ export default function Navbar({
             );
           })}
           <Link
-            href="/ig"
+            href="/"
             className="ml-4 gold-btn px-5 py-2.5 rounded-full text-sm font-semibold"
           >
             Get Report
@@ -149,7 +148,7 @@ export default function Navbar({
             );
           })}
           <Link
-            href="/ig"
+            href="/"
             onClick={() => setMobileOpen(false)}
             className="mt-2 gold-btn px-5 py-3 rounded-full text-sm font-semibold text-center"
           >
