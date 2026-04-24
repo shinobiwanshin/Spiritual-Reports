@@ -73,19 +73,18 @@ export default function IgLanding({
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 animate-fade-in-up">
-            ULTIMATE PERSONALISED <span className="gold-gradient-text">ASTROLOGY REPORT</span>
+            Your Personalized <span className="gold-gradient-text">Astrology Report</span>
           </h1>
 
           <p className="text-[#b0a8c8] text-lg sm:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-4 animate-fade-in-up">
-            Your future is already decided...<br className="hidden sm:block" />
-            The only question is — <span className="text-white">do you want to know it before it happens?</span>
+            Explore astrological insights that may resonate with your spiritual journey.<br className="hidden sm:block" />
+            <span className="text-white">Discover patterns that support your self-reflection.</span>
           </p>
 
           <p className="text-[#b0a8c8]/70 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6 animate-fade-in-up">
             Under the grace of{" "}
             <span className="text-[#cfa375] font-semibold">Lord Shiva</span>,
-            this is offered as sincere spiritual guidance — not superstition,
-            not false promises.
+            this is offered as a spiritual reflective tool to support your personal growth and awareness.
           </p>
 
 
@@ -244,7 +243,7 @@ export default function IgLanding({
       <TestimonialCarousel />
 
       {/* ─── Bottom Philosophy Section ─── */}
-      <section className="relative z-10 px-6 pb-20">
+      <section className="relative z-10 px-6 pb-12">
         <div className="max-w-3xl mx-auto text-center">
           <div className="bg-white/[0.03] border border-white/[0.06] rounded-3xl p-10 md:p-14 backdrop-blur-sm">
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
@@ -261,6 +260,20 @@ export default function IgLanding({
             >
               Contact Us
             </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── Meta Compliance Disclaimer ─── */}
+      <section className="relative z-10 px-6 pb-20">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center text-xs text-white/40 space-y-2">
+            <p>
+              <strong>Disclaimer:</strong> Astrology services are offered as spiritual reflective and exploratory tools only.
+            </p>
+            <p>
+              Our reports are not medical, psychological, legal, or financial advice. Always consult qualified professionals for health, mental health, legal, or financial matters. Results are not guaranteed.
+            </p>
           </div>
         </div>
       </section>
