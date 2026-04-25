@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import {
   Sparkles,
@@ -33,9 +34,6 @@ export interface ServiceVariant {
   featured: boolean | null;
 }
 
-
-
-
 /* ──────────────── Page count helper ──────────────── */
 
 function getPageCount(duration: string): number {
@@ -49,17 +47,31 @@ function getPageCount(duration: string): number {
 
 export default function IgLanding({
   services,
+  showZodiacWheel = false,
 }: {
   services: ServiceVariant[];
+  showZodiacWheel?: boolean;
 }) {
-
-
   return (
     <div className="min-h-screen bg-[#0f0a2e] text-white relative overflow-hidden">
       {/* Video background */}
       <div className="fixed inset-0 z-0">
         <VideoBackground overlayOpacity={0.55} />
       </div>
+
+      {showZodiacWheel && (
+        <div className="pointer-events-none fixed inset-0 z-1 overflow-hidden">
+          <div className="absolute -top-20 -right-24 sm:-top-28 sm:-right-16 w-70 h-70 sm:w-105 sm:h-105 opacity-25 animate-zodiac-spin">
+            <Image
+              src="/images/Zodiac-Wheel.png"
+              alt="Spinning zodiac wheel"
+              fill
+              priority
+              className="object-contain"
+            />
+          </div>
+        </div>
+      )}
 
       {/* ─── Hero Section ─── */}
       <section className="relative z-10 pt-28 pb-12 px-6">
@@ -73,20 +85,25 @@ export default function IgLanding({
           </div>
 
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6 animate-fade-in-up">
-            Your Personalized <span className="gold-gradient-text">Astrology Report</span>
+            Your Personalized{" "}
+            <span className="gold-gradient-text">Astrology Report</span>
           </h1>
 
           <p className="text-[#b0a8c8] text-lg sm:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-4 animate-fade-in-up">
-            Explore astrological insights that may resonate with your spiritual journey.<br className="hidden sm:block" />
-            <span className="text-white">Discover patterns that support your self-reflection.</span>
+            Explore astrological insights that may resonate with your spiritual
+            journey.
+            <br className="hidden sm:block" />
+            <span className="text-white">
+              Discover patterns that support your self-reflection.
+            </span>
           </p>
 
           <p className="text-[#b0a8c8]/70 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto mb-6 animate-fade-in-up">
             Under the grace of{" "}
             <span className="text-[#cfa375] font-semibold">Lord Shiva</span>,
-            this is offered as a spiritual reflective tool to support your personal growth and awareness.
+            this is offered as a spiritual reflective tool to support your
+            personal growth and awareness.
           </p>
-
 
           {/* Trust row */}
           <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-white/50 animate-fade-in-up">
@@ -269,10 +286,13 @@ export default function IgLanding({
         <div className="max-w-3xl mx-auto">
           <div className="text-center text-xs text-white/40 space-y-2">
             <p>
-              <strong>Disclaimer:</strong> Astrology services are offered as spiritual reflective and exploratory tools only.
+              <strong>Disclaimer:</strong> Astrology services are offered as
+              spiritual reflective and exploratory tools only.
             </p>
             <p>
-              Our reports are not medical, psychological, legal, or financial advice. Always consult qualified professionals for health, mental health, legal, or financial matters. Results are not guaranteed.
+              Our reports are not medical, psychological, legal, or financial
+              advice. Always consult qualified professionals for health, mental
+              health, legal, or financial matters. Results are not guaranteed.
             </p>
           </div>
         </div>

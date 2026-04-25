@@ -23,5 +23,5 @@ export default async function HomePage() {
     featured: s.featured,
   }));
 
-  return <IgLanding services={serviceData} />;
+  return <IgLanding services={serviceData} showZodiacWheel />;
 }
