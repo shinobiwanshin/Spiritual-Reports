@@ -59,23 +59,23 @@ export default function IgLanding({
         <VideoBackground overlayOpacity={0.55} />
       </div>
 
-      {showZodiacWheel && (
-        <div className="pointer-events-none fixed inset-0 z-1 overflow-hidden">
-          <div className="absolute -top-20 -right-24 sm:-top-28 sm:-right-16 w-70 h-70 sm:w-105 sm:h-105 opacity-25 animate-zodiac-spin">
-            <Image
-              src="/images/Zodiac-Wheel.png"
-              alt="Spinning zodiac wheel"
-              fill
-              priority
-              className="object-contain"
-            />
-          </div>
-        </div>
-      )}
-
       {/* ─── Hero Section ─── */}
       <section className="relative z-10 pt-28 pb-12 px-6">
-        <div className="max-w-4xl mx-auto text-center">
+        {showZodiacWheel && (
+          <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+            <div className="relative w-80 h-80 sm:w-130 sm:h-130 opacity-20 animate-zodiac-spin">
+              <Image
+                src="/images/Zodiac-Wheel.png"
+                alt="Spinning zodiac wheel"
+                fill
+                priority
+                className="object-contain"
+              />
+            </div>
+          </div>
+        )}
+
+        <div className="relative z-10 max-w-4xl mx-auto text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#cfa375]/10 border border-[#cfa375]/20 mb-6 animate-fade-in-up">
             <Sparkles className="w-3.5 h-3.5 text-[#cfa375]" />
