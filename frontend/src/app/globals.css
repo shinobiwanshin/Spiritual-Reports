@@ -123,6 +123,15 @@ h1 {
   }
 }
 
+@keyframes zodiacSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
@@ -144,6 +153,10 @@ h1 {
 
 .animate-glow {
   animation: glow 3s ease-in-out infinite;
+}
+
+.animate-zodiac-spin {
+  animation: zodiacSpin 48s linear infinite;
 }
 
 /* Gold gradient text */

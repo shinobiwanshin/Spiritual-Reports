@@ -107,7 +107,7 @@ export function ServiceForm({ action, initialData }: ServiceFormProps) {
             type="text"
             required
             defaultValue={initialData?.subtitle || ""}
-            placeholder="e.g. Mid-Term Strategy"
+            placeholder="e.g. Medium-Term Patterns"
             className={inputClasses}
           />
         </div>
