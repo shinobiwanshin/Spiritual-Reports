@@ -63,7 +63,7 @@ export default function IgLanding({
       <section className="relative z-10 pt-28 pb-12 px-6">
         {showZodiacWheel && (
           <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
-            <div className="relative w-80 h-80 sm:w-130 sm:h-130 opacity-20 animate-zodiac-spin">
+            <div className="relative w-120 h-120 sm:w-190 sm:h-190 opacity-20 animate-zodiac-spin">
               <Image
                 src="/images/Zodiac-Wheel.png"
                 alt="Spinning zodiac wheel"
