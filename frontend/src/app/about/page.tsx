@@ -5,6 +5,7 @@ import {
   Infinity,
   Heart,
   Eye,
+  FileText,
   Mountain,
   Moon,
   Sparkles,
@@ -14,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: "About Us — Shivabakthi",
   description:
-    "We are seekers standing in devotion at the feet of Mahadev, offering sincere spiritual guidance as seva — sacred service.",
+    "We are seekers standing in devotion at the feet of Mahadev, offering Vedic reflection reports and spiritual perspective as seva — sacred service.",
 };
 
 /* ─── Section data ─── */
@@ -33,7 +34,7 @@ const sections: Section[] = [
     content: [
       "We are not here as astrologers seeking followers.\nWe are not here as readers of fate.\nWe are not here as sellers of predictions.",
       "We are seekers —\nstanding in devotion at the feet of Mahadev,\noffering what little understanding has been given to us.",
-      "This platform was not created as a business idea.\nIt arose as seva — sacred service.",
+      "This platform arose as seva — sacred service.\nTo sustain this mission and serve more seekers, we offer\nVedic reports and guidance as tools for spiritual reflection.",
     ],
   },
   {
@@ -42,8 +43,9 @@ const sections: Section[] = [
     content: [
       "Everything here begins with one truth:",
       { shloka: "ॐ नमः शिवाय" },
-      "We believe that time, karma, and destiny are not accidents of the universe. They are movements of consciousness under the silent witness of Shiva.",
-      "Our work is to observe, interpret, and present what is already written in the subtle language of time — with humility and surrender.",
+      "Rooted in Vedic wisdom and accessible to all seekers, regardless of background.",
+      "From our Vedic tradition, we understand that time, karma, and destiny\noperate as movements of consciousness - observed through Shiva's awareness.",
+      "Our work is to interpret these patterns thoughtfully - not as fixed prophecy,\nbut as spiritual perspective offering self-reflection and personal insight.",
     ],
   },
   {
@@ -51,32 +53,31 @@ const sections: Section[] = [
     title: "Our Intention",
     content: [
       "We do not promise miracles.\nWe do not create fear.\nWe do not manipulate emotion.",
-      "We offer guidance only when it feels dharmic.\nWe speak only what aligns with inner clarity.",
-      "If ever a message is delivered through us,\nit is delivered with folded hands.",
-      "Because we believe:",
+      "We offer guidance aligned with our spiritual tradition.\nWe speak with reverence and intention.",
+      "Our messages are offered with reverence and responsibility.\nWe stand behind the integrity of our approach.",
+      "In our tradition, we believe:",
       {
         shloka: "यदा आत्मा प्रश्नं करोति\nतदा शिवः उत्तरं ददाति",
-        translation: "When the soul asks sincerely, Shiva responds.",
+        translation: "When the soul seeks sincerely, understanding emerges.",
       },
-      "We are merely instruments.",
+      "We are devoted to serving this purpose with authenticity.",
     ],
   },
   {
     icon: Eye,
     title: "Our Approach to Astrology",
     content: [
-      "Astrology, for us, is not prediction.\nIt is remembrance.",
-      "Not fortune-telling — but karma-understanding.\nNot control of the future — but awareness of the present.",
-      "We do not claim to change destiny.\nWe believe destiny transforms when awareness awakens.",
+      "Astrology, for us, is not prediction.\nIt is a framework for self-reflection and pattern-interpretation.",
+      "Not fortune-telling — but understanding patterns within our spiritual tradition.\nNot control of the future — but awareness of the patterns that shape our present.",
+      "We do not claim to change destiny.\nWithin our framework, deeper self-awareness can transform how we\nexperience life's unfolding and our own agency within it.",
     ],
   },
   {
     icon: Mountain,
     title: "Why We Exist",
     content: [
-      "There are many who feel lost in silence.\nMany who seek reassurance without drama.\nMany who want spiritual clarity, not fear.",
-      "This space exists for them.\nFor the quiet devotee.\nFor the inward seeker.\nFor the one who feels called, but does not know why.",
-      "If you feel calm here,\nif something within you softens —\nthat is enough.",
+      "This space is for those drawn to contemplative wisdom.\nFor those interested in Vedic perspective on life patterns.\nFor those seeking spiritual understanding, not fear-based predictions.\nFor the curious mind.\nFor the sincere seeker.\nFor those aligned with our approach.",
+      "If this space resonates with your values,\nif our perspective aligns with your spiritual practice -\nwe welcome your exploration.",
     ],
   },
   {
@@ -94,11 +95,19 @@ const sections: Section[] = [
     ],
   },
   {
+    icon: FileText,
+    title: "A Note on Our Service",
+    content: [
+      "We offer Vedic astrology reports and spiritual guidance as the means to\nsustain our mission. When you explore our work with us, you're supporting\na community dedicated to spiritual service and truth.",
+      "Our reports are tools for reflection and self-exploration within our Vedic\ntradition - not promises of life changes, but invitations to deeper\nunderstanding and personal insight.",
+    ],
+  },
+  {
     icon: Sparkles,
     title: "Closing Words",
     content: [
       "We do not claim perfection.\nWe claim devotion.",
-      "If anything spoken here brings peace to your heart, the gratitude belongs to Mahadev.",
+      "If anything shared here supports your spiritual growth, we are honored to serve.",
       {
         shloka: "शिवो भूत्वा शिवं यजेत्",
         translation: "Become Shiva to worship Shiva.",
@@ -125,7 +134,7 @@ export default function AboutPage() {
           We are seekers — standing in devotion, offering what little
           understanding has been given to us.
         </p>
-        <div className="w-20 h-0.5 bg-gradient-to-r from-transparent via-[#cfa375] to-transparent mx-auto mt-8" />
+        <div className="w-20 h-0.5 bg-linear-to-r from-transparent via-[#cfa375] to-transparent mx-auto mt-8" />
       </div>
 
       {/* Sections */}
@@ -205,14 +214,21 @@ export default function AboutPage() {
             ॐ नमः शिवाय
           </p>
           <p className="text-[#b0a8c8] text-sm mb-8">
-            If you feel called, begin your journey with us.
+            If this resonates with you, begin your journey with us.
           </p>
           <Link
             href="/ig"
             className="gold-btn px-8 py-3.5 rounded-full text-sm font-semibold inline-block"
           >
-            Explore Our Reports
+            Explore Our Vedic Reflection Reports
           </Link>
+          <p className="text-xs text-white/50 mt-8 max-w-2xl mx-auto leading-relaxed">
+            Disclaimer: Our reports are offered for spiritual reflection and
+            entertainment purposes. Astrological analysis is not a substitute
+            for professional medical, psychological, legal, or financial advice.
+            Results may vary. For serious concerns, please consult qualified
+            professionals.
+          </p>
         </div>
       </div>
     </div>

@@ -121,7 +121,7 @@ export async function POST(req: NextRequest) {
               ]
             };
 
-            const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || "956360896845471";
+            const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || "1413955200415939";
             const capiToken = process.env.META_CAPI_TOKEN;
 
             if (capiToken) {

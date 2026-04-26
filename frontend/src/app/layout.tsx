@@ -39,6 +39,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || "1413955200415939";
+
   let isAdmin = false;
   let isSignedIn = false;
   try {
@@ -70,7 +72,7 @@ n.queue=[];t=b.createElement(e);t.async=!0;
 t.src=v;s=b.getElementsByTagName(e)[0];
 s.parentNode.insertBefore(t,s)}(window, document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '1326893692586088');
+fbq('init', '${metaPixelId}');
 fbq('track', 'PageView');
 window.__fbInitialPageViewFired__ = true;
             `,
@@ -81,7 +83,7 @@ window.__fbInitialPageViewFired__ = true;
             height="1"
             width="1"
             style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=1326893692586088&ev=PageView&noscript=1"
+            src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
             alt=""
           />
         </noscript>
