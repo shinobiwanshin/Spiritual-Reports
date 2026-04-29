@@ -39,7 +39,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || "1413955200415939";
+  const metaPixelId = "1413955200415939";
 
   let isAdmin = false;
   let isSignedIn = false;
@@ -58,8 +58,11 @@ export default async function RootLayout({
   return (
     <html lang="en" className={cn(playfair.variable, inter.variable)}>
       <head>
-        <meta name="facebook-domain-verification" content="dw8qi3uwj499uf11ca9p9jymtyqpjy" />
-        
+        <meta
+          name="facebook-domain-verification"
+          content="dw8qi3uwj499uf11ca9p9jymtyqpjy"
+        />
+
         {/* Meta Pixel Code */}
         <script
           dangerouslySetInnerHTML={{
