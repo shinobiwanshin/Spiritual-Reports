@@ -85,62 +85,64 @@ function PaymentStatusContent() {
           }
         }
 
-          // If payment is successful, the webhook is generating the report behind the scenes
-          if (data.status === "PAID") {
-            // Track Purchase event once per session / orderId
-            // Hydrate from sessionStorage if present
-            if (typeof window !== "undefined") {
-              if (!fallbackTrackedPurchaseStore[orderId]) {
-                const sessionKey = `tracked_purchase_${orderId}`;
-                let alreadyTracked = false;
+        // If payment is successful, the webhook is generating the report behind the scenes
+        if (data.status === "PAID") {
+          // Track Purchase event once per session / orderId
+          // Hydrate from sessionStorage if present
+          if (typeof window !== "undefined") {
+            if (!fallbackTrackedPurchaseStore[orderId]) {
+              const sessionKey = `tracked_purchase_${orderId}`;
+              let alreadyTracked = false;
+              try {
+                if ("sessionStorage" in window) {
+                  alreadyTracked = !!sessionStorage.getItem(sessionKey);
+                }
+              } catch {
+                // Swallow errors
+              }
+
+              if (alreadyTracked) {
+                fallbackTrackedPurchaseStore[orderId] = true;
+              } else if ((window as any).fbq) {
+                try {
+                  (window as any).fbq(
+                    "track",
+                    "Purchase",
+                    {
+                      value: data.amount,
+                      currency: data.currency || "INR",
+                      content_type: "product",
+                      content_id: data.reportSlug,
+                    },
+                    { eventID: data.orderId },
+                  );
+                } catch (err) {
+                  console.error("Facebook pixel tracking failed:", err);
+                }
+
+                fallbackTrackedPurchaseStore[orderId] = true;
                 try {
                   if ("sessionStorage" in window) {
-                    alreadyTracked = !!sessionStorage.getItem(sessionKey);
+                    sessionStorage.setItem(sessionKey, "true");
                   }
                 } catch {
                   // Swallow errors
                 }
-
-                if (alreadyTracked) {
-                  fallbackTrackedPurchaseStore[orderId] = true;
-                } else if ((window as any).fbq) {
-                  try {
-                    (window as any).fbq(
-                      "track", 
-                      "Purchase", 
-                      {
-                        value: data.amount,
-                        currency: data.currency || "INR",
-                      },
-                      { eventID: data.orderId }
-                    );
-                  } catch (err) {
-                    console.error("Facebook pixel tracking failed:", err);
-                  }
-                  
-                  fallbackTrackedPurchaseStore[orderId] = true;
-                  try {
-                    if ("sessionStorage" in window) {
-                      sessionStorage.setItem(sessionKey, "true");
-                    }
-                  } catch {
-                    // Swallow errors
-                  }
-                }
               }
             }
-
-            // Poll a couple more times just to see if the DB order has finally been updated
-            // Or just optimistically show generating state since the webhook will handle it
-            setGeneratingReport(true);
-
-            // Assuming webhook finishes very fast, we just tell user it's paid
-            setTimeout(() => {
-              setReportGenerated(true);
-              setGeneratingReport(false);
-            }, 3000);
           }
-        } catch {
+
+          // Poll a couple more times just to see if the DB order has finally been updated
+          // Or just optimistically show generating state since the webhook will handle it
+          setGeneratingReport(true);
+
+          // Assuming webhook finishes very fast, we just tell user it's paid
+          setTimeout(() => {
+            setReportGenerated(true);
+            setGeneratingReport(false);
+          }, 3000);
+        }
+      } catch {
         setError("Failed to verify payment status");
       } finally {
         setLoading(false);
