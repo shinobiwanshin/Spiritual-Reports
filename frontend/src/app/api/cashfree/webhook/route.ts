@@ -89,13 +89,21 @@ export async function POST(req: NextRequest) {
           .limit(1);
 
         if (dbOrder && dbOrder.formData) {
-          console.log(`Webhook: Processing CAPI tracking and report generation for Order ${orderId}`);
-          
+          console.log(
+            `Webhook: Processing CAPI tracking and report generation for Order ${orderId}`,
+          );
+
           // Execute CAPI Tracking Event
           try {
-            const hashData = (str: string | null) => str ? crypto.createHash("sha256").update(str.trim().toLowerCase()).digest("hex") : undefined;
+            const hashData = (str: string | null) =>
+              str
+                ? crypto
+                    .createHash("sha256")
+                    .update(str.trim().toLowerCase())
+                    .digest("hex")
+                : undefined;
             const metaCapiData = (dbOrder.formData as any).metaCapiData || {};
-            
+
             const eventPayload = {
               data: [
                 {
@@ -104,40 +112,62 @@ export async function POST(req: NextRequest) {
                   event_id: dbOrder.orderId,
                   action_source: "website",
                   user_data: {
-                    client_ip_address: metaCapiData.clientIpAddress || undefined,
-                    client_user_agent: metaCapiData.clientUserAgent || undefined,
+                    client_ip_address:
+                      metaCapiData.clientIpAddress || undefined,
+                    client_user_agent:
+                      metaCapiData.clientUserAgent || undefined,
                     external_id: [hashData(dbOrder.customerEmail)],
                     em: [hashData(dbOrder.customerEmail)],
                     ph: [hashData(dbOrder.customerPhone || "")].filter(Boolean),
-                    fn: [hashData(dbOrder.customerName?.split(" ")[0] || "")].filter(Boolean),
+                    fn: [
+                      hashData(dbOrder.customerName?.split(" ")[0] || ""),
+                    ].filter(Boolean),
                     fbc: metaCapiData.fbc || undefined,
                     fbp: metaCapiData.fbp || undefined,
                   },
                   custom_data: {
                     currency: dbOrder.currency || "INR",
                     value: dbOrder.amount,
-                  }
-                }
-              ]
+                  },
+                },
+              ],
             };
 
-            const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || "1413955200415939";
+            const pixelId = "1413955200415939";
             const capiToken = process.env.META_CAPI_TOKEN;
 
-            if (capiToken) {
-              const capiRes = await fetch(`https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${capiToken}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(eventPayload),
-              });
-              const data = await capiRes.json();
-              if (!capiRes.ok) {
-                console.error(`Webhook: Failed to send CAPI event for Order ${orderId}`, data);
-              } else {
-                console.log(`Webhook: Sent CAPI Purchase event for Order ${orderId}`, data);
-              }
+            if (!capiToken) {
+              console.error(
+                `[CRITICAL] Webhook: META_CAPI_TOKEN is missing. Purchase events will NOT be tracked in Meta Ads Manager for Order ${orderId}. Please set META_CAPI_TOKEN in your environment variables.`,
+              );
             } else {
-              console.warn("Webhook: META_CAPI_TOKEN is missing. Server CAPI tracking skipped.");
+              try {
+                const capiRes = await fetch(
+                  `https://graph.facebook.com/v25.0/${pixelId}/events?access_token=${capiToken}`,
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(eventPayload),
+                  },
+                );
+                const data = await capiRes.json();
+                if (!capiRes.ok) {
+                  console.error(
+                    `Webhook: Failed to send CAPI event for Order ${orderId}`,
+                    data,
+                  );
+                } else {
+                  console.log(
+                    `Webhook: Sent CAPI Purchase event for Order ${orderId}`,
+                    data,
+                  );
+                }
+              } catch (fetchErr) {
+                console.error(
+                  `Webhook: Network error while sending CAPI event for Order ${orderId}:`,
+                  fetchErr,
+                );
+              }
             }
           } catch (capiErr) {
             console.error("Webhook: Failed to execute CAPI logic:", capiErr);
